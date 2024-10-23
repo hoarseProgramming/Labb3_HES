@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Labb3_HES.Views"
+             DataContext="{Binding PlayerViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -14,30 +15,39 @@
                Margin="0, 0, 20, 0"/>
         
         <StackPanel HorizontalAlignment="Center">
+            
             <Label Content="Question Name"
                    FontSize="30" 
                    HorizontalAlignment="Center"
                    Margin="0, 60, 0, 0"/>
+            
             <Label Content="Question X of X" 
                    HorizontalAlignment="Center"
                    FontSize="15"
                    Margin="0, 0, 0, 60"/>
 
             <StackPanel Orientation="Horizontal">
+                
                 <Button Width="230"
                         Height="80" 
                         Margin="20"/>
+                
                 <Button Width="230"
                         Height="80" />
+                
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
+                
                 <Button Width="230"
                         Height="80" 
                         Margin="20, 0, 20, 0"/>
+                
                 <Button Width="230"
                         Height="80" />
+                
             </StackPanel>
+            
         </StackPanel>
     </Grid>
 </UserControl>
