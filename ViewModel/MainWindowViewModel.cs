@@ -19,6 +19,7 @@ namespace Labb3_HES.ViewModel
             {
                 _activePack = value;
                 RaisePropertyChanged();
+                ConfigurationViewModel.RaisePropertyChanged("ActivePack");
             }
         }
 
@@ -28,7 +29,14 @@ namespace Labb3_HES.ViewModel
 
             PlayerViewModel = new PlayerViewModel(this);
 
-            ActivePack = new QuestionPackViewModel(new QuestionPack("My Question Pack"));
+            Packs = new ObservableCollection<QuestionPackViewModel>();
+
+            Packs.Add(new QuestionPackViewModel(new QuestionPack("Default Lovely Question Pack")));
+
+            ActivePack = Packs[0];
+            ActivePack.Questions.Add(new Question("What is Love?", "Baby don't hurt me", "No more", "No more", "No more"));
+            ActivePack.Questions.Add(new Question("What is Love?", "Baby don't hurt me", "No more", "No more", "No more"));
+
         }
     }
 }
