@@ -2,8 +2,8 @@
 {
     class Question
     {
-        public Question(string query, string correctAnswer,
-            string incorrectAnswer1, string incorrectAnswer2, string incorrectAnswer3)
+        public Question(string query = "New Question", string correctAnswer = "",
+            string incorrectAnswer1 = "", string incorrectAnswer2 = "", string incorrectAnswer3 = "")
         {
             Query = query;
             CorrectAnswer = correctAnswer;
