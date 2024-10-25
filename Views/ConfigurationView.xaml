@@ -21,7 +21,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Label Content="Question Pack Name"
+        <Label Content="{Binding ActivePack.Name}"
                FontWeight="Bold"
                Margin="10, 0"
                VerticalAlignment="Bottom"/>
@@ -36,58 +36,69 @@
                     Content="{fa:Icon gears}"/>
             <Button Width="18"
                     Height="18"
+                    Margin="5, 0"
                     Content="{fa:Icon plus}"
-                    Margin="5, 0"/>
+                    Command="{Binding AddQuestionCommand}"/>
             <Button Width="18"
                     Height="18" 
-                    Content="{fa:Icon minus}"/>
+                    Content="{fa:Icon minus}"
+                    Command="{Binding RemoveQuestionCommand}"/>
             
         </StackPanel>
 
         <ListBox Margin="10, 0, 10, 10"
                  Grid.ColumnSpan="2"
-                 Grid.Row="1">
-            <ListBoxItem>
-                <StackPanel>
-                    <Label Content="Question" 
-                            FontWeight="Bold"
-                            Padding="0"/>
-                    <Label Content="Question Name"
-                            Padding="0" />
-                </StackPanel>
-            </ListBoxItem>
-                
-            <ListBoxItem>
-                <StackPanel>
-                    <Label Content="Question" 
-                            FontWeight="Bold"
-                            Padding="0"/>
-                    <Label Content="Question Name"
-                            Padding="0" />
-                </StackPanel>
-            </ListBoxItem>
+                 Grid.Row="1"
+                 ItemsSource="{Binding ActivePack.Questions}"
+                 SelectedItem="{Binding ActiveQuestion}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Question:"
+                                   FontWeight="Bold"/>
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding Query}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+         
         </ListBox>
 
-        <StackPanel Grid.Row="1"
+        <StackPanel DataContext="{Binding ActiveQuestion}" 
+                    Grid.Row="1"
                     Grid.Column="3"
                     Margin="20, 0, 20, 10">
+
             <Label Content="Question:" 
                    FontWeight="Bold"
                    Padding="2"/>
             <TextBox Height="70" 
-                     Margin="0, 0, 0, 30"/>
+                     Margin="0, 0, 0, 30"
+                     Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"/>
+            
             <Label Content="Correct Answer"
                    FontWeight="Bold" />
-            <TextBox Margin="0, 0, 0, 5"/>
+            <TextBox Margin="0, 0, 0, 5"
+                     Text="{Binding CorrectAnswer, UpdateSourceTrigger=PropertyChanged}"/>
+            
             <Label Content="First Incorrect Answer"
                    FontWeight="Bold" />
-            <TextBox Margin="0, 0, 0, 5"/>
+            <TextBox Margin="0, 0, 0, 5"
+                     Text="{Binding IncorrectAnswers[0], UpdateSourceTrigger=PropertyChanged}"/>
+
             <Label Content="Second Incorrect Answer"
                    FontWeight="Bold" />
-            <TextBox Margin="0, 0, 0, 5"/>
+            <TextBox Margin="0, 0, 0, 5"
+                     Text="{Binding IncorrectAnswers[1], UpdateSourceTrigger=PropertyChanged}"/>
+            
             <Label Content="Third Incorrect Answer"
                    FontWeight="Bold" />
-            <TextBox />
+            <TextBox Text="{Binding IncorrectAnswers[2], UpdateSourceTrigger=PropertyChanged}"/>
+        
         </StackPanel>
         
 
