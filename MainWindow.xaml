@@ -7,6 +7,11 @@
         xmlns:views="clr-namespace:Labb3_HES.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800" MinHeight="450" MinWidth="700">
+
+    <Window.InputBindings>
+        <KeyBinding Key="U" Modifiers="Ctrl" Command="{Binding PlayerViewModel.UpdateLabelCommand}" />
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.RowDefinitions>
             

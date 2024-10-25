@@ -13,6 +13,7 @@ namespace Labb3_HES
             InitializeComponent();
             DataContext = new MainWindowViewModel();
 
+            //Make Importer class for VG
         }
     }
 }
