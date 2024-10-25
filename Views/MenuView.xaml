@@ -7,18 +7,23 @@
              xmlns:local="clr-namespace:Labb3_HES.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
     <Grid>
         <Menu>
             <MenuItem Header="_File">
                 
                 <MenuItem Header="_New Question Pack" 
-                          Icon="{fa:Icon folderplus}"/>
+                          Icon="{fa:Icon folderplus}" />
+                <!-- Binding to other command -->
+                <MenuItem Header="Update Label" 
+                          InputGestureText="Ctrl+U"
+                          Command="{Binding PlayerViewModel.UpdateLabelCommand}"/>
                 <!--Needs an open-up menu-->
                 <MenuItem Header="_Select Question Pack" 
-                          Icon="{fa:Icon folderopen}"/>
+                          Icon="{fa:Icon folderopen}" />
                 
                 <MenuItem Header="_Delete Question Pack" 
-                          Icon="{fa:Icon folderminus}"/>
+                          Icon="{fa:Icon folderminus}" />
                 
                 <Separator />
                 
@@ -32,13 +37,16 @@
                 
             </MenuItem>
             
-            <MenuItem Header="_Edit">
+            <MenuItem DataContext="{Binding ConfigurationViewModel}" 
+                      Header="_Edit">
                 
                 <MenuItem Header="_Add Question"
-                          Icon="{fa:Icon plus}"/>
+                          Icon="{fa:Icon plus}"
+                          Command="{Binding AddQuestionCommand}"/>
                 
                 <MenuItem Header="_Remove Question" 
-                          Icon="{fa:Icon minus}"/>
+                          Icon="{fa:Icon minus}"
+                          Command="{Binding RemoveQuestionCommand}"/>
                 
                 <MenuItem Header="Pack _Options"
                           Icon="{fa:Icon sliders}"/>
