@@ -1,4 +1,5 @@
-﻿using Labb3_HES.Model;
+﻿using Labb3_HES.Command;
+using Labb3_HES.Model;
 using System.Collections.ObjectModel;
 
 namespace Labb3_HES.ViewModel
@@ -12,6 +13,7 @@ namespace Labb3_HES.ViewModel
         public PlayerViewModel PlayerViewModel { get; }
 
         private QuestionPackViewModel? _activePack;
+
         public QuestionPackViewModel? ActivePack
         {
             get => _activePack;
@@ -22,21 +24,38 @@ namespace Labb3_HES.ViewModel
                 ConfigurationViewModel.RaisePropertyChanged("ActivePack");
             }
         }
+        public DelegateCommand AddNewPackCommand { get; }
+        public DelegateCommand DeletePackCommand { get; }
+        public DelegateCommand SelectActivePackCommand { get; }
 
         public MainWindowViewModel()
         {
+            AddNewPackCommand = new DelegateCommand(AddNewPack);
+            DeletePackCommand = new DelegateCommand(DeletePack, CanDeletePack);
+            SelectActivePackCommand = new DelegateCommand(SelectActivePack);
+
             ConfigurationViewModel = new ConfigurationViewModel(this);
 
             PlayerViewModel = new PlayerViewModel(this);
 
-            Packs = new ObservableCollection<QuestionPackViewModel>();
+            Packs = JsonHandler.LoadJsonFile();
+            ActivePack = Packs.FirstOrDefault();
+        }
 
-            Packs.Add(new QuestionPackViewModel(new QuestionPack("Default Lovely Question Pack")));
+        private void SelectActivePack(object obj) => ActivePack = obj as QuestionPackViewModel;
 
-            ActivePack = Packs[0];
-            ActivePack.Questions.Add(new Question("What is Love?", "Baby don't hurt me", "No more", "No more", "No more"));
-            ActivePack.Questions.Add(new Question("What is Love?", "Baby don't hurt me", "No more", "No more", "No more"));
+        private bool CanDeletePack(object? arg) => Packs.Count > 1;
 
+        private void DeletePack(object obj)
+        {
+            Packs.Remove(ActivePack);
+            DeletePackCommand.RaiseCanExecuteChanged();
+        }
+
+        private void AddNewPack(Object obj)
+        {
+            Packs.Add(new QuestionPackViewModel(new QuestionPack()));
+            DeletePackCommand.RaiseCanExecuteChanged();
         }
     }
 }
