@@ -15,5 +15,10 @@ namespace Labb3_HES
 
             //Make Importer class for VG
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            JsonHandler.SaveJsonFile((DataContext as MainWindowViewModel).Packs);
+        }
     }
 }

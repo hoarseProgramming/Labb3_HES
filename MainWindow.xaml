@@ -6,10 +6,14 @@
         xmlns:local="clr-namespace:Labb3_HES" 
         xmlns:views="clr-namespace:Labb3_HES.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800" MinHeight="450" MinWidth="700">
+        Title="MainWindow" Height="500" Width="800" MinHeight="450" MinWidth="700"
+        Closing="Window_Closing">
 
     <Window.InputBindings>
         <KeyBinding Key="U" Modifiers="Ctrl" Command="{Binding PlayerViewModel.UpdateLabelCommand}" />
+        <KeyBinding Key="A" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.AddQuestionCommand}" />
+        <KeyBinding Key="R" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}" />
+
     </Window.InputBindings>
     
     <Grid>
