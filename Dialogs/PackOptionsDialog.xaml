@@ -6,18 +6,19 @@
         xmlns:local="clr-namespace:Labb3_HES.Dialogs"
         mc:Ignorable="d"
             Title="Pack Options" 
-    Height="200" 
-    Width="200"
-    ResizeMode="NoResize">
+        Height="200" 
+        Width="200"
+        ResizeMode="NoResize">
 
     <Grid>
         <StackPanel Margin="10">
             <Label Content="Pack Name:" 
-               FontWeight="Bold" />
-            <TextBox Margin="5, 0"/>
+                   FontWeight="Bold" />
+            <TextBox Text="{Binding ActivePack.Name}" 
+                     Margin="5, 0"/>
 
             <Label Content="Difficulty:" 
-               FontWeight="Bold" />
+                   FontWeight="Bold" />
             <ComboBox Margin="5, 0">
                 <ComboBoxItem Content="Medium" />
             </ComboBox>
