@@ -39,7 +39,7 @@
 
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="MenuItem">
-                            <Setter Property="Header" Value="{Binding Name}" />
+                            <Setter Property="Header" Value="{Binding}" />
                             <Setter Property="Command" 
                                     Value="{Binding DataContext.SelectActivePackCommand, 
                                                     RelativeSource={RelativeSource AncestorType=Window}}" />
