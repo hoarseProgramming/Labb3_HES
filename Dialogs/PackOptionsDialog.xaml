@@ -3,40 +3,59 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Labb3_HES.Dialogs"
+        xmlns:local="clr-namespace:Labb3_HES.Dialogs" 
+        xmlns:converters="clr-namespace:Labb3_HES.Converters"
         mc:Ignorable="d"
-            Title="Pack Options" 
+        Title="Pack Options" 
         Height="200" 
         Width="200"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <converters:DifficultyToIntConverter x:Key="DifficultyToIntConverter" />
+    </Window.Resources>
 
     <Grid>
-        <StackPanel Margin="10">
+        <StackPanel Margin="10"
+                    DataContext="{Binding ActivePack}">
             <Label Content="Pack Name:" 
                    FontWeight="Bold" />
-            <TextBox Text="{Binding ActivePack.Name}" 
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
                      Margin="5, 0"/>
 
             <Label Content="Difficulty:" 
                    FontWeight="Bold" />
-            <ComboBox Margin="5, 0">
+
+            <ComboBox x:Name="comboBox" Margin="5, 0"
+                      SelectedIndex="{Binding Difficulty, Converter={StaticResource DifficultyToIntConverter}}">
+                <ComboBoxItem Content="Easy" />
                 <ComboBoxItem Content="Medium" />
+                <ComboBoxItem Content="Hard" />
             </ComboBox>
 
             <StackPanel Orientation="Horizontal">
+                
                 <Label Content="Time Limit:" 
-                   FontWeight="Bold"/>
-                <Label Content="10" 
-                   Width="40"
-                   Padding="20, 5, 0, 0" />
-                <Label Content="seconds"/>
+                       FontWeight="Bold"/>
+                
+                <Label Content="{Binding TimeLimitInSeconds}" 
+                       HorizontalContentAlignment="Right"
+                       Width="40"
+                       Padding="20, 5, 0, 0" />
+                
+                <Label Content="seconds"
+                       Padding="5, 5"/>
+                
             </StackPanel>
+                
             <Slider Minimum="5"
-                Maximum="120"
-                TickFrequency="5"
-                IsSnapToTickEnabled="True"
-                TickPlacement="BottomRight"
-                Margin="5, 0"/>
+                    Maximum="120"
+                    TickFrequency="5"
+                    IsSnapToTickEnabled="True"
+                    TickPlacement="BottomRight"
+                    Margin="5, 0"
+                    Value="{Binding TimeLimitInSeconds}"/>
             
         </StackPanel>
     </Grid>
