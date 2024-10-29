@@ -4,12 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             xmlns:local="clr-namespace:Labb3_HES.Views"
+             xmlns:local="clr-namespace:Labb3_HES.Views" 
+             xmlns:converters="clr-namespace:Labb3_HES.Converters"
              DataContext="{Binding ConfigurationViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converters:QuestionPackViewModelToVisibilityConverter x:Key="questionPackViewModelToVisibilityConverter" />
+    </UserControl.Resources>
+    
     <Grid>
-        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -33,7 +38,8 @@
            
             <Button Width="18"
                     Height="18" 
-                    Content="{fa:Icon gears}"/>
+                    Content="{fa:Icon gears}"
+                    Click="ButtonOpenPackOptions_Click"/>
             <Button Width="18"
                     Height="18"
                     Margin="5, 0"
@@ -71,7 +77,8 @@
         <StackPanel DataContext="{Binding ActiveQuestion}" 
                     Grid.Row="1"
                     Grid.Column="3"
-                    Margin="20, 0, 20, 10">
+                    Margin="20, 0, 20, 10"
+                    Visibility="{Binding Converter={StaticResource questionPackViewModelToVisibilityConverter}}">
 
             <Label Content="Question:" 
                    FontWeight="Bold"
