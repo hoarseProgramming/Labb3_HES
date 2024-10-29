@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using Labb3_HES.Dialogs;
+using System.Windows.Controls;
 
 namespace Labb3_HES.Views
 {
@@ -10,6 +11,13 @@ namespace Labb3_HES.Views
         public MenuView()
         {
             InitializeComponent();
+        }
+
+        private void OpenPackOptionsCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            PackOptionsDialog packOptionsDialog = new();
+
+            packOptionsDialog.ShowDialog();
         }
     }
 }

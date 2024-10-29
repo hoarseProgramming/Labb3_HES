@@ -5,14 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:local="clr-namespace:Labb3_HES.Views"
+             xmlns:commands="clr-namespace:Labb3_HES.Command"          
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{x:Static commands:ViewCommands.OpenPackOptionsCommand}" 
+                        Executed="OpenPackOptionsCommand_Executed" />
+    </UserControl.CommandBindings>
+    
+    <!-- TODO: Take away menu icon
     <UserControl.Resources>
         <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
             <StackPanel Margin="-20,0,0,0" Background="White"/>
         </ItemsPanelTemplate>
-    </UserControl.Resources>
-    
+    </UserControl.Resources>-->
+
     <Grid>
         <Menu>
             <MenuItem Header="_File">
@@ -64,15 +72,18 @@
                 <MenuItem Header="_Add Question"
                           Icon="{fa:Icon plus}"
                           Command="{Binding AddQuestionCommand}"
-                          InputGestureText="Ctrl+A" />
+                          InputGestureText="Ctrl+" />
                 
                 <MenuItem Header="_Remove Question" 
                           Icon="{fa:Icon minus}"
                           Command="{Binding RemoveQuestionCommand}"
-                          InputGestureText="Ctrl+R"/>
+                          InputGestureText="Ctrl-"/>
                 
                 <MenuItem Header="Pack _Options"
-                          Icon="{fa:Icon sliders}"/>
+                          DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                          Icon="{fa:Icon sliders}"
+                          Command="{x:Static commands:ViewCommands.OpenPackOptionsCommand}"
+                          InputGestureText="Ctrl+O"/>
                 
             </MenuItem>
             
