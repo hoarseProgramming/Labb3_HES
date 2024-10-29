@@ -1,5 +1,4 @@
 ﻿using Labb3_HES.Command;
-using Labb3_HES.Dialogs;
 using Labb3_HES.Model;
 
 namespace Labb3_HES.ViewModel
@@ -23,28 +22,17 @@ namespace Labb3_HES.ViewModel
         }
         public DelegateCommand AddQuestionCommand { get; }
         public DelegateCommand RemoveQuestionCommand { get; }
-        public DelegateCommand PackOptionsCommand { get; }
 
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
             AddQuestionCommand = new DelegateCommand(AddQuestion);
             RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
-            PackOptionsCommand = new DelegateCommand(OpenPackOptions);
-        }
-
-        private void OpenPackOptions(object obj)
-        {
-            //TODO: Make pakcoptiondialog MVVM way
-            PackOptionsDialog packOptionsDialog = new PackOptionsDialog();
         }
 
         private bool CanRemoveQuestion(object? arg) => ActiveQuestion != null;
 
-        private void RemoveQuestion(object obj)
-        {
-            ActivePack.Questions.Remove(ActiveQuestion);
-        }
+        private void RemoveQuestion(object obj) => ActivePack.Questions.Remove(ActiveQuestion);
 
         private void AddQuestion(object obj) => ActivePack.Questions.Add(new Question());
 
