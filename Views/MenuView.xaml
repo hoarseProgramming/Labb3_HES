@@ -93,7 +93,8 @@
             <MenuItem Header="_View">
                 
                 <MenuItem Header="_Play" 
-                          Icon="{fa:Icon play}"/>
+                          Icon="{fa:Icon play}"
+                          Command="{Binding PlayerViewModel.PlayQuizCommand}"/>
                 <MenuItem Header="_Edit" 
                           Icon="{fa:Icon gears}"/>
 
