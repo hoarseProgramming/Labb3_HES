@@ -24,13 +24,11 @@ namespace Labb3_HES.ViewModel
                 ConfigurationViewModel.RaisePropertyChanged("ActivePack");
             }
         }
-        public DelegateCommand AddNewPackCommand { get; }
         public DelegateCommand DeletePackCommand { get; }
         public DelegateCommand SelectActivePackCommand { get; }
 
         public MainWindowViewModel()
         {
-            AddNewPackCommand = new DelegateCommand(AddNewPack);
             DeletePackCommand = new DelegateCommand(DeletePack, CanDeletePack);
             SelectActivePackCommand = new DelegateCommand(SelectActivePack);
 
@@ -48,13 +46,30 @@ namespace Labb3_HES.ViewModel
 
         private void DeletePack(object obj)
         {
-            Packs.Remove(ActivePack);
+            var currentActivePack = ActivePack;
+            UpdateActivePackBeforeDeletingPack(ActivePack);
+            Packs.Remove(currentActivePack);
             DeletePackCommand.RaiseCanExecuteChanged();
         }
 
-        private void AddNewPack(Object obj)
+        private void UpdateActivePackBeforeDeletingPack(QuestionPackViewModel currentActivePack)
         {
-            Packs.Add(new QuestionPackViewModel(new QuestionPack()));
+            int currentActivePackIndex = Packs.IndexOf(ActivePack);
+            if (currentActivePackIndex == 0)
+            {
+                ActivePack = Packs[1];
+            }
+            else
+            {
+                ActivePack = Packs[currentActivePackIndex - 1];
+            }
+        }
+
+        public void AddNewPack(string name, int difficultyIndex, int timeLimitInSeconds)
+        {
+            var newQuestionPack = new QuestionPackViewModel(new QuestionPack(name, (Difficulty)difficultyIndex, timeLimitInSeconds));
+            Packs.Add(newQuestionPack);
+            ActivePack = newQuestionPack;
             DeletePackCommand.RaiseCanExecuteChanged();
         }
     }
