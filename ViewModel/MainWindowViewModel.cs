@@ -38,6 +38,7 @@ namespace Labb3_HES.ViewModel
             PlayerViewModel = new PlayerViewModel(this);
 
             Packs = JsonHandler.LoadJsonFile();
+
             ActivePack = Packs.FirstOrDefault();
         }
 

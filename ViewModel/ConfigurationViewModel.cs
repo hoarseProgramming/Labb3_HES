@@ -45,6 +45,8 @@ namespace Labb3_HES.ViewModel
         public DelegateCommand AddQuestionCommand { get; }
         public DelegateCommand RemoveQuestionCommand { get; }
 
+        public DelegateCommand EnableConfigurationCommand { get; }
+
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
@@ -52,6 +54,23 @@ namespace Labb3_HES.ViewModel
             IsEnabled = true;
             AddQuestionCommand = new DelegateCommand(AddQuestion);
             RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
+            EnableConfigurationCommand = new DelegateCommand(EnableConfiguration, CanEnableConfiguration);
+        }
+        private void EnableConfiguration(object obj)
+        {
+            ReverseVisibleAndEnabled();
+            EnableConfigurationCommand.RaiseCanExecuteChanged();
+
+            mainWindowViewModel.PlayerViewModel.ReverseVisibleAndEnabled();
+            mainWindowViewModel.PlayerViewModel.PlayQuizCommand.RaiseCanExecuteChanged();
+        }
+
+        private bool CanEnableConfiguration(object? arg) => !IsEnabled;
+
+        public void ReverseVisibleAndEnabled()
+        {
+            IsVisible = !IsVisible;
+            IsEnabled = !IsEnabled;
         }
 
         private bool CanRemoveQuestion(object? arg) => ActiveQuestion != null;

@@ -45,7 +45,6 @@ namespace Labb3_HES.ViewModel
 
         public DelegateCommand UpdateLabelCommand { get; }
         public DelegateCommand PlayQuizCommand { get; }
-
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
@@ -63,18 +62,25 @@ namespace Labb3_HES.ViewModel
             UpdateLabelCommand = new DelegateCommand(UpdateLabel, CanUpdateLabel);
             PlayQuizCommand = new DelegateCommand(PlayQuiz, CanPlayQuiz);
 
+
         }
 
         private void PlayQuiz(object obj)
         {
-            IsVisible = !IsVisible;
-            IsEnabled = !IsEnabled;
-            mainWindowViewModel.ConfigurationViewModel.IsVisible = false;
-            mainWindowViewModel.ConfigurationViewModel.IsEnabled = false;
+            ReverseVisibleAndEnabled();
+            PlayQuizCommand.RaiseCanExecuteChanged();
+
+            mainWindowViewModel.ConfigurationViewModel.ReverseVisibleAndEnabled();
+            mainWindowViewModel.ConfigurationViewModel.EnableConfigurationCommand.RaiseCanExecuteChanged();
 
         }
-        private bool CanPlayQuiz(object? arg) => mainWindowViewModel.ActivePack.Questions.Count > 0;
+        private bool CanPlayQuiz(object? arg) => mainWindowViewModel.ActivePack.Questions.Count > 0 && !IsEnabled;
 
+        public void ReverseVisibleAndEnabled()
+        {
+            IsVisible = !IsVisible;
+            IsEnabled = !IsEnabled;
+        }
 
         //Don't call methods something from view, ex "button" or "label"
         private void UpdateLabel(object obj)

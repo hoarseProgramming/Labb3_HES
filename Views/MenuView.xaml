@@ -96,7 +96,8 @@
                           Icon="{fa:Icon play}"
                           Command="{Binding PlayerViewModel.PlayQuizCommand}"/>
                 <MenuItem Header="_Edit" 
-                          Icon="{fa:Icon gears}"/>
+                          Icon="{fa:Icon gears}"
+                          Command="{Binding ConfigurationViewModel.EnableConfigurationCommand}"/>
 
                 <Separator />
                 
