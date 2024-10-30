@@ -33,7 +33,7 @@
         
         <views:MenuView x:Name="menuView"/>
         <views:ConfigurationView Grid.Row="1"/>
-        <!--<views:PlayerView Grid.Row="1" />-->
+        <views:PlayerView Grid.Row="1" />
 
     </Grid>
 </Window>
