@@ -5,47 +5,65 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb3_HES.Dialogs"
         mc:Ignorable="d"
-        x:Name="window"
         Title="New Question Pack" 
         Height="240" 
         Width="200"
-        ResizeMode="NoResize" >
-        
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen">
+
+    <!--x:Name="window"-->
+
     <Grid>
         <StackPanel Margin="10">
             <Label Content="Pack Name:" 
                    FontWeight="Bold" />
-            <TextBox Margin="5, 0"/>
+            <TextBox x:Name="textboxPackName"
+                     Text="&lt;Pack Name&gt;"
+                     Margin="5, 0"
+                     TextChanged="textboxPackName_TextChanged"/>
             
             <Label Content="Difficulty:" 
                    FontWeight="Bold" />
-            <ComboBox Margin="5, 0">
+            <ComboBox x:Name="comboboxDifficulty" 
+                      Margin="5, 0"
+                      SelectedIndex="1"
+                      SelectionChanged="comboboxDifficulty_SelectionChanged">
+                <ComboBoxItem Content="Easy" />
                 <ComboBoxItem Content="Medium" />
+                <ComboBoxItem Content="Hard" />
             </ComboBox>
             
             <StackPanel Orientation="Horizontal">
                 <Label Content="Time Limit:" 
                        FontWeight="Bold"/>
-                <Label Content="10" 
+                <Label x:Name="labelTimeLimitInSeconds" 
+                       Content="{Binding ElementName=sliderTimeLimitInSeconds, Path=Value}"
+                       HorizontalContentAlignment="Right"
                        Width="40"
                        Padding="20, 5, 0, 0" />
                 <Label Content="seconds"/>
             </StackPanel>
-            <Slider Minimum="5"
+            <Slider x:Name="sliderTimeLimitInSeconds" 
+                    Minimum="5"
                     Maximum="120"
                     TickFrequency="5"
                     IsSnapToTickEnabled="True"
                     TickPlacement="BottomRight"
-                    Margin="5, 0"/>
+                    Margin="5, 0"
+                    ValueChanged="sliderTimeLimitInSeconds_ValueChanged"/>
 
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         Margin="0, 15">
-                <Button Content="Cancel"
+                <Button x:Name="buttonCancel" 
+                        Content="Cancel"
                         Width="50"
-                        Margin="0, 0, 30, 0"/>
-                <Button Content="Create"
-                        Width="50"/>
+                        Margin="0, 0, 30, 0"
+                        Click="buttonCancel_Click"/>
+                <Button x:Name="buttonCreate" 
+                        Content="Create"
+                        Width="50"
+                        Click="buttonCreate_Click"/>
             </StackPanel>
 
         </StackPanel>

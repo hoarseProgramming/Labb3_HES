@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Labb3_HES.Dialogs
 {
@@ -19,10 +8,44 @@ namespace Labb3_HES.Dialogs
     /// </summary>
     public partial class CreateNewPackDialog : Window
     {
+        public string Name { get; set; }
+        public int Index { get; set; }
+        public int TimeLimitInSeconds { get; set; }
         public CreateNewPackDialog()
         {
             InitializeComponent();
-            
+            DataContext = (App.Current.MainWindow as MainWindow).DataContext;
+        }
+
+        private void buttonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            this.Close();
+        }
+
+        private void buttonCreate_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            this.Close();
+        }
+
+        private void sliderTimeLimitInSeconds_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Slider? slider = sender as Slider;
+            int value = (int)slider.Value;
+            TimeLimitInSeconds = value;
+        }
+
+        private void comboboxDifficulty_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            ComboBox? comboBox = sender as ComboBox;
+            Index = comboBox.SelectedIndex;
+        }
+
+        private void textboxPackName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            TextBox? textBox = sender as TextBox;
+            Name = textBox.Text;
         }
     }
 }
