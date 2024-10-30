@@ -12,9 +12,11 @@
 
     <UserControl.Resources>
         <converters:QuestionPackViewModelToVisibilityConverter x:Key="questionPackViewModelToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConver" />
     </UserControl.Resources>
     
-    <Grid>
+    <Grid Visibility="{Binding IsVisible, Converter={StaticResource boolToVisibilityConver}}"
+          IsEnabled="{Binding IsEnabled}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
