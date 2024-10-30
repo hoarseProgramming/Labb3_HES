@@ -12,6 +12,8 @@
     <UserControl.CommandBindings>
         <CommandBinding Command="{x:Static commands:ViewCommands.OpenPackOptionsCommand}" 
                         Executed="OpenPackOptionsCommand_Executed" />
+        <CommandBinding Command="{x:Static commands:ViewCommands.CreateNewPackCommand}" 
+                        Executed="CommandBinding_Executed" />
     </UserControl.CommandBindings>
     
     <!-- TODO: Take away menu icon
@@ -24,11 +26,12 @@
     <Grid>
         <Menu>
             <MenuItem Header="_File">
-                
-                <MenuItem Header="_New Question Pack" 
+
+                <MenuItem x:Name="menuItemNewQuestionpack" 
+                          Header="_New Question Pack" 
                           Icon="{fa:Icon folderplus}"
-                          Command="{Binding AddNewPackCommand}"/>
-                
+                          Command="{x:Static commands:ViewCommands.CreateNewPackCommand}"/>
+
                 <MenuItem Header="Update Label" 
                           InputGestureText="Ctrl+U"
                           Command="{Binding PlayerViewModel.UpdateLabelCommand}"/>
