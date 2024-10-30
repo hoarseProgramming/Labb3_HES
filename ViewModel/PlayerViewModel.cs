@@ -7,7 +7,30 @@ namespace Labb3_HES.ViewModel
     {
         private readonly MainWindowViewModel? mainWindowViewModel;
 
+        private bool _isVisible;
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                _isVisible = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool _isEnabled;
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                _isEnabled = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private DispatcherTimer timer;
+
         private int _timeLimit;
 
         public int TimeLimit
@@ -21,6 +44,7 @@ namespace Labb3_HES.ViewModel
         }
 
         public DelegateCommand UpdateLabelCommand { get; }
+        public DelegateCommand PlayQuizCommand { get; }
 
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
@@ -37,8 +61,20 @@ namespace Labb3_HES.ViewModel
             ////timer.Start();
 
             UpdateLabelCommand = new DelegateCommand(UpdateLabel, CanUpdateLabel);
+            PlayQuizCommand = new DelegateCommand(PlayQuiz, CanPlayQuiz);
 
         }
+
+        private void PlayQuiz(object obj)
+        {
+            IsVisible = !IsVisible;
+            IsEnabled = !IsEnabled;
+            mainWindowViewModel.ConfigurationViewModel.IsVisible = false;
+            mainWindowViewModel.ConfigurationViewModel.IsEnabled = false;
+
+        }
+        private bool CanPlayQuiz(object? arg) => mainWindowViewModel.ActivePack.Questions.Count > 0;
+
 
         //Don't call methods something from view, ex "button" or "label"
         private void UpdateLabel(object obj)
