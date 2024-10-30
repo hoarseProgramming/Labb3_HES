@@ -1,6 +1,7 @@
 ﻿using Labb3_HES.Command;
 using Labb3_HES.Model;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace Labb3_HES.ViewModel
 {
@@ -46,10 +47,17 @@ namespace Labb3_HES.ViewModel
 
         private void DeletePack(object obj)
         {
-            var currentActivePack = ActivePack;
-            UpdateActivePackBeforeDeletingPack(ActivePack);
-            Packs.Remove(currentActivePack);
-            DeletePackCommand.RaiseCanExecuteChanged();
+            var result = MessageBox.Show($"Are you sure you want to delete {ActivePack.Name}",
+                                         "Delete question pack?",
+                                         MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                var currentActivePack = ActivePack;
+                UpdateActivePackBeforeDeletingPack(ActivePack);
+                Packs.Remove(currentActivePack);
+                DeletePackCommand.RaiseCanExecuteChanged();
+            }
         }
 
         private void UpdateActivePackBeforeDeletingPack(QuestionPackViewModel currentActivePack)
