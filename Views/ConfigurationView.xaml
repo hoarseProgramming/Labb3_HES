@@ -15,8 +15,8 @@
         <BooleanToVisibilityConverter x:Key="boolToVisibilityConver" />
     </UserControl.Resources>
     
-    <Grid Visibility="{Binding IsVisible, Converter={StaticResource boolToVisibilityConver}}"
-          IsEnabled="{Binding IsEnabled}">
+    <Grid Visibility="{Binding IsConfigurationMode, Converter={StaticResource boolToVisibilityConver}}"
+          IsEnabled="{Binding IsConfigurationMode}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />

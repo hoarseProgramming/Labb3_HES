@@ -27,7 +27,10 @@ namespace Labb3_HES.ViewModel
         public DelegateCommand DeletePackCommand { get; }
         public DelegateCommand SelectActivePackCommand { get; }
 
+        public event EventHandler ConstructorsIsLoadedMessage;
+
         public event EventHandler DeletePackMessage;
+
 
         public MainWindowViewModel()
         {
@@ -35,14 +38,19 @@ namespace Labb3_HES.ViewModel
             SelectActivePackCommand = new DelegateCommand(SelectActivePack);
 
             ConfigurationViewModel = new ConfigurationViewModel(this);
-
             PlayerViewModel = new PlayerViewModel(this);
+
+            SendConstructorsIsLoadedMessage();
 
             Packs = JsonHandler.LoadJsonFile();
 
             ActivePack = Packs.FirstOrDefault();
         }
 
+        private void SendConstructorsIsLoadedMessage()
+        {
+            ConstructorsIsLoadedMessage.Invoke(this, EventArgs.Empty);
+        }
         private void SendDeletePackMessage()
         {
             DeletePackMessage.Invoke(this, EventArgs.Empty);
@@ -59,12 +67,13 @@ namespace Labb3_HES.ViewModel
         public void DeletePackTest()
         {
             var currentActivePack = ActivePack;
-            UpdateActivePackBeforeDeletingPack(ActivePack);
+            SelectNewActivePackBeforeDeletingCurrentPack();
+
             Packs.Remove(currentActivePack);
             DeletePackCommand.RaiseCanExecuteChanged();
         }
 
-        private void UpdateActivePackBeforeDeletingPack(QuestionPackViewModel currentActivePack)
+        private void SelectNewActivePackBeforeDeletingCurrentPack()
         {
             int currentActivePackIndex = Packs.IndexOf(ActivePack);
             if (currentActivePackIndex == 0)

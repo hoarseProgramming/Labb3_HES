@@ -7,27 +7,38 @@ namespace Labb3_HES.ViewModel
     {
         private readonly MainWindowViewModel? mainWindowViewModel;
 
-        private bool _isVisible;
-        public bool IsVisible
+        private bool _isPlayerMode;
+        public bool IsPlayerMode
         {
-            get => _isVisible;
+            get => _isPlayerMode;
             set
             {
-                _isVisible = value;
+                _isPlayerMode = value;
                 RaisePropertyChanged();
             }
         }
 
-        private bool _isEnabled;
-        public bool IsEnabled
-        {
-            get => _isEnabled;
-            set
-            {
-                _isEnabled = value;
-                RaisePropertyChanged();
-            }
-        }
+        //private bool _isVisible;
+        //public bool IsVisible
+        //{
+        //    get => _isVisible;
+        //    set
+        //    {
+        //        _isVisible = value;
+        //        RaisePropertyChanged();
+        //    }
+        //}
+
+        //private bool _isEnabled;
+        //public bool IsEnabled
+        //{
+        //    get => _isEnabled;
+        //    set
+        //    {
+        //        _isEnabled = value;
+        //        RaisePropertyChanged();
+        //    }
+        //}
 
         private DispatcherTimer timer;
 
@@ -45,6 +56,7 @@ namespace Labb3_HES.ViewModel
 
         public DelegateCommand UpdateLabelCommand { get; }
         public DelegateCommand PlayQuizCommand { get; }
+        public event EventHandler IsPlayerModeMessage;
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
@@ -62,24 +74,40 @@ namespace Labb3_HES.ViewModel
             UpdateLabelCommand = new DelegateCommand(UpdateLabel, CanUpdateLabel);
             PlayQuizCommand = new DelegateCommand(PlayQuiz, CanPlayQuiz);
 
+            mainWindowViewModel.ConstructorsIsLoadedMessage += OnConstructorsIsLoadedMessageRecieved;
 
+        }
+
+        private void OnConstructorsIsLoadedMessageRecieved(object? sender, EventArgs e)
+        {
+            mainWindowViewModel.ConfigurationViewModel.IsConfigurationModeMessage += OnIsConfigurationModeMessageRecieved;
         }
 
         private void PlayQuiz(object obj)
         {
-            ReverseVisibleAndEnabled();
-            PlayQuizCommand.RaiseCanExecuteChanged();
+            SendIsPlayerModeMessage();
+            ReverseIsPlayerMode();
+            //PlayQuizCommand.RaiseCanExecuteChanged();
 
-            mainWindowViewModel.ConfigurationViewModel.ReverseVisibleAndEnabled();
-            mainWindowViewModel.ConfigurationViewModel.EnableConfigurationCommand.RaiseCanExecuteChanged();
+            //mainWindowViewModel.ConfigurationViewModel.ReverseIsConfigurationMode();
+            //mainWindowViewModel.ConfigurationViewModel.EnableConfigurationCommand.RaiseCanExecuteChanged();
 
         }
-        private bool CanPlayQuiz(object? arg) => mainWindowViewModel.ActivePack.Questions.Count > 0 && !IsEnabled;
+        private bool CanPlayQuiz(object? arg) => mainWindowViewModel.ActivePack.Questions.Count > 0 && !IsPlayerMode;
 
-        public void ReverseVisibleAndEnabled()
+        public void ReverseIsPlayerMode()
         {
-            IsVisible = !IsVisible;
-            IsEnabled = !IsEnabled;
+            IsPlayerMode = !IsPlayerMode;
+            PlayQuizCommand.RaiseCanExecuteChanged();
+        }
+        private void SendIsPlayerModeMessage()
+        {
+            IsPlayerModeMessage.Invoke(this, EventArgs.Empty);
+        }
+        public void OnIsConfigurationModeMessageRecieved(object sender, EventArgs args)
+        {
+            ReverseIsPlayerMode();
+            PlayQuizCommand.RaiseCanExecuteChanged();
         }
 
         //Don't call methods something from view, ex "button" or "label"

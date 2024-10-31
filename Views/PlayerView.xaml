@@ -11,8 +11,8 @@
         <BooleanToVisibilityConverter x:Key="boolToVisibilityConver" />
     </UserControl.Resources>
 
-    <Grid Visibility="{Binding IsVisible, Converter={StaticResource boolToVisibilityConver}}"
-          IsEnabled="{Binding IsEnabled}">
+    <Grid Visibility="{Binding IsPlayerMode, Converter={StaticResource boolToVisibilityConver}}"
+          IsEnabled="{Binding IsPlayerMode}">
         
         <Label Content="{Binding TimeLimit}"
                FontSize="30"

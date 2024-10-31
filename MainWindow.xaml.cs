@@ -15,7 +15,7 @@ namespace Labb3_HES
             DataContext = new MainWindowViewModel();
             (DataContext as MainWindowViewModel).DeletePackMessage += OnDeletePackMessageRecieved;
 
-            //Make Importer class for VG
+            //TODO: Make Importer class for VG
         }
         public void OnDeletePackMessageRecieved(object sender, EventArgs args)
         {
