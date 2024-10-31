@@ -21,7 +21,7 @@ namespace Labb3_HES.Views
             packOptionsDialog.ShowDialog();
         }
 
-        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        private void CreateNewPackCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             CreateNewPackDialog createNewPackDialog = new();
 

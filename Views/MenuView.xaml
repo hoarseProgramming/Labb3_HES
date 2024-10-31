@@ -13,7 +13,7 @@
         <CommandBinding Command="{x:Static commands:ViewCommands.OpenPackOptionsCommand}" 
                         Executed="OpenPackOptionsCommand_Executed" />
         <CommandBinding Command="{x:Static commands:ViewCommands.CreateNewPackCommand}" 
-                        Executed="CommandBinding_Executed" />
+                        Executed="CreateNewPackCommand_Executed" />
     </UserControl.CommandBindings>
     
     <!-- TODO: Take away menu icon
@@ -54,8 +54,7 @@
 
                 <MenuItem Header="_Delete Question Pack" 
                           Icon="{fa:Icon folderminus}"
-                          Command="{Binding DeletePackCommand}">
-                </MenuItem>
+                          Command="{Binding DeletePackCommand}" />
 
                 <Separator />
                 
