@@ -86,10 +86,12 @@
                 
                 <MenuItem Header="_Play" 
                           Icon="{fa:Icon play}"
-                          Command="{Binding PlayerViewModel.PlayQuizCommand}"/>
+                          Command="{Binding PlayerViewModel.PlayQuizCommand}"
+                          InputGestureText="Ctrl+P"/>
                 <MenuItem Header="_Edit" 
                           Icon="{fa:Icon gears}"
-                          Command="{Binding ConfigurationViewModel.EnableConfigurationCommand}"/>
+                          Command="{Binding ConfigurationViewModel.EnableConfigurationCommand}"
+                          InputGestureText="Ctrl+E"/>
 
                 <Separator />
                 
