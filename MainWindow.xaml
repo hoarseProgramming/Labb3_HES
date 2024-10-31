@@ -5,22 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"       
         xmlns:local="clr-namespace:Labb3_HES" 
         xmlns:views="clr-namespace:Labb3_HES.Views"
-        xmlns:commands="clr-namespace:Labb3_HES.Command"   
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800" MinHeight="450" MinWidth="700"
         WindowStartupLocation="CenterScreen"
         Closing="Window_Closing" >
     
-    <Window.CommandBindings>
-        <CommandBinding Command="{x:Static commands:ViewCommands.OpenPackOptionsCommand}" 
-                    Executed="OpenPackOptionsCommand_Executed" />
-    </Window.CommandBindings>
-
     <Window.InputBindings>
         <KeyBinding Key="U" Modifiers="Ctrl" Command="{Binding PlayerViewModel.UpdateLabelCommand}" />
         <KeyBinding Key="OemPlus" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.AddQuestionCommand}" />
         <KeyBinding Key="OemMinus" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}" />
-        <KeyBinding Key="O" Modifiers="Ctrl" Command="{x:Static commands:ViewCommands.OpenPackOptionsCommand}" />
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.OpenPackOptionsCommand}" />
     </Window.InputBindings>
     
     <Grid>

@@ -17,29 +17,6 @@ namespace Labb3_HES.ViewModel
                 RaisePropertyChanged();
             }
         }
-
-        //private bool _isVisible;
-        //public bool IsVisible
-        //{
-        //    get => _isVisible;
-        //    set
-        //    {
-        //        _isVisible = value;
-        //        RaisePropertyChanged();
-        //    }
-        //}
-
-        //private bool _isEnabled;
-        //public bool IsEnabled
-        //{
-        //    get => _isEnabled;
-        //    set
-        //    {
-        //        _isEnabled = value;
-        //        RaisePropertyChanged();
-        //    }
-        //}
-
         private DispatcherTimer timer;
 
         private int _timeLimit;
@@ -74,11 +51,11 @@ namespace Labb3_HES.ViewModel
             UpdateLabelCommand = new DelegateCommand(UpdateLabel, CanUpdateLabel);
             PlayQuizCommand = new DelegateCommand(PlayQuiz, CanPlayQuiz);
 
-            mainWindowViewModel.ConstructorsIsLoadedMessage += OnConstructorsIsLoadedMessageRecieved;
+            mainWindowViewModel.ConstructorsAreLoadedMessage += OnConstructorsAreLoadedMessageRecieved;
 
         }
 
-        private void OnConstructorsIsLoadedMessageRecieved(object? sender, EventArgs e)
+        private void OnConstructorsAreLoadedMessageRecieved(object? sender, EventArgs e)
         {
             mainWindowViewModel.ConfigurationViewModel.IsConfigurationModeMessage += OnIsConfigurationModeMessageRecieved;
         }

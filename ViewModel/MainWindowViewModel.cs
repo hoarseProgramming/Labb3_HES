@@ -24,32 +24,49 @@ namespace Labb3_HES.ViewModel
                 ConfigurationViewModel.RaisePropertyChanged("ActivePack");
             }
         }
-        public DelegateCommand DeletePackCommand { get; }
+
+        public DelegateCommand CreateNewPackCommand { get; }
+        public event EventHandler ShouldCreateNewPackMessage;
         public DelegateCommand SelectActivePackCommand { get; }
-
-        public event EventHandler ConstructorsIsLoadedMessage;
-
+        public DelegateCommand DeletePackCommand { get; }
         public event EventHandler DeletePackMessage;
+
+
+        public event EventHandler ConstructorsAreLoadedMessage;
+
 
 
         public MainWindowViewModel()
         {
+            CreateNewPackCommand = new DelegateCommand(CreateNewPack, CanCreateNewPack);
             DeletePackCommand = new DelegateCommand(DeletePack, CanDeletePack);
             SelectActivePackCommand = new DelegateCommand(SelectActivePack);
 
             ConfigurationViewModel = new ConfigurationViewModel(this);
             PlayerViewModel = new PlayerViewModel(this);
 
-            SendConstructorsIsLoadedMessage();
+            SendConstructorsAreLoadedMessage();
 
             Packs = JsonHandler.LoadJsonFile();
 
             ActivePack = Packs.FirstOrDefault();
         }
-
-        private void SendConstructorsIsLoadedMessage()
+        private void CreateNewPack(object obj)
         {
-            ConstructorsIsLoadedMessage.Invoke(this, EventArgs.Empty);
+            ShouldCreateNewPackMessage.Invoke(this, EventArgs.Empty);
+        }
+        private bool CanCreateNewPack(object? arg) => ConfigurationViewModel.IsConfigurationMode;
+        public void AddNewPack(string name, int difficultyIndex, int timeLimitInSeconds)
+        {
+            var newQuestionPack = new QuestionPackViewModel(new QuestionPack(name, (Difficulty)difficultyIndex, timeLimitInSeconds));
+            Packs.Add(newQuestionPack);
+            ActivePack = newQuestionPack;
+            DeletePackCommand.RaiseCanExecuteChanged();
+        }
+
+        private void SendConstructorsAreLoadedMessage()
+        {
+            ConstructorsAreLoadedMessage.Invoke(this, EventArgs.Empty);
         }
         private void SendDeletePackMessage()
         {
@@ -58,13 +75,13 @@ namespace Labb3_HES.ViewModel
 
         private void SelectActivePack(object obj) => ActivePack = obj as QuestionPackViewModel;
 
-        private bool CanDeletePack(object? arg) => Packs.Count > 1;
+
 
         private void DeletePack(object obj)
         {
             SendDeletePackMessage();
         }
-        public void DeletePackTest()
+        public void DeletePackAfterConfirmation()
         {
             var currentActivePack = ActivePack;
             SelectNewActivePackBeforeDeletingCurrentPack();
@@ -85,13 +102,8 @@ namespace Labb3_HES.ViewModel
                 ActivePack = Packs[currentActivePackIndex - 1];
             }
         }
+        private bool CanDeletePack(object? arg) => Packs.Count > 1 && ConfigurationViewModel.IsConfigurationMode;
 
-        public void AddNewPack(string name, int difficultyIndex, int timeLimitInSeconds)
-        {
-            var newQuestionPack = new QuestionPackViewModel(new QuestionPack(name, (Difficulty)difficultyIndex, timeLimitInSeconds));
-            Packs.Add(newQuestionPack);
-            ActivePack = newQuestionPack;
-            DeletePackCommand.RaiseCanExecuteChanged();
-        }
+
     }
 }

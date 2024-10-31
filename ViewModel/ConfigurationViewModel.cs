@@ -18,27 +18,6 @@ namespace Labb3_HES.ViewModel
             }
         }
 
-        //private bool _isVisible;
-        //public bool IsVisible
-        //{
-        //    get => _isVisible;
-        //    set
-        //    {
-        //        _isVisible = value;
-        //        RaisePropertyChanged();
-        //    }
-        //}
-
-        //private bool _isEnabled;
-        //public bool IsEnabled
-        //{
-        //    get => _isEnabled;
-        //    set
-        //    {
-        //        _isEnabled = value;
-        //        RaisePropertyChanged();
-        //    }
-        //}
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
 
         public Question _activeQuestion;
@@ -55,6 +34,9 @@ namespace Labb3_HES.ViewModel
         }
         public DelegateCommand AddQuestionCommand { get; }
         public DelegateCommand RemoveQuestionCommand { get; }
+        public DelegateCommand OpenPackOptionsCommand { get; }
+
+        public event EventHandler ShouldOpenPackOptionsMessage;
         public DelegateCommand EnableConfigurationCommand { get; }
 
         public event EventHandler IsConfigurationModeMessage;
@@ -63,15 +45,36 @@ namespace Labb3_HES.ViewModel
         {
             this.mainWindowViewModel = mainWindowViewModel;
             IsConfigurationMode = true;
-            AddQuestionCommand = new DelegateCommand(AddQuestion);
+
+            AddQuestionCommand = new DelegateCommand(AddQuestion, CanAddQuestion);
             RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
+            OpenPackOptionsCommand = new DelegateCommand(OpenPackOptions, CanOpenPackOptions);
             EnableConfigurationCommand = new DelegateCommand(EnableConfiguration, CanEnableConfiguration);
 
-            mainWindowViewModel.ConstructorsIsLoadedMessage += OnConstructorsIsLoadedMessageRecieved;
-
+            mainWindowViewModel.ConstructorsAreLoadedMessage += OnConstructorsAreLoadedMessageRecieved;
 
         }
-        public void OnConstructorsIsLoadedMessageRecieved(object sender, EventArgs args)
+
+
+        private void AddQuestion(object obj)
+        {
+            ActivePack.Questions.Add(new Question());
+            mainWindowViewModel.PlayerViewModel.PlayQuizCommand.RaiseCanExecuteChanged();
+        }
+        private bool CanAddQuestion(object? arg) => IsConfigurationMode;
+        private void RemoveQuestion(object obj)
+        {
+            ActivePack.Questions.Remove(ActiveQuestion);
+            mainWindowViewModel.PlayerViewModel.PlayQuizCommand.RaiseCanExecuteChanged();
+        }
+        private bool CanRemoveQuestion(object? arg) => ActiveQuestion != null && IsConfigurationMode;
+        private void OpenPackOptions(object obj)
+        {
+            ShouldOpenPackOptionsMessage.Invoke(this, EventArgs.Empty);
+        }
+        private bool CanOpenPackOptions(object? arg) => IsConfigurationMode;
+
+        public void OnConstructorsAreLoadedMessageRecieved(object sender, EventArgs args)
         {
             mainWindowViewModel.PlayerViewModel.IsPlayerModeMessage += OnIsPlayerModeMessageRecieved;
         }
@@ -79,10 +82,7 @@ namespace Labb3_HES.ViewModel
         {
             SendIsConfigurationModeMessage();
             ReverseIsConfigurationMode();
-            //EnableConfigurationCommand.RaiseCanExecuteChanged();           
-            //mainWindowViewModel.PlayerViewModel.PlayQuizCommand.RaiseCanExecuteChanged();
         }
-
         private bool CanEnableConfiguration(object? arg) => !IsConfigurationMode;
         private void SendIsConfigurationModeMessage()
         {
@@ -92,6 +92,11 @@ namespace Labb3_HES.ViewModel
         {
             IsConfigurationMode = !IsConfigurationMode;
             EnableConfigurationCommand.RaiseCanExecuteChanged();
+            AddQuestionCommand.RaiseCanExecuteChanged();
+            RemoveQuestionCommand.RaiseCanExecuteChanged();
+            OpenPackOptionsCommand.RaiseCanExecuteChanged();
+            mainWindowViewModel.CreateNewPackCommand.RaiseCanExecuteChanged();
+            mainWindowViewModel.DeletePackCommand.RaiseCanExecuteChanged();
         }
         public void OnIsPlayerModeMessageRecieved(object sender, EventArgs args)
         {
@@ -99,17 +104,6 @@ namespace Labb3_HES.ViewModel
             EnableConfigurationCommand.RaiseCanExecuteChanged();
         }
 
-        private bool CanRemoveQuestion(object? arg) => ActiveQuestion != null;
 
-        private void RemoveQuestion(object obj)
-        {
-            ActivePack.Questions.Remove(ActiveQuestion);
-            mainWindowViewModel.PlayerViewModel.PlayQuizCommand.RaiseCanExecuteChanged();
-        }
-        private void AddQuestion(object obj)
-        {
-            ActivePack.Questions.Add(new Question());
-            mainWindowViewModel.PlayerViewModel.PlayQuizCommand.RaiseCanExecuteChanged();
-        }
     }
 }

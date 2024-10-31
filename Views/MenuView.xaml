@@ -4,19 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             xmlns:local="clr-namespace:Labb3_HES.Views"
-             xmlns:commands="clr-namespace:Labb3_HES.Command"          
+             xmlns:local="clr-namespace:Labb3_HES.Views"       
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.CommandBindings>
-        <CommandBinding Command="{x:Static commands:ViewCommands.OpenPackOptionsCommand}" 
-                        Executed="OpenPackOptionsCommand_Executed" />
-        <CommandBinding Command="{x:Static commands:ViewCommands.CreateNewPackCommand}" 
-                        Executed="CreateNewPackCommand_Executed" />
-    </UserControl.CommandBindings>
-    
-    <!-- TODO: Take away menu icon
     <UserControl.Resources>
         <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
             <StackPanel Margin="-20,0,0,0" Background="White"/>
@@ -30,7 +21,7 @@
                 <MenuItem x:Name="menuItemNewQuestionpack" 
                           Header="_New Question Pack" 
                           Icon="{fa:Icon folderplus}"
-                          Command="{x:Static commands:ViewCommands.CreateNewPackCommand}"/>
+                          Command="{Binding CreateNewPackCommand}"/>
 
                 <MenuItem Header="Update Label" 
                           InputGestureText="Ctrl+U"
@@ -38,7 +29,8 @@
                 
                 <MenuItem Header="_Select Question Pack"                         
                           Icon="{fa:Icon folderopen}"
-                          ItemsSource="{Binding Packs}">
+                          ItemsSource="{Binding Packs}"
+                          IsEnabled="{Binding ConfigurationViewModel.IsConfigurationMode}">
 
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="MenuItem">
@@ -80,13 +72,12 @@
                           Icon="{fa:Icon minus}"
                           Command="{Binding RemoveQuestionCommand}"
                           InputGestureText="Ctrl-"/>
-                
+
                 <MenuItem Header="Pack _Options"
-                          DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                           Icon="{fa:Icon sliders}"
-                          Command="{x:Static commands:ViewCommands.OpenPackOptionsCommand}"
+                          Command="{Binding OpenPackOptionsCommand}"
                           InputGestureText="Ctrl+O"/>
-                
+
             </MenuItem>
             
             <MenuItem Header="_View">

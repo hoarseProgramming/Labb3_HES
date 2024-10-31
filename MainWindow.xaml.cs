@@ -14,6 +14,9 @@ namespace Labb3_HES
             InitializeComponent();
             DataContext = new MainWindowViewModel();
             (DataContext as MainWindowViewModel).DeletePackMessage += OnDeletePackMessageRecieved;
+            (DataContext as MainWindowViewModel).ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
+            (DataContext as MainWindowViewModel).ShouldCreateNewPackMessage += OnShouldCreateNewPackMessageRecieved;
+
 
             //TODO: Make Importer class for VG
         }
@@ -25,20 +28,33 @@ namespace Labb3_HES
 
             if (result == MessageBoxResult.Yes)
             {
-                (DataContext as MainWindowViewModel).DeletePackTest();
+                (DataContext as MainWindowViewModel).DeletePackAfterConfirmation();
             }
         }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            JsonHandler.SaveJsonFile((DataContext as MainWindowViewModel).Packs);
-        }
-
-        private void OpenPackOptionsCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        public void OnShouldOpenPackOptionsMessageRecieved(object sender, EventArgs args)
         {
             PackOptionsDialog packOptionsDialog = new();
 
             packOptionsDialog.ShowDialog();
         }
+        public void OnShouldCreateNewPackMessageRecieved(object sender, EventArgs args)
+        {
+            CreateNewPackDialog createNewPackDialog = new();
+
+            var result = createNewPackDialog.ShowDialog();
+
+            if (result == true)
+            {
+                string name = createNewPackDialog.Name;
+                int difficultyIndex = createNewPackDialog.Index;
+                int timeLimitInSeconds = createNewPackDialog.TimeLimitInSeconds;
+                (DataContext as MainWindowViewModel).AddNewPack(name, difficultyIndex, timeLimitInSeconds);
+            }
+        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            JsonHandler.SaveJsonFile((DataContext as MainWindowViewModel).Packs);
+        }
+
     }
 }
