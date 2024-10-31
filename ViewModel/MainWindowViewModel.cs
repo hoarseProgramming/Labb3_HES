@@ -1,7 +1,6 @@
 ﻿using Labb3_HES.Command;
 using Labb3_HES.Model;
 using System.Collections.ObjectModel;
-using System.Windows;
 
 namespace Labb3_HES.ViewModel
 {
@@ -28,6 +27,8 @@ namespace Labb3_HES.ViewModel
         public DelegateCommand DeletePackCommand { get; }
         public DelegateCommand SelectActivePackCommand { get; }
 
+        public event EventHandler DeletePackMessage;
+
         public MainWindowViewModel()
         {
             DeletePackCommand = new DelegateCommand(DeletePack, CanDeletePack);
@@ -42,23 +43,25 @@ namespace Labb3_HES.ViewModel
             ActivePack = Packs.FirstOrDefault();
         }
 
+        private void SendDeletePackMessage()
+        {
+            DeletePackMessage.Invoke(this, EventArgs.Empty);
+        }
+
         private void SelectActivePack(object obj) => ActivePack = obj as QuestionPackViewModel;
 
         private bool CanDeletePack(object? arg) => Packs.Count > 1;
 
         private void DeletePack(object obj)
         {
-            var result = MessageBox.Show($"Are you sure you want to delete {ActivePack.Name}",
-                                         "Delete question pack?",
-                                         MessageBoxButton.YesNo);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                var currentActivePack = ActivePack;
-                UpdateActivePackBeforeDeletingPack(ActivePack);
-                Packs.Remove(currentActivePack);
-                DeletePackCommand.RaiseCanExecuteChanged();
-            }
+            SendDeletePackMessage();
+        }
+        public void DeletePackTest()
+        {
+            var currentActivePack = ActivePack;
+            UpdateActivePackBeforeDeletingPack(ActivePack);
+            Packs.Remove(currentActivePack);
+            DeletePackCommand.RaiseCanExecuteChanged();
         }
 
         private void UpdateActivePackBeforeDeletingPack(QuestionPackViewModel currentActivePack)
