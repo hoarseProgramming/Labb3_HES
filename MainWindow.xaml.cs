@@ -9,26 +9,34 @@ namespace Labb3_HES
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainWindowViewModel mainWindowViewModel = new();
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
-            (DataContext as MainWindowViewModel).DeletePackMessage += OnDeletePackMessageRecieved;
-            (DataContext as MainWindowViewModel).ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
-            (DataContext as MainWindowViewModel).ShouldCreateNewPackMessage += OnShouldCreateNewPackMessageRecieved;
+
+            DataContext = mainWindowViewModel;
+            mainWindowViewModel.DeletePackMessage += OnDeletePackMessageRecieved;
+            mainWindowViewModel.ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
+            mainWindowViewModel.ShouldCreateNewPackMessage += OnShouldCreateNewPackMessageRecieved;
+            mainWindowViewModel.ShouldExitApplicationMessage += OnShouldExitApplicationMessageRecieved;
+
+            //DataContext = new MainWindowViewModel();
+            //(DataContext as MainWindowViewModel).DeletePackMessage += OnDeletePackMessageRecieved;
+            //(DataContext as MainWindowViewModel).ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
+            //(DataContext as MainWindowViewModel).ShouldCreateNewPackMessage += OnShouldCreateNewPackMessageRecieved;
 
 
             //TODO: Make Importer class for VG
         }
         public void OnDeletePackMessageRecieved(object sender, EventArgs args)
         {
-            var result = MessageBox.Show($"Are you sure you want to delete {(DataContext as MainWindowViewModel).ActivePack.Name}",
+            var result = MessageBox.Show($"Are you sure you want to delete {mainWindowViewModel.ActivePack.Name}",
                                          "Delete question pack?",
                                          MessageBoxButton.YesNo);
 
             if (result == MessageBoxResult.Yes)
             {
-                (DataContext as MainWindowViewModel).DeletePackAfterConfirmation();
+                mainWindowViewModel.DeletePackAfterConfirmation();
             }
         }
         public void OnShouldOpenPackOptionsMessageRecieved(object sender, EventArgs args)
@@ -48,12 +56,13 @@ namespace Labb3_HES
                 string name = createNewPackDialog.Name;
                 int difficultyIndex = createNewPackDialog.Index;
                 int timeLimitInSeconds = createNewPackDialog.TimeLimitInSeconds;
-                (DataContext as MainWindowViewModel).AddNewPack(name, difficultyIndex, timeLimitInSeconds);
+                mainWindowViewModel.AddNewPack(name, difficultyIndex, timeLimitInSeconds);
             }
         }
+        public void OnShouldExitApplicationMessageRecieved(object sender, EventArgs args) => this.Close();
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            JsonHandler.SaveJsonFile((DataContext as MainWindowViewModel).Packs);
+            JsonHandler.SaveJsonFile(mainWindowViewModel.Packs);
         }
 
     }
