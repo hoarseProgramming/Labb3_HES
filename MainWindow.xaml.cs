@@ -13,8 +13,20 @@ namespace Labb3_HES
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
+            (DataContext as MainWindowViewModel).DeletePackMessage += OnDeletePackMessageRecieved;
 
             //Make Importer class for VG
+        }
+        public void OnDeletePackMessageRecieved(object sender, EventArgs args)
+        {
+            var result = MessageBox.Show($"Are you sure you want to delete {(DataContext as MainWindowViewModel).ActivePack.Name}",
+                                         "Delete question pack?",
+                                         MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                (DataContext as MainWindowViewModel).DeletePackTest();
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
