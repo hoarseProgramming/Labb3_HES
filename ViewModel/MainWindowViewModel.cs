@@ -9,6 +9,7 @@ namespace Labb3_HES.ViewModel
         public ObservableCollection<QuestionPackViewModel>? Packs { get; set; }
         public ConfigurationViewModel ConfigurationViewModel { get; }
         public PlayerViewModel PlayerViewModel { get; }
+        public ResultViewModel ResultViewModel { get; }
 
         private QuestionPackViewModel? _activePack;
 
@@ -27,11 +28,13 @@ namespace Labb3_HES.ViewModel
         public DelegateCommand SelectActivePackCommand { get; }
         public DelegateCommand DeletePackCommand { get; }
         public DelegateCommand ExitApplicationCommand { get; }
+        public DelegateCommand ToggleFullScreenCommand { get; }
 
         public event EventHandler ShouldCreateNewPackMessage;
         public event EventHandler DeletePackMessage;
         public event EventHandler ConstructorsAreLoadedMessage;
         public event EventHandler ShouldExitApplicationMessage;
+        public event EventHandler ShouldToggleFullScreenMessage;
 
         public MainWindowViewModel()
         {
@@ -39,16 +42,25 @@ namespace Labb3_HES.ViewModel
             DeletePackCommand = new DelegateCommand(DeletePack, CanDeletePack);
             SelectActivePackCommand = new DelegateCommand(SelectActivePack);
             ExitApplicationCommand = new DelegateCommand(ExitApplication);
+            ToggleFullScreenCommand = new DelegateCommand(ToggleFullScreen);
 
 
             ConfigurationViewModel = new ConfigurationViewModel(this);
             PlayerViewModel = new PlayerViewModel(this);
-
-            SendConstructorsAreLoadedMessage();
+            ResultViewModel = new ResultViewModel(this);
 
             Packs = JsonHandler.LoadJsonFile();
 
             ActivePack = Packs.FirstOrDefault();
+
+            SendConstructorsAreLoadedMessage();
+
+
+        }
+
+        private void ToggleFullScreen(object obj)
+        {
+            ShouldToggleFullScreenMessage.Invoke(this, EventArgs.Empty);
         }
 
         private void CreateNewPack(object obj)
