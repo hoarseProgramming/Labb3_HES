@@ -9,9 +9,6 @@ namespace Labb3_HES.Command
 
         public event EventHandler? CanExecuteChanged;
 
-        //Raise Can ExecuteChanged when it's supposed to, will change the object
-        //that subscribes to this
-
         public DelegateCommand(Action<object> execute, Func<object?, bool> canExecute = null)
         {
             ArgumentNullException.ThrowIfNull(execute);
@@ -21,9 +18,10 @@ namespace Labb3_HES.Command
 
         public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
+        public void Execute(object? parameter) => execute(parameter);
+
         public bool CanExecute(object? parameter) => canExecute is null ? true : canExecute(parameter);
 
-        public void Execute(object? parameter) => execute(parameter);
 
     }
 }
