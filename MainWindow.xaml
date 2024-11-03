@@ -6,18 +6,18 @@
         xmlns:local="clr-namespace:Labb3_HES" 
         xmlns:views="clr-namespace:Labb3_HES.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800" MinHeight="450" MinWidth="700"
+        Title="hoarseQuizerrer" Height="500" Width="800" MinHeight="450" MinWidth="700"
         WindowStartupLocation="CenterScreen"
         Closing="Window_Closing" >
     
     <Window.InputBindings>
-        <KeyBinding Key="U" Modifiers="Ctrl" Command="{Binding PlayerViewModel.UpdateLabelCommand}" />
         <KeyBinding Key="OemPlus" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.AddQuestionCommand}" />
         <KeyBinding Key="OemMinus" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}" />
         <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.OpenPackOptionsCommand}" />
         <KeyBinding Key="P" Modifiers="Ctrl" Command="{Binding PlayerViewModel.PlayQuizCommand}" />
         <KeyBinding Key="E" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.EnableConfigurationCommand}" />
         <KeyBinding Key="F4" Modifiers="Alt" Command="{Binding ExitApplicationCommand}" />
+        <KeyBinding Key="Return" Modifiers="Alt" Command="{Binding ToggleFullScreenCommand}" />
     </Window.InputBindings>
     
     <Grid>
@@ -30,7 +30,9 @@
         
         <views:MenuView x:Name="menuView"/>
         <views:ConfigurationView Grid.Row="1"/>
-        <views:PlayerView Grid.Row="1" />
+        <views:PlayerView x:Name="playerView" 
+                          Grid.Row="1" />
+        <views:ResultView Grid.Row="1"/>
 
     </Grid>
 </Window>

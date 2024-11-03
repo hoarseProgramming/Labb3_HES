@@ -10,23 +10,29 @@ namespace Labb3_HES
     public partial class MainWindow : Window
     {
         private MainWindowViewModel mainWindowViewModel = new();
+        private WindowState stateBeforeFullScreenToggled;
         public MainWindow()
         {
             InitializeComponent();
 
             DataContext = mainWindowViewModel;
-            mainWindowViewModel.DeletePackMessage += OnDeletePackMessageRecieved;
-            mainWindowViewModel.ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
-            mainWindowViewModel.ShouldCreateNewPackMessage += OnShouldCreateNewPackMessageRecieved;
-            mainWindowViewModel.ShouldExitApplicationMessage += OnShouldExitApplicationMessageRecieved;
-
-            //DataContext = new MainWindowViewModel();
-            //(DataContext as MainWindowViewModel).DeletePackMessage += OnDeletePackMessageRecieved;
-            //(DataContext as MainWindowViewModel).ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
-            //(DataContext as MainWindowViewModel).ShouldCreateNewPackMessage += OnShouldCreateNewPackMessageRecieved;
+            playerView.DataContext = mainWindowViewModel.PlayerViewModel;
+            SubscribeToEvents();
 
 
             //TODO: Make Importer class for VG
+        }
+        private void SubscribeToEvents()
+        {
+            mainWindowViewModel.DeletePackMessage += OnDeletePackMessageRecieved;
+            mainWindowViewModel.ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
+            mainWindowViewModel.ShouldCreateNewPackMessage += OnShouldCreateNewPackMessageRecieved;
+            mainWindowViewModel.ShouldToggleFullScreenMessage += OnShouldToggleFullScreenMessageRecieved;
+            mainWindowViewModel.ShouldExitApplicationMessage += OnShouldExitApplicationMessageRecieved;
+            mainWindowViewModel.PlayerViewModel.AnswerRecievedMessage += playerView.OnAnswerRecievedMessageRecieved;
+            mainWindowViewModel.PlayerViewModel.NoAnswerRecievedMessage += playerView.OnNoAnswerRecievedMessageRecieved;
+            mainWindowViewModel.PlayerViewModel.IsNewQuestionMessage += playerView.OnIsNewQuestionMessageRecieved;
+
         }
         public void OnDeletePackMessageRecieved(object sender, EventArgs args)
         {
@@ -57,6 +63,21 @@ namespace Labb3_HES
                 int difficultyIndex = createNewPackDialog.Index;
                 int timeLimitInSeconds = createNewPackDialog.TimeLimitInSeconds;
                 mainWindowViewModel.AddNewPack(name, difficultyIndex, timeLimitInSeconds);
+            }
+        }
+        public void OnShouldToggleFullScreenMessageRecieved(object sender, EventArgs args)
+        {
+            if (!(this.WindowState == WindowState.Maximized))
+            {
+                stateBeforeFullScreenToggled = WindowState;
+                WindowStyle = WindowStyle.None;
+                WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                WindowState = stateBeforeFullScreenToggled;
+                WindowStyle = WindowStyle.SingleBorderWindow;
+                ResizeMode = ResizeMode.CanResize;
             }
         }
         public void OnShouldExitApplicationMessageRecieved(object sender, EventArgs args) => this.Close();
