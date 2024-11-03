@@ -76,21 +76,21 @@ namespace Labb3_HES.ViewModel
 
         public void OnConstructorsAreLoadedMessageRecieved(object sender, EventArgs args)
         {
-            mainWindowViewModel.PlayerViewModel.IsPlayerModeMessage += OnIsPlayerModeMessageRecieved;
+            mainWindowViewModel.PlayerViewModel.IsPlayerModeMessage += OnIsOtherModeMessageRecieved;
         }
         private void EnableConfiguration(object obj)
         {
             SendIsConfigurationModeMessage();
-            ReverseIsConfigurationMode();
+            ToggleConfigurationModeOn();
         }
         private bool CanEnableConfiguration(object? arg) => !IsConfigurationMode;
         private void SendIsConfigurationModeMessage()
         {
             IsConfigurationModeMessage.Invoke(this, EventArgs.Empty);
         }
-        private void ReverseIsConfigurationMode()
+        private void ToggleConfigurationModeOn()
         {
-            IsConfigurationMode = !IsConfigurationMode;
+            IsConfigurationMode = true;
             EnableConfigurationCommand.RaiseCanExecuteChanged();
             AddQuestionCommand.RaiseCanExecuteChanged();
             RemoveQuestionCommand.RaiseCanExecuteChanged();
@@ -98,12 +98,19 @@ namespace Labb3_HES.ViewModel
             mainWindowViewModel.CreateNewPackCommand.RaiseCanExecuteChanged();
             mainWindowViewModel.DeletePackCommand.RaiseCanExecuteChanged();
         }
-        public void OnIsPlayerModeMessageRecieved(object sender, EventArgs args)
+        private void ToggleConfigurationModeOff()
         {
-            ReverseIsConfigurationMode();
+            IsConfigurationMode = false;
             EnableConfigurationCommand.RaiseCanExecuteChanged();
+            AddQuestionCommand.RaiseCanExecuteChanged();
+            RemoveQuestionCommand.RaiseCanExecuteChanged();
+            OpenPackOptionsCommand.RaiseCanExecuteChanged();
+            mainWindowViewModel.CreateNewPackCommand.RaiseCanExecuteChanged();
+            mainWindowViewModel.DeletePackCommand.RaiseCanExecuteChanged();
         }
-
-
+        public void OnIsOtherModeMessageRecieved(object sender, EventArgs args)
+        {
+            ToggleConfigurationModeOff();
+        }
     }
 }
