@@ -23,10 +23,6 @@
                           Icon="{fa:Icon folderplus}"
                           Command="{Binding CreateNewPackCommand}"/>
 
-                <MenuItem Header="Update Label" 
-                          InputGestureText="Ctrl+U"
-                          Command="{Binding PlayerViewModel.UpdateLabelCommand}"/>
-                
                 <MenuItem Header="_Select Question Pack"                         
                           Icon="{fa:Icon folderopen}"
                           ItemsSource="{Binding Packs}"
@@ -96,7 +92,9 @@
                 <Separator />
                 
                 <MenuItem Header="_Fullscreen" 
-                          Icon="{fa:Icon expand}"/>
+                          Icon="{fa:Icon expand}"
+                          Command="{Binding ToggleFullScreenCommand}"
+                          InputGestureText="Alt+Enter"/>
                 
             </MenuItem>
             
