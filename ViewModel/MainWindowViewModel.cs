@@ -1,6 +1,7 @@
 ﻿using Labb3_HES.Command;
 using Labb3_HES.Model;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace Labb3_HES.ViewModel
 {
@@ -11,7 +12,9 @@ namespace Labb3_HES.ViewModel
         public PlayerViewModel PlayerViewModel { get; }
         public ResultViewModel ResultViewModel { get; }
 
-        private QuestionPackViewModel? _activePack;
+        private QuestionPackViewModel? _activePack = new QuestionPackViewModel(new QuestionPack());
+
+        public string pathToJsonFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Labb3_HES\\hoarseQuizzerer.json";
 
         public QuestionPackViewModel? ActivePack
         {
@@ -32,12 +35,13 @@ namespace Labb3_HES.ViewModel
 
         public event EventHandler ShouldCreateNewPackMessage;
         public event EventHandler DeletePackMessage;
-        public event EventHandler ConstructorsAreLoadedMessage;
         public event EventHandler ShouldExitApplicationMessage;
         public event EventHandler ShouldToggleFullScreenMessage;
 
         public MainWindowViewModel()
         {
+            Packs = new ObservableCollection<QuestionPackViewModel>();
+
             CreateNewPackCommand = new DelegateCommand(CreateNewPack, CanCreateNewPack);
             DeletePackCommand = new DelegateCommand(DeletePack, CanDeletePack);
             SelectActivePackCommand = new DelegateCommand(SelectActivePack);
@@ -49,12 +53,13 @@ namespace Labb3_HES.ViewModel
             PlayerViewModel = new PlayerViewModel(this);
             ResultViewModel = new ResultViewModel(this);
 
-            Packs = JsonHandler.LoadJsonFile();
+            ConfigurationViewModel.IsConfigurationModeMessage += PlayerViewModel.OnIsOtherModeMessageRecieved;
+            ConfigurationViewModel.IsConfigurationModeMessage += ResultViewModel.OnIsOtherModeMessageRecieved;
 
-            ActivePack = Packs.FirstOrDefault();
+            PlayerViewModel.IsPlayerModeMessage += ResultViewModel.OnIsOtherModeMessageRecieved;
+            PlayerViewModel.IsPlayerModeMessage += ConfigurationViewModel.OnIsOtherModeMessageRecieved;
 
-            SendConstructorsAreLoadedMessage();
-
+            ResultViewModel.IsResultModeMessage += PlayerViewModel.OnIsOtherModeMessageRecieved;
 
         }
 
@@ -103,7 +108,55 @@ namespace Labb3_HES.ViewModel
         private void SelectActivePack(object obj) => ActivePack = obj as QuestionPackViewModel;
 
         private void ExitApplication(object obj) => ShouldExitApplicationMessage.Invoke(this, EventArgs.Empty);
-        private void SendConstructorsAreLoadedMessage() => ConstructorsAreLoadedMessage.Invoke(this, EventArgs.Empty);
 
+
+        public async Task LoadPacks()
+        {
+
+            Task<List<QuestionPack>> loadQuestions = JsonHandler.LoadJsonFileTest(pathToJsonFile);
+
+            var packs = await loadQuestions;
+
+            foreach (var pack in packs)
+            {
+                Packs.Add(new QuestionPackViewModel(pack));
+            }
+
+        }
+        public async Task SavePacks()
+        {
+            List<QuestionPack> questionPacks = new();
+
+            foreach (var pack in Packs)
+            {
+                QuestionPack currentQuestionPack = pack.GetQuestionPackModel();
+
+                List<Question> questions = new();
+
+                foreach (var question in pack.Questions)
+                {
+                    questions.Add(question);
+                }
+
+                currentQuestionPack.Questions = questions;
+
+                questionPacks.Add(pack.GetQuestionPackModel());
+            }
+
+            await JsonHandler.SaveJsonFileTest(questionPacks, pathToJsonFile);
+        }
+
+        internal void CreateDirectory()
+        {
+            string pathToDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Labb3_HES";
+            Directory.CreateDirectory(pathToDirectory);
+        }
+
+        internal void CreateDefaultQuestionpack()
+        {
+            QuestionPackViewModel defaultQuestionpack = new(new QuestionPack());
+            defaultQuestionpack.Questions.Add(new Question("Fredrik the ...?", "SOLID", "Weak", "Smelly", "Null Exception"));
+            Packs.Add(defaultQuestionpack);
+        }
     }
 }

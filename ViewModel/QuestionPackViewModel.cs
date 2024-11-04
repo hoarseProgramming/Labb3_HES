@@ -98,5 +98,9 @@ namespace Labb3_HES.ViewModel
             return $"<{Name}> ({Difficulty})";
         }
 
+        public QuestionPack GetQuestionPackModel()
+        {
+            return model;
+        }
     }
 }

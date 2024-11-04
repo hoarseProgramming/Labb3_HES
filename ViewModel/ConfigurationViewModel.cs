@@ -51,7 +51,6 @@ namespace Labb3_HES.ViewModel
             OpenPackOptionsCommand = new DelegateCommand(OpenPackOptions, CanOpenPackOptions);
             EnableConfigurationCommand = new DelegateCommand(EnableConfiguration, CanEnableConfiguration);
 
-            mainWindowViewModel.ConstructorsAreLoadedMessage += OnConstructorsAreLoadedMessageRecieved;
 
         }
 
@@ -74,10 +73,6 @@ namespace Labb3_HES.ViewModel
         }
         private bool CanOpenPackOptions(object? arg) => IsConfigurationMode;
 
-        public void OnConstructorsAreLoadedMessageRecieved(object sender, EventArgs args)
-        {
-            mainWindowViewModel.PlayerViewModel.IsPlayerModeMessage += OnIsOtherModeMessageRecieved;
-        }
         private void EnableConfiguration(object obj)
         {
             SendIsConfigurationModeMessage();

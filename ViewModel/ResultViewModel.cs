@@ -37,13 +37,8 @@
         public ResultViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
-            mainWindowViewModel.ConstructorsAreLoadedMessage += OnConstructorsAreLoadedMessageRecieved;
         }
-        public void OnConstructorsAreLoadedMessageRecieved(object sender, EventArgs args)
-        {
-            mainWindowViewModel.PlayerViewModel.IsPlayerModeMessage += OnIsOtherModeMessageRecieved;
-            mainWindowViewModel.ConfigurationViewModel.IsConfigurationModeMessage += OnIsOtherModeMessageRecieved;
-        }
+
         public void OnIsOtherModeMessageRecieved(object sender, EventArgs args)
         {
             IsResultMode = false;

@@ -136,7 +136,6 @@ namespace Labb3_HES.ViewModel
             PlayQuizCommand = new DelegateCommand(PlayQuiz, CanPlayQuiz);
             GiveAnswerCommand = new DelegateCommand(GetAnswer);
 
-            mainWindowViewModel.ConstructorsAreLoadedMessage += OnConstructorsAreLoadedMessageRecieved;
 
         }
 
@@ -155,15 +154,7 @@ namespace Labb3_HES.ViewModel
             }
         }
 
-        private void OnConstructorsAreLoadedMessageRecieved(object? sender, EventArgs e)
-        {
-            mainWindowViewModel.ConfigurationViewModel.IsConfigurationModeMessage += OnIsOtherModeMessageRecieved;
-            mainWindowViewModel.ResultViewModel.IsResultModeMessage += OnIsOtherModeMessageRecieved;
 
-            //TODO: Fix in another way?
-            QuestionPackWithRandomizedOrder = mainWindowViewModel.ActivePack.GetQuestionPackWithRandomizedOrderOfQuestions();
-            ActiveAnswers = new string[4];
-        }
 
         private void PlayQuiz(object obj)
         {
