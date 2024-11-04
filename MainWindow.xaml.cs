@@ -1,5 +1,6 @@
 ﻿using Labb3_HES.Dialogs;
 using Labb3_HES.ViewModel;
+using System.IO;
 using System.Windows;
 
 namespace Labb3_HES
@@ -81,10 +82,26 @@ namespace Labb3_HES
             }
         }
         public void OnShouldExitApplicationMessageRecieved(object sender, EventArgs args) => this.Close();
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            JsonHandler.SaveJsonFile(mainWindowViewModel.Packs);
+            await mainWindowViewModel.SavePacks();
         }
 
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Path.Exists(mainWindowViewModel.pathToJsonFile))
+            {
+                await mainWindowViewModel.LoadPacks();
+            }
+            else
+            {
+                mainWindowViewModel.CreateDirectory();
+                mainWindowViewModel.CreateDefaultQuestionpack();
+            }
+
+            mainWindowViewModel.ActivePack = mainWindowViewModel.Packs.FirstOrDefault();
+            mainWindowViewModel.PlayerViewModel.QuestionPackWithRandomizedOrder = mainWindowViewModel.ActivePack.GetQuestionPackWithRandomizedOrderOfQuestions();
+            mainWindowViewModel.PlayerViewModel.ActiveAnswers = new string[4];
+        }
     }
 }

@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Title="hoarseQuizerrer" Height="500" Width="800" MinHeight="450" MinWidth="700"
         WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded"
         Closing="Window_Closing" >
     
     <Window.InputBindings>
