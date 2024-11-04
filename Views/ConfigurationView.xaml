@@ -59,6 +59,7 @@
                  Grid.Row="1"
                  ItemsSource="{Binding ActivePack.Questions}"
                  SelectedItem="{Binding ActiveQuestion}">
+            
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
