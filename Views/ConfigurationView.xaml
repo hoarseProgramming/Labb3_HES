@@ -91,27 +91,35 @@
             <TextBox Height="70" 
                      Margin="0, 0, 0, 30"
                      Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" />
+                     TextWrapping="Wrap" 
+                     Padding="4"/>
             
             <Label Content="Correct Answer"
                    FontWeight="Bold" />
             <TextBox Margin="0, 0, 0, 5"
                      Text="{Binding CorrectAnswer, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" />
+                     TextWrapping="Wrap" 
+                     Padding="4"/>
             
             <Label Content="First Incorrect Answer"
                    FontWeight="Bold" />
             <TextBox Margin="0, 0, 0, 5"
-                     Text="{Binding IncorrectAnswers[0], UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding IncorrectAnswers[0], UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" 
+                     Padding="4"/>
 
             <Label Content="Second Incorrect Answer"
                    FontWeight="Bold" />
             <TextBox Margin="0, 0, 0, 5"
-                     Text="{Binding IncorrectAnswers[1], UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding IncorrectAnswers[1], UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" 
+                     Padding="4"/>
             
             <Label Content="Third Incorrect Answer"
                    FontWeight="Bold" />
-            <TextBox Text="{Binding IncorrectAnswers[2], UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding IncorrectAnswers[2], UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" 
+                     Padding="4"/>
         
         </StackPanel>
         

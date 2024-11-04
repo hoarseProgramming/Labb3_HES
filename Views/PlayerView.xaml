@@ -48,66 +48,86 @@
         
         <StackPanel HorizontalAlignment="Center">
 
-            <Label Content="{Binding ActiveQuestion.Query}"
-                   FontSize="30" 
-                   HorizontalAlignment="Center"
-                   Margin="0, 60, 0, 0"/>
+            <TextBlock Text="{Binding ActiveQuestion.Query}" 
+                       FontSize="25" 
+                       HorizontalAlignment="Center"
+                       Margin="15, 50, 15, 10" 
+                       TextWrapping="Wrap"/>  
 
-            <StackPanel Margin="0, 0, 0, 60"
+            <StackPanel Margin="0, 0, 0, 40"
                         HorizontalAlignment="Center"
                         Orientation="Horizontal">
                 <Label Content="Question" 
-                       FontSize="15" />
+                       FontSize="20" />
                 <Label Content="{Binding CurrentQuestionNumber}" 
-                       FontSize="15" />
+                       FontSize="20" />
                 <Label Content="of" 
-                       FontSize="15" />
+                       FontSize="20" />
                 <Label Content="{Binding NumberOfQuestionsInPack}" 
-                       FontSize="15" />
+                       FontSize="20" />
             </StackPanel>
             
 
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                
+
                 <Button x:Name="buttonOne" 
                         Style="{StaticResource ButtonWithoutHoveringEffectStyle}"
                         Width="230"
                         Height="80" 
-                        Margin="20"
-                        Content="{Binding ActiveAnswers[0]}"
+                        Margin="20" 
                         Command="{Binding GiveAnswerCommand}"
-                        CommandParameter="{Binding ElementName=buttonOne, Path=Content}"/>
-
+                        CommandParameter="{Binding ElementName=buttonOne, Path=Content.Text}">
+                    <Button.Content>
+                        <TextBlock Text="{Binding ActiveAnswers[0]}"
+                                   TextWrapping="Wrap" />
+                    </Button.Content>
+                    
+                </Button>
                 <Button x:Name="buttonTwo" 
                         Style="{StaticResource ButtonWithoutHoveringEffectStyle}"
                         Width="230"
                         Height="80" 
-                        Content="{Binding ActiveAnswers[1]}"
+                        Margin="20" 
                         Command="{Binding GiveAnswerCommand}"
-                        CommandParameter="{Binding ElementName=buttonTwo, Path=Content}"/>
-                
+                        CommandParameter="{Binding ElementName=buttonTwo, Path=Content.Text}">
+                    <Button.Content>
+                        <TextBlock Text="{Binding ActiveAnswers[1]}"
+                                   TextWrapping="Wrap" />
+                    </Button.Content>
+
+                </Button>
+
             </StackPanel>
 
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center">
-
                 <Button x:Name="buttonThree" 
                         Style="{StaticResource ButtonWithoutHoveringEffectStyle}"
                         Width="230"
                         Height="80" 
-                        Margin="20, 0, 20, 0"
-                        Content="{Binding ActiveAnswers[2]}"
+                        Margin="20" 
                         Command="{Binding GiveAnswerCommand}"
-                        CommandParameter="{Binding ElementName=buttonThree, Path=Content}"/>
+                        CommandParameter="{Binding ElementName=buttonThree, Path=Content.Text}">
+                    <Button.Content>
+                        <TextBlock Text="{Binding ActiveAnswers[2]}"
+                                   TextWrapping="Wrap" />
+                    </Button.Content>
 
+                </Button>
                 <Button x:Name="buttonFour" 
                         Style="{StaticResource ButtonWithoutHoveringEffectStyle}"
                         Width="230"
                         Height="80" 
-                        Content="{Binding ActiveAnswers[3]}"
+                        Margin="20" 
                         Command="{Binding GiveAnswerCommand}"
-                        CommandParameter="{Binding ElementName=buttonFour, Path=Content}"/>
+                        CommandParameter="{Binding ElementName=buttonFour, Path=Content.Text}">
+                    <Button.Content>
+                        <TextBlock Text="{Binding ActiveAnswers[3]}"
+                                   TextWrapping="Wrap" />
+                    </Button.Content>
+
+                </Button>
                 
             </StackPanel>
             
