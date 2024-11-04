@@ -58,7 +58,8 @@
                  Grid.ColumnSpan="2"
                  Grid.Row="1"
                  ItemsSource="{Binding ActivePack.Questions}"
-                 SelectedItem="{Binding ActiveQuestion}">
+                 SelectedItem="{Binding ActiveQuestion}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -70,7 +71,8 @@
                         <TextBlock Text="Question:"
                                    FontWeight="Bold"/>
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding Query}" />
+                                   Text="{Binding Query}"
+                                   TextWrapping="Wrap" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -88,12 +90,14 @@
                    Padding="2"/>
             <TextBox Height="70" 
                      Margin="0, 0, 0, 30"
-                     Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" />
             
             <Label Content="Correct Answer"
                    FontWeight="Bold" />
             <TextBox Margin="0, 0, 0, 5"
-                     Text="{Binding CorrectAnswer, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding CorrectAnswer, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" />
             
             <Label Content="First Incorrect Answer"
                    FontWeight="Bold" />
