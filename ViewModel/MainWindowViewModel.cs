@@ -61,6 +61,7 @@ namespace Labb3_HES.ViewModel
 
             ResultViewModel.IsResultModeMessage += PlayerViewModel.OnIsOtherModeMessageRecieved;
 
+
         }
 
         private void ToggleFullScreen(object obj)
@@ -113,7 +114,7 @@ namespace Labb3_HES.ViewModel
         public async Task LoadPacks()
         {
 
-            Task<List<QuestionPack>> loadQuestions = JsonHandler.LoadJsonFileTest(pathToJsonFile);
+            Task<List<QuestionPack>> loadQuestions = JsonHandler.LoadJsonFile(pathToJsonFile);
 
             var packs = await loadQuestions;
 
@@ -143,7 +144,7 @@ namespace Labb3_HES.ViewModel
                 questionPacks.Add(pack.GetQuestionPackModel());
             }
 
-            await JsonHandler.SaveJsonFileTest(questionPacks, pathToJsonFile);
+            await JsonHandler.SaveJsonFile(questionPacks, pathToJsonFile);
         }
 
         internal void CreateDirectory()
