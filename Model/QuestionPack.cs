@@ -1,4 +1,6 @@
-﻿namespace Labb3_HES.Model
+﻿using System.Text.Json.Serialization;
+
+namespace Labb3_HES.Model
 {
     enum Difficulty { Easy, Medium, Hard }
 
@@ -10,6 +12,15 @@
             Difficulty = difficulty;
             TimeLimitInSeconds = timeLimitInSeconds;
             Questions = [];
+        }
+
+        [JsonConstructor]
+        public QuestionPack(string name, Difficulty difficulty, int timeLimitInSeconds, List<Question> questions)
+        {
+            Name = name;
+            Difficulty = difficulty;
+            TimeLimitInSeconds = timeLimitInSeconds;
+            Questions = questions;
         }
 
         public string Name { get; set; }

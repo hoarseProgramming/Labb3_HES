@@ -11,6 +11,7 @@ namespace Labb3_HES.Model
             CorrectAnswer = correctAnswer;
             IncorrectAnswers = [incorrectAnswer1, incorrectAnswer2, incorrectAnswer3];
         }
+
         [JsonConstructor]
         public Question(string query, string correctAnswer, string[] incorrectAnswers)
         {
