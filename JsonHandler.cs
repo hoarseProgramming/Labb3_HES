@@ -2,6 +2,7 @@
 {
     using Labb3_HES.Model;
     using System.IO;
+    using System.Net.Http;
     using System.Text.Json;
 
     static class JsonHandler
@@ -21,6 +22,17 @@
             }
 
             return deserializedPacks;
+        }
+        public static async Task<List<Question>> LoadJsonFileFromApi(string url)
+        {
+            HttpClient client = new HttpClient();
+
+            //Asynchronous method starts
+            var serializedQuestions = await client.GetStringAsync("https://www.google.com");
+
+            var deserializedQuestions = JsonSerializer.Deserialize<List<Question>>(serializedQuestions);
+
+            return deserializedQuestions;
         }
 
         public static async Task SaveJsonFile(List<QuestionPack> packs, string pathToFile)
