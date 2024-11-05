@@ -47,7 +47,9 @@
                 <Separator />
                 
                 <MenuItem Header="_Import Questions" 
-                          Icon="{fa:Icon cloudarrowdown}"/>
+                          Icon="{fa:Icon cloudarrowdown}"
+                          Command="{Binding ConfigurationViewModel.ShouldOpenImportQuestionsCommand}"
+                          InputGestureText="Ctrl+I"/>
                 
                 <Separator />
                 
