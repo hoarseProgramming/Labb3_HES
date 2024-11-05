@@ -40,20 +40,65 @@ namespace Labb3_HES.ViewModel
         public DelegateCommand EnableConfigurationCommand { get; }
 
         public event EventHandler IsConfigurationModeMessage;
+        public DelegateCommand ShouldOpenImportQuestionsCommand { get; }
+        public event EventHandler ShouldOpenImportQuestionsMessage;
+
+        //private List<Category> _categoryList;
+
+        //public List<Category> CategoryList
+        //{
+        //    get => _categoryList;
+        //    set
+        //    {
+        //        this._categoryList = value;
+        //        RaisePropertyChanged();
+        //    }
+        //}
+        private CategoryList _categoryList;
+
+        public CategoryList CategoryList
+        {
+            get => _categoryList;
+            set
+            {
+                this._categoryList = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
+
+            var listOfCategories = new List<Category>();
+            listOfCategories.Add(new Category(0, "Loading"));
+            //CategoryList = listOfCategories;
+            CategoryList = new CategoryList(listOfCategories);
+
             IsConfigurationMode = true;
 
             AddQuestionCommand = new DelegateCommand(AddQuestion, CanAddQuestion);
             RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
             OpenPackOptionsCommand = new DelegateCommand(OpenPackOptions, CanOpenPackOptions);
             EnableConfigurationCommand = new DelegateCommand(EnableConfiguration, CanEnableConfiguration);
+            ShouldOpenImportQuestionsCommand = new DelegateCommand(OpenImportQuestions, CanOpenImportQuestions);
 
 
         }
 
+        private bool CanOpenImportQuestions(object? arg) => IsConfigurationMode;
+
+        private async void OpenImportQuestions(object obj)
+        {
+            ShouldOpenImportQuestionsMessage.Invoke(this, EventArgs.Empty);
+            CategoryList = await APIHandler.GetQuestionCategories();
+            //var categoryList = await APIHandler.GetQuestionCategories();
+            //CategoryList = categoryList.trivia_categories;
+        }
+        public void ImportQuestions()
+        {
+
+        }
 
         private void AddQuestion(object obj)
         {
@@ -90,6 +135,7 @@ namespace Labb3_HES.ViewModel
             AddQuestionCommand.RaiseCanExecuteChanged();
             RemoveQuestionCommand.RaiseCanExecuteChanged();
             OpenPackOptionsCommand.RaiseCanExecuteChanged();
+            ShouldOpenImportQuestionsCommand.RaiseCanExecuteChanged();
             mainWindowViewModel.CreateNewPackCommand.RaiseCanExecuteChanged();
             mainWindowViewModel.DeletePackCommand.RaiseCanExecuteChanged();
         }
@@ -100,6 +146,7 @@ namespace Labb3_HES.ViewModel
             AddQuestionCommand.RaiseCanExecuteChanged();
             RemoveQuestionCommand.RaiseCanExecuteChanged();
             OpenPackOptionsCommand.RaiseCanExecuteChanged();
+            ShouldOpenImportQuestionsCommand.RaiseCanExecuteChanged();
             mainWindowViewModel.CreateNewPackCommand.RaiseCanExecuteChanged();
             mainWindowViewModel.DeletePackCommand.RaiseCanExecuteChanged();
         }
