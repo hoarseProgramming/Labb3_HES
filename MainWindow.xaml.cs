@@ -27,6 +27,7 @@ namespace Labb3_HES
         {
             mainWindowViewModel.DeletePackMessage += OnDeletePackMessageRecieved;
             mainWindowViewModel.ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
+            mainWindowViewModel.ConfigurationViewModel.ShouldOpenImportQuestionsMessage += OnShouldOpenImportQuestionsMessageRecieved;
             mainWindowViewModel.ShouldCreateNewPackMessage += OnShouldCreateNewPackMessageRecieved;
             mainWindowViewModel.ShouldToggleFullScreenMessage += OnShouldToggleFullScreenMessageRecieved;
             mainWindowViewModel.ShouldExitApplicationMessage += OnShouldExitApplicationMessageRecieved;
@@ -80,6 +81,12 @@ namespace Labb3_HES
                 WindowStyle = WindowStyle.SingleBorderWindow;
                 ResizeMode = ResizeMode.CanResize;
             }
+        }
+        public void OnShouldOpenImportQuestionsMessageRecieved(object sender, EventArgs args)
+        {
+            ImportQuestionsDialog importQuestionsDialog = new();
+
+            var result = importQuestionsDialog.ShowDialog();
         }
         public void OnShouldExitApplicationMessageRecieved(object sender, EventArgs args) => this.Close();
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
