@@ -43,17 +43,7 @@ namespace Labb3_HES.ViewModel
         public DelegateCommand ShouldOpenImportQuestionsCommand { get; }
         public event EventHandler ShouldOpenImportQuestionsMessage;
 
-        //private List<Category> _categoryList;
 
-        //public List<Category> CategoryList
-        //{
-        //    get => _categoryList;
-        //    set
-        //    {
-        //        this._categoryList = value;
-        //        RaisePropertyChanged();
-        //    }
-        //}
         private CategoryList _categoryList;
 
         public CategoryList CategoryList
@@ -102,7 +92,9 @@ namespace Labb3_HES.ViewModel
 
         private void AddQuestion(object obj)
         {
-            ActivePack.Questions.Add(new Question());
+            //TODO: Test
+            ActivePack.Questions.Add(new Question(new string[3]));
+            //ActivePack.Questions.Add(new Question());
             mainWindowViewModel.PlayerViewModel.PlayQuizCommand.RaiseCanExecuteChanged();
         }
         private bool CanAddQuestion(object? arg) => IsConfigurationMode;

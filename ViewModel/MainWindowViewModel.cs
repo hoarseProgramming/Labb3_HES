@@ -156,7 +156,23 @@ namespace Labb3_HES.ViewModel
         internal void CreateDefaultQuestionpack()
         {
             QuestionPackViewModel defaultQuestionpack = new(new QuestionPack());
-            defaultQuestionpack.Questions.Add(new Question("Fredrik the ...?", "SOLID", "Weak", "Smelly", "Null Exception"));
+            //TODO: Test
+            defaultQuestionpack.Questions.Add(new Question(new string[] { "UnDRY", "Weak", "Smelly" }, "Fredrik the ...?", "SOLID"));
+            defaultQuestionpack.Questions.Add(new Question(new string[]
+                { "This is one of the longest answers in the world. And also the wrong one (1). " +
+                    "Does this fit in the player? I guess we'll have to try it. Don't we?",
+                    "This is one of the longest answers in the world. And also the wrong one (2). " +
+                    "Does this fit in the player? I guess we'll have to try it. Don't we?",
+                    "This is one of the longest answers in the world. And also the wrong one (3). " +
+                    "Does this fit in the player? I guess we'll have to try it. Don't we?"
+                },
+                "This is one of the longest questions in the world, with no apparent question or use, " +
+                "really, it's more of a test to see how the configuration view handles extremely long " +
+                "questions",
+                "This is one of the longest answers in the world. And also the correct one. " +
+                "Does this fit in the player? I guess we'll have to try it. Don't we?"));
+
+            //defaultQuestionpack.Questions.Add(new Question("Fredrik the ...?", "SOLID", "Weak", "Smelly", "Null Exception"));
             Packs.Add(defaultQuestionpack);
         }
     }
