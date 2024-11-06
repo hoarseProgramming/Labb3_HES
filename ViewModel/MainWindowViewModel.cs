@@ -113,7 +113,6 @@ namespace Labb3_HES.ViewModel
 
         public async Task LoadPacks()
         {
-
             Task<List<QuestionPack>> loadQuestions = JsonHandler.LoadJsonFile(pathToJsonFile);
 
             var packs = await loadQuestions;
@@ -155,24 +154,26 @@ namespace Labb3_HES.ViewModel
 
         internal void CreateDefaultQuestionpack()
         {
-            QuestionPackViewModel defaultQuestionpack = new(new QuestionPack());
-            //TODO: Test
-            defaultQuestionpack.Questions.Add(new Question(new string[] { "UnDRY", "Weak", "Smelly" }, "Fredrik the ...?", "SOLID"));
+            QuestionPackViewModel defaultQuestionpack = new(new QuestionPack("hoarse Default Question Pack!"));
+
+            defaultQuestionpack.Questions.Add(new Question(new string[] { "UnDRY", "Weak", "Smelly" }, "SOLID", "Fredrik the ...?"));
             defaultQuestionpack.Questions.Add(new Question(new string[]
-                { "This is one of the longest answers in the world. And also the wrong one (1). " +
+                {
+                    "This is one of the longest answers in the world. And also the wrong one (1). " +
                     "Does this fit in the player? I guess we'll have to try it. Don't we?",
                     "This is one of the longest answers in the world. And also the wrong one (2). " +
                     "Does this fit in the player? I guess we'll have to try it. Don't we?",
                     "This is one of the longest answers in the world. And also the wrong one (3). " +
                     "Does this fit in the player? I guess we'll have to try it. Don't we?"
                 },
-                "This is one of the longest questions in the world, with no apparent question or use, " +
-                "really, it's more of a test to see how the configuration view handles extremely long " +
-                "questions",
-                "This is one of the longest answers in the world. And also the correct one. " +
-                "Does this fit in the player? I guess we'll have to try it. Don't we?"));
+                    "This is one of the longest answers in the world. And also the correct one. " +
+                    "Does this fit in the player? I guess we'll have to try it. Don't we?",
 
-            //defaultQuestionpack.Questions.Add(new Question("Fredrik the ...?", "SOLID", "Weak", "Smelly", "Null Exception"));
+                    "This is one of the longest questions in the world, with no apparent question or use, " +
+                    "really, it's more of a test to see how the configuration view handles extremely long " +
+                    "questions"
+                ));
+
             Packs.Add(defaultQuestionpack);
         }
     }
