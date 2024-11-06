@@ -1,15 +1,18 @@
-﻿namespace Labb3_HES
+﻿using System.Text.Json.Serialization;
+
+namespace Labb3_HES
 {
     class Category
     {
+        [JsonPropertyName("id")]
+        public int Id { get; }
+        [JsonPropertyName("name")]
+        public string Name { get; }
+
         public Category(int id, string name)
         {
-            this.id = id;
-            this.name = name;
+            this.Id = id;
+            this.Name = name;
         }
-
-        public int id { get; }
-        public string name { get; }
-
     }
 }
