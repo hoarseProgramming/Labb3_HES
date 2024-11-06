@@ -28,7 +28,7 @@
                       ItemsSource="{Binding ConfigurationViewModel.CategoryList.ListOfCategories}"
                       SelectedItem="{Binding ConfigurationViewModel.SelectedCategory}"
                       SelectedIndex="0"
-                      DisplayMemberPath="name" />
+                      DisplayMemberPath="Name" />
                 
             <Label Content="Difficulty"
                    FontWeight="Bold" />
