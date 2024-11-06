@@ -10,13 +10,15 @@
         <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
     </UserControl.Resources>
 
-    <!--DataContext="{Binding PlayerViewModel}"-->
+    
     <Grid Visibility="{Binding ResultViewModel.IsResultMode, Converter={StaticResource boolToVisibilityConverter}}"
           IsEnabled="{Binding ResultViewModel.IsResultMode}">
+        
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center">
             <Label FontSize="30"
-                   Content="Complete!" 
+                   FontWeight="SemiBold"
+                   Content="{Binding ResultViewModel.ResultMessage}" 
                    HorizontalAlignment="Center"
                    Margin="0, 0, 0, 10"/>
             
@@ -24,21 +26,42 @@
                         HorizontalAlignment="Center"
                         Orientation="Horizontal">
                 <Label Content="You got" 
-                       FontSize="15" />
+                       FontSize="15" 
+                       FontWeight="SemiBold"/>
                 <Label Content="{Binding ResultViewModel.CorrectAnswersGiven}" 
-                       FontSize="15" />
+                       FontSize="15" 
+                       FontWeight="SemiBold"
+                       Padding="0, 5, 0, 5"/>
                 <Label Content="of" 
-                       FontSize="15" />
+                       FontSize="15" 
+                       FontWeight="SemiBold"/>
                 <Label Content="{Binding ResultViewModel.NumberOfQuestionsInPack}" 
-                       FontSize="15" />
+                       FontSize="15" 
+                       FontWeight="SemiBold"
+                       Padding="0, 5, 0, 5"/>
                 <Label Content="correct answers!" 
-                       FontSize="15" />
+                       FontSize="15" 
+                       FontWeight="SemiBold"/>
             </StackPanel>
 
-            <Button FontSize="25"
-                    Content="Restart?"
-                    Command="{Binding PlayerViewModel.PlayQuizCommand}"/>
-            
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                
+                <Button FontSize="25"
+                        Content="Restart!"
+                        FontWeight="SemiBold"
+                        Command="{Binding PlayerViewModel.PlayQuizCommand}"
+                        Margin="0, 0, 20, 0"
+                        Padding="10"/>
+
+                <Button FontSize="25"
+                        Content="Edit quiz!"
+                        FontWeight="SemiBold"
+                        Padding="10"
+                        Command="{Binding ConfigurationViewModel.EnableConfigurationCommand}"/>
+                
+            </StackPanel>
+
         </StackPanel>
     </Grid>
 </UserControl>
