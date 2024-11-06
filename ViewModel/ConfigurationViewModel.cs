@@ -41,8 +41,11 @@ namespace Labb3_HES.ViewModel
 
         public event EventHandler IsConfigurationModeMessage;
         public DelegateCommand ShouldOpenImportQuestionsCommand { get; }
+
         public event EventHandler ShouldOpenImportQuestionsMessage;
 
+        public DelegateCommand ShouldImportQuestionsCommand { get; }
+        public event EventHandler ShouldImportQuestionsMessage;
 
         private CategoryList _categoryList;
 
@@ -56,14 +59,61 @@ namespace Labb3_HES.ViewModel
             }
         }
 
+        private APIQuestionRequest _aPIQuestionRequest;
+
+        public APIQuestionRequest APIQuestionRequest
+        {
+            get => _aPIQuestionRequest;
+            set
+            {
+                _aPIQuestionRequest = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string _responseMessage;
+
+        public string ResponseMessage
+        {
+            get => _responseMessage;
+            set
+            {
+                _responseMessage = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+        private Category _selectedCategory;
+
+        public Category SelectedCategory
+        {
+            get => _selectedCategory;
+            set
+            {
+                _selectedCategory = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public Difficulty SelectedDifficultyForImporting { get; set; }
+        public int SelectedNumberOfQuestionsForImporting { get; set; }
+
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
 
             var listOfCategories = new List<Category>();
             listOfCategories.Add(new Category(0, "Loading"));
-            //CategoryList = listOfCategories;
+
             CategoryList = new CategoryList(listOfCategories);
+            SelectedCategory = CategoryList.ListOfCategories[0];
+
+            var listOfQuestions = new List<Question>();
+            APIQuestionRequest = new APIQuestionRequest(6, listOfQuestions);
+            ResponseMessage = APIQuestionRequest.ActiveResponseCodeMessage;
+            SelectedDifficultyForImporting = Difficulty.Medium;
+            SelectedNumberOfQuestionsForImporting = 1;
 
             IsConfigurationMode = true;
 
@@ -71,30 +121,36 @@ namespace Labb3_HES.ViewModel
             RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
             OpenPackOptionsCommand = new DelegateCommand(OpenPackOptions, CanOpenPackOptions);
             EnableConfigurationCommand = new DelegateCommand(EnableConfiguration, CanEnableConfiguration);
-            ShouldOpenImportQuestionsCommand = new DelegateCommand(OpenImportQuestions, CanOpenImportQuestions);
+            ShouldOpenImportQuestionsCommand = new DelegateCommand(ShouldOpenImportQuestions, CanOpenImportQuestions);
+            ShouldImportQuestionsCommand = new DelegateCommand(ShouldImportQuestions, CanImportQuestions);
 
+        }
 
+        private bool CanImportQuestions(object? arg) => CategoryList.ListOfCategories.Count > 1;
+
+        private void ShouldImportQuestions(object obj)
+        {
+            ShouldImportQuestionsMessage.Invoke(this, EventArgs.Empty);
         }
 
         private bool CanOpenImportQuestions(object? arg) => IsConfigurationMode;
 
-        private async void OpenImportQuestions(object obj)
+        private async void ShouldOpenImportQuestions(object obj)
         {
             ShouldOpenImportQuestionsMessage.Invoke(this, EventArgs.Empty);
-            CategoryList = await APIHandler.GetQuestionCategories();
-            //var categoryList = await APIHandler.GetQuestionCategories();
-            //CategoryList = categoryList.trivia_categories;
         }
-        public void ImportQuestions()
+        public async Task ImportQuestions()
         {
-
+            APIQuestionRequest = await APIHandler.GetQuestions(SelectedNumberOfQuestionsForImporting, SelectedCategory.id, SelectedDifficultyForImporting.ToString().ToLower());
+            foreach (var question in APIQuestionRequest.ImportedQuestions)
+            {
+                mainWindowViewModel.ActivePack.Questions.Add(question);
+            }
         }
 
         private void AddQuestion(object obj)
         {
-            //TODO: Test
-            ActivePack.Questions.Add(new Question(new string[3]));
-            //ActivePack.Questions.Add(new Question());
+            ActivePack.Questions.Add(new Question(new string[] { "Answer2", "Answer3", "Answer4" }, "Answer1"));
             mainWindowViewModel.PlayerViewModel.PlayQuizCommand.RaiseCanExecuteChanged();
         }
         private bool CanAddQuestion(object? arg) => IsConfigurationMode;
@@ -113,27 +169,17 @@ namespace Labb3_HES.ViewModel
         private void EnableConfiguration(object obj)
         {
             SendIsConfigurationModeMessage();
-            ToggleConfigurationModeOn();
+            ToggleConfigurationModeOnOrOff();
         }
         private bool CanEnableConfiguration(object? arg) => !IsConfigurationMode;
         private void SendIsConfigurationModeMessage()
         {
             IsConfigurationModeMessage.Invoke(this, EventArgs.Empty);
         }
-        private void ToggleConfigurationModeOn()
+        private void ToggleConfigurationModeOnOrOff()
         {
-            IsConfigurationMode = true;
-            EnableConfigurationCommand.RaiseCanExecuteChanged();
-            AddQuestionCommand.RaiseCanExecuteChanged();
-            RemoveQuestionCommand.RaiseCanExecuteChanged();
-            OpenPackOptionsCommand.RaiseCanExecuteChanged();
-            ShouldOpenImportQuestionsCommand.RaiseCanExecuteChanged();
-            mainWindowViewModel.CreateNewPackCommand.RaiseCanExecuteChanged();
-            mainWindowViewModel.DeletePackCommand.RaiseCanExecuteChanged();
-        }
-        private void ToggleConfigurationModeOff()
-        {
-            IsConfigurationMode = false;
+            IsConfigurationMode = !IsConfigurationMode;
+
             EnableConfigurationCommand.RaiseCanExecuteChanged();
             AddQuestionCommand.RaiseCanExecuteChanged();
             RemoveQuestionCommand.RaiseCanExecuteChanged();
@@ -144,7 +190,7 @@ namespace Labb3_HES.ViewModel
         }
         public void OnIsOtherModeMessageRecieved(object sender, EventArgs args)
         {
-            ToggleConfigurationModeOff();
+            if (IsConfigurationMode) ToggleConfigurationModeOnOrOff();
         }
     }
 }
