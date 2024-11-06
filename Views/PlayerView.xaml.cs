@@ -18,7 +18,6 @@ namespace Labb3_HES.Views
             buttons.Add(buttonTwo);
             buttons.Add(buttonThree);
             buttons.Add(buttonFour);
-
         }
         public void OnAnswerRecievedMessageRecieved(object sender, EventArgs args)
         {
