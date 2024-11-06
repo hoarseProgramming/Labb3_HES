@@ -11,8 +11,6 @@
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen">
 
-    <!--x:Name="window"-->
-
     <Grid>
         <StackPanel Margin="10">
             <Label Content="Pack Name:" 
