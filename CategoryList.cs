@@ -1,12 +1,15 @@
-﻿namespace Labb3_HES
+﻿using System.Text.Json.Serialization;
+
+namespace Labb3_HES
 {
     class CategoryList
 
     {
-        public List<Category> trivia_categories { get; }
-        public CategoryList(List<Category> trivia_categories)
+        [JsonPropertyName("trivia_categories")]
+        public List<Category> ListOfCategories { get; }
+        public CategoryList(List<Category> listOfCategories)
         {
-            this.trivia_categories = trivia_categories;
+            this.ListOfCategories = listOfCategories;
         }
     }
 }
