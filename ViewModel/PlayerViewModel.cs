@@ -158,8 +158,8 @@ namespace Labb3_HES.ViewModel
 
         private void PlayQuiz(object obj)
         {
-            SendIsPlayerModeMessage();
             IsPlayerMode = true;
+            SendIsPlayerModeMessage();
             CurrentQuestionIndex = 0;
             CorrectAnswersGiven = 0;
 
@@ -233,7 +233,7 @@ namespace Labb3_HES.ViewModel
                 }
                 else
                 {
-                    mainWindowViewModel.ResultViewModel.EnableResultMode();
+                    mainWindowViewModel.ResultViewModel.EnableResultMode(NumberOfQuestionsInPack, CorrectAnswersGiven);
                 }
             }
         }
