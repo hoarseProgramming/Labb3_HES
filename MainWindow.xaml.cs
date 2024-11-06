@@ -20,8 +20,6 @@ namespace Labb3_HES
             playerView.DataContext = mainWindowViewModel.PlayerViewModel;
             SubscribeToEvents();
 
-
-            //TODO: Make Importer class for VG
         }
         private void SubscribeToEvents()
         {
@@ -82,11 +80,30 @@ namespace Labb3_HES
                 ResizeMode = ResizeMode.CanResize;
             }
         }
-        public void OnShouldOpenImportQuestionsMessageRecieved(object sender, EventArgs args)
+        public async void OnShouldOpenImportQuestionsMessageRecieved(object sender, EventArgs args)
         {
-            ImportQuestionsDialog importQuestionsDialog = new();
+            try
+            {
+                Task startCheckConnection = APIHandler.CheckConnectionToOpenTDB();
 
-            var result = importQuestionsDialog.ShowDialog();
+                ImportQuestionsDialog importQuestionsDialog = new();
+
+                await startCheckConnection;
+
+                var result = importQuestionsDialog.ShowDialog();
+
+                if (result == true)
+                {
+                    ImportStatusDialog importStatusDialog = new();
+                    var importStatusDialogResult = importStatusDialog.ShowDialog();
+                }
+            }
+            catch (Exception exception)
+            {
+                ImportStatusDialog importStatusDialog = new();
+
+                var importStatuaDialogResult = importStatusDialog.ShowDialog();
+            }
         }
         public void OnShouldExitApplicationMessageRecieved(object sender, EventArgs args) => this.Close();
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
