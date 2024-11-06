@@ -12,24 +12,35 @@ namespace Labb3_HES.Dialogs
             InitializeComponent();
             DataContext = (App.Current.MainWindow as MainWindow).DataContext;
             configurationViewModel = (DataContext as MainWindowViewModel).ConfigurationViewModel;
+            configurationViewModel.ShouldImportQuestionsMessage += StartQuestionImport;
+        }
+
+        private void StartQuestionImport(object? sender, EventArgs e)
+        {
+            configurationViewModel.ShouldImportQuestionsMessage -= StartQuestionImport;
+            DialogResult = true;
+
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
-            this.Close();
-        }
-
-        private void buttonImport_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-            this.Close();
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            configurationViewModel.CategoryList = await APIHandler.GetQuestionCategories();
-            comboboxCategories.SelectedIndex = 0;
+            try
+            {
+                configurationViewModel.CategoryList = await APIHandler.GetQuestionCategories();
+                configurationViewModel.SelectedCategory = configurationViewModel.CategoryList.ListOfCategories[0];
+                configurationViewModel.ShouldImportQuestionsCommand.RaiseCanExecuteChanged();
+            }
+            catch (Exception exception)
+            {
+                this.Close();
+                ImportStatusDialog importStatusDialog = new();
+                var result = importStatusDialog.ShowDialog();
+            }
         }
     }
 }

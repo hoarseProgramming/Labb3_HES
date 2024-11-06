@@ -3,13 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Labb3_HES.Dialogs"
+        xmlns:local="clr-namespace:Labb3_HES.Dialogs" 
+        xmlns:converters="clr-namespace:Labb3_HES.Converters"
         mc:Ignorable="d"
         Title="Import Questions From Open Trivia Database" Height="270" Width="300"
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
-        
+
+    <Window.Resources>
+        <converters:DifficultyToIntConverter x:Key="DifficultyToIntConverter" />
+    </Window.Resources>
+
     <Grid>
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -20,14 +25,16 @@
             <ComboBox x:Name="comboboxCategories" 
                       Margin="5"
                       Width="250"
-                      ItemsSource="{Binding ConfigurationViewModel.CategoryList.trivia_categories}"
+                      ItemsSource="{Binding ConfigurationViewModel.CategoryList.ListOfCategories}"
+                      SelectedItem="{Binding ConfigurationViewModel.SelectedCategory}"
                       SelectedIndex="0"
                       DisplayMemberPath="name" />
                 
             <Label Content="Difficulty"
                    FontWeight="Bold" />
             <ComboBox Margin="5"
-                      SelectedIndex="1">
+                      SelectedIndex="{Binding ConfigurationViewModel.SelectedDifficultyForImporting,
+                                      Converter={StaticResource DifficultyToIntConverter}}">
                      <ComboBoxItem Content="Easy" />
                      <ComboBoxItem Content="Medium" />
                      <ComboBoxItem Content="Hard" />
@@ -50,7 +57,8 @@
                     TickFrequency="1"
                     TickPlacement="BottomRight"
                     IsSnapToTickEnabled="True"
-                    Margin="5"/>
+                    Margin="5"
+                    Value="{Binding ConfigurationViewModel.SelectedNumberOfQuestionsForImporting}"/>
 
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
@@ -64,7 +72,7 @@
                 <Button x:Name="buttonImport" 
                         Content="Import" 
                         Padding="4" 
-                        Click="buttonImport_Click"/>
+                        Command="{Binding ConfigurationViewModel.ShouldImportQuestionsCommand}"/>
                 
             </StackPanel>
 
