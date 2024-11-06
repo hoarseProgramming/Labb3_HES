@@ -4,9 +4,6 @@ using System.Windows.Media;
 
 namespace Labb3_HES.Views
 {
-    /// <summary>
-    /// Interaction logic for PlayerView.xaml
-    /// </summary>
     public partial class PlayerView : UserControl
     {
         private List<Button> buttons = new();
