@@ -141,7 +141,7 @@ namespace Labb3_HES.ViewModel
         }
         public async Task ImportQuestions()
         {
-            APIQuestionRequest = await APIHandler.GetQuestions(SelectedNumberOfQuestionsForImporting, SelectedCategory.id, SelectedDifficultyForImporting.ToString().ToLower());
+            APIQuestionRequest = await APIHandler.GetQuestions(SelectedNumberOfQuestionsForImporting, SelectedCategory.Id, SelectedDifficultyForImporting.ToString().ToLower());
             foreach (var question in APIQuestionRequest.ImportedQuestions)
             {
                 mainWindowViewModel.ActivePack.Questions.Add(question);
