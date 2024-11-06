@@ -8,18 +8,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
-            <StackPanel Margin="-20,0,0,0" Background="White"/>
-        </ItemsPanelTemplate>
-    </UserControl.Resources>
-
     <Grid>
+        
         <Menu>
+            
             <MenuItem Header="_File">
 
-                <MenuItem x:Name="menuItemNewQuestionpack" 
-                          Header="_New Question Pack" 
+                <MenuItem Header="_New Question Pack" 
                           Icon="{fa:Icon folderplus}"
                           Command="{Binding CreateNewPackCommand}"/>
 
@@ -27,31 +22,33 @@
                           Icon="{fa:Icon folderopen}"
                           ItemsSource="{Binding Packs}"
                           IsEnabled="{Binding ConfigurationViewModel.IsConfigurationMode}">
-
+                    
                     <MenuItem.ItemContainerStyle>
+                        
                         <Style TargetType="MenuItem">
-                            <Setter Property="Header" Value="{Binding}" />
-                            <Setter Property="Command" 
-                                    Value="{Binding DataContext.SelectActivePackCommand, 
-                                                    RelativeSource={RelativeSource AncestorType=Window}}" />
-                            <Setter Property="CommandParameter" Value="{Binding}" />
+                            <Setter Property="Header" Value="{Binding}"/>
+                            <Setter Property="Icon" Value="{fa:Icon box}"/>
+                            <Setter Property="Command" Value="{Binding DataContext.SelectActivePackCommand, 
+                                                              RelativeSource={RelativeSource AncestorType=Window}}"/>
+                            <Setter Property="CommandParameter" Value="{Binding}"/>
                         </Style>
+                        
                     </MenuItem.ItemContainerStyle>
                     
                 </MenuItem>
 
                 <MenuItem Header="_Delete Question Pack" 
                           Icon="{fa:Icon folderminus}"
-                          Command="{Binding DeletePackCommand}" />
+                          Command="{Binding DeletePackCommand}"/>
 
-                <Separator />
+                <Separator/>
                 
                 <MenuItem Header="_Import Questions" 
                           Icon="{fa:Icon cloudarrowdown}"
                           Command="{Binding ConfigurationViewModel.ShouldOpenImportQuestionsCommand}"
                           InputGestureText="Ctrl+I"/>
                 
-                <Separator />
+                <Separator/>
                 
                 <MenuItem Header="E_xit"
                           Icon="{fa:Icon personrunning}"
@@ -59,9 +56,9 @@
                           InputGestureText="Alt+F4"/>
                 
             </MenuItem>
-            
-            <MenuItem DataContext="{Binding ConfigurationViewModel}" 
-                      Header="_Edit">
+
+            <MenuItem Header="_Edit"
+                      DataContext="{Binding ConfigurationViewModel}">
                 
                 <MenuItem Header="_Add Question"
                           Icon="{fa:Icon plus}"
@@ -71,12 +68,12 @@
                 <MenuItem Header="_Remove Question" 
                           Icon="{fa:Icon minus}"
                           Command="{Binding RemoveQuestionCommand}"
-                          InputGestureText="Ctrl-"/>
+                          InputGestureText="Ctrl-" />
 
                 <MenuItem Header="Pack _Options"
                           Icon="{fa:Icon sliders}"
                           Command="{Binding OpenPackOptionsCommand}"
-                          InputGestureText="Ctrl+O"/>
+                          InputGestureText="Ctrl+O" />
 
             </MenuItem>
             
