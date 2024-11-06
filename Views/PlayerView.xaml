@@ -7,17 +7,21 @@
              DataContext="{Binding PlayerViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
     <UserControl.Resources>
         
-        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
         
         <Style x:Key="ButtonWithoutHoveringEffectStyle" TargetType="Button">
+            
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Background" Value="AliceBlue" />
             <Setter Property="Template">
                     <Setter.Value>
+                        
                     <ControlTemplate TargetType="Button">
+                        
                         <Border Name="border" 
                                 BorderThickness="1"
                                 Padding="4,2" 
@@ -26,14 +30,18 @@
                                 Background="{TemplateBinding Background}">  
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
+                        
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="BorderBrush" Value="Black" />
                             </Trigger>
                         </ControlTemplate.Triggers>
+                        
                     </ControlTemplate>
+                        
                 </Setter.Value>
             </Setter>
+            
         </Style>
         
     </UserControl.Resources>
@@ -42,9 +50,10 @@
     <Grid Visibility="{Binding IsPlayerMode, Converter={StaticResource boolToVisibilityConverter}}"
           IsEnabled="{Binding IsPlayerMode}">
 
-        <StackPanel Margin="0, 10, 0, 0"
-            HorizontalAlignment="Center"
-            Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0, 10, 0, 0">
+            
             <Label Content="Question" 
                    FontSize="20" 
                    FontWeight="SemiBold"/>
@@ -57,6 +66,7 @@
             <Label Content="{Binding NumberOfQuestionsInPack}" 
                    FontSize="20" 
                    FontWeight="SemiBold"/>
+            
         </StackPanel>
 
         <Label Content="{Binding TimeLimit}"
@@ -68,11 +78,11 @@
         <StackPanel HorizontalAlignment="Center">
 
             <TextBlock Text="{Binding ActiveQuestion.Query}" 
+                       TextWrapping="Wrap"
                        FontSize="25" 
                        FontWeight="DemiBold"
                        HorizontalAlignment="Center"
-                       Margin="30, 100, 15, 30" 
-                       TextWrapping="Wrap"/>  
+                       Margin="30, 100, 15, 30"/>  
 
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
@@ -86,11 +96,13 @@
                         Command="{Binding GiveAnswerCommand}"
                         CommandParameter="{Binding ElementName=buttonOne, Path=Content.Text}">
                     <Button.Content>
+                        
                         <TextBlock Text="{Binding ActiveAnswers[0]}"
                                    TextWrapping="Wrap" />
+                        
                     </Button.Content>
-                    
                 </Button>
+                
                 <Button x:Name="buttonTwo" 
                         Style="{StaticResource ButtonWithoutHoveringEffectStyle}"
                         Width="230"
@@ -99,16 +111,18 @@
                         Command="{Binding GiveAnswerCommand}"
                         CommandParameter="{Binding ElementName=buttonTwo, Path=Content.Text}">
                     <Button.Content>
+                        
                         <TextBlock Text="{Binding ActiveAnswers[1]}"
                                    TextWrapping="Wrap" />
+                        
                     </Button.Content>
-
                 </Button>
 
             </StackPanel>
 
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center">
+                
                 <Button x:Name="buttonThree" 
                         Style="{StaticResource ButtonWithoutHoveringEffectStyle}"
                         Width="230"
@@ -117,11 +131,13 @@
                         Command="{Binding GiveAnswerCommand}"
                         CommandParameter="{Binding ElementName=buttonThree, Path=Content.Text}">
                     <Button.Content>
+                        
                         <TextBlock Text="{Binding ActiveAnswers[2]}"
-                                   TextWrapping="Wrap" />
+                                   TextWrapping="Wrap"/>
+                        
                     </Button.Content>
-
                 </Button>
+                
                 <Button x:Name="buttonFour" 
                         Style="{StaticResource ButtonWithoutHoveringEffectStyle}"
                         Width="230"
@@ -130,10 +146,11 @@
                         Command="{Binding GiveAnswerCommand}"
                         CommandParameter="{Binding ElementName=buttonFour, Path=Content.Text}">
                     <Button.Content>
+                        
                         <TextBlock Text="{Binding ActiveAnswers[3]}"
                                    TextWrapping="Wrap" />
+                        
                     </Button.Content>
-
                 </Button>
                 
             </StackPanel>
