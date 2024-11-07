@@ -23,7 +23,7 @@ namespace Labb3_HES
         }
         private void SubscribeToEvents()
         {
-            mainWindowViewModel.DeletePackMessage += OnDeletePackMessageRecieved;
+            mainWindowViewModel.ShouldDeletePackMessage += OnDeletePackMessageRecieved;
             mainWindowViewModel.ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
             mainWindowViewModel.ConfigurationViewModel.ShouldOpenImportQuestionsMessage += OnShouldOpenImportQuestionsMessageRecieved;
             mainWindowViewModel.ShouldCreateNewPackMessage += OnShouldCreateNewPackMessageRecieved;
