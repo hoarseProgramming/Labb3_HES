@@ -31,7 +31,10 @@
 
         <Label Content="{Binding ActivePack.Name}"
                FontWeight="Bold"
-               Margin="10, 0"
+               Margin="10, 0, 0, 0"
+               Width="295"
+               Grid.ColumnSpan="2"
+               HorizontalAlignment="Left"
                VerticalAlignment="Bottom"/>
 
         <StackPanel Orientation="Horizontal"
@@ -42,15 +45,18 @@
             <Button Width="18"
                     Height="18" 
                     Content="{fa:Icon gears}"
+                    IsTabStop="False"
                     Click="ButtonOpenPackOptions_Click"/>
             <Button Width="18"
                     Height="18"
                     Margin="5, 0"
                     Content="{fa:Icon plus}"
+                    IsTabStop="False"
                     Command="{Binding AddQuestionCommand}"/>
             <Button Width="18"
                     Height="18" 
                     Content="{fa:Icon minus}"
+                    IsTabStop="False"
                     Command="{Binding RemoveQuestionCommand}"/>
             
         </StackPanel>

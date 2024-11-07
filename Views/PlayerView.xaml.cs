@@ -42,7 +42,7 @@ namespace Labb3_HES.Views
         {
             foreach (Button button in buttons)
             {
-                string answerInButton = (string)button.Content;
+                string answerInButton = (button.Content as TextBlock).Text;
                 bool answerInButtonIsCorrectAnswer = answerInButton == (DataContext as PlayerViewModel).ActiveQuestion.CorrectAnswer;
 
                 if (answerInButtonIsCorrectAnswer)
