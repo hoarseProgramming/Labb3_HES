@@ -8,9 +8,12 @@
         Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen"
         Title="Import Status:" Height="200" Width="400">
+    
     <Grid>
+        
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center">
+            
             <TextBlock Text="{Binding ConfigurationViewModel.ResponseMessage}"
                        TextWrapping="Wrap"
                        Height="60"
@@ -20,6 +23,7 @@
                     Content="Ok"
                     Width="50"
                     Click="buttonOk_Click"/>
+            
         </StackPanel>
         
     </Grid>
