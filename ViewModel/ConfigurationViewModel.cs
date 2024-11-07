@@ -7,7 +7,7 @@ namespace Labb3_HES.ViewModel
     {
         private readonly MainWindowViewModel? mainWindowViewModel;
 
-        private bool _isConfigurationMode;
+        private bool _isConfigurationMode = true;
         public bool IsConfigurationMode
         {
             get => _isConfigurationMode;
@@ -21,7 +21,6 @@ namespace Labb3_HES.ViewModel
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
 
         public Question _activeQuestion;
-
         public Question ActiveQuestion
         {
             get => _activeQuestion;
@@ -32,23 +31,8 @@ namespace Labb3_HES.ViewModel
                 RemoveQuestionCommand.RaiseCanExecuteChanged();
             }
         }
-        public DelegateCommand AddQuestionCommand { get; }
-        public DelegateCommand RemoveQuestionCommand { get; }
-        public DelegateCommand OpenPackOptionsCommand { get; }
-
-        public event EventHandler ShouldOpenPackOptionsMessage;
-        public DelegateCommand EnableConfigurationCommand { get; }
-
-        public event EventHandler IsConfigurationModeMessage;
-        public DelegateCommand ShouldOpenImportQuestionsCommand { get; }
-
-        public event EventHandler ShouldOpenImportQuestionsMessage;
-
-        public DelegateCommand ShouldImportQuestionsCommand { get; }
-        public event EventHandler ShouldImportQuestionsMessage;
 
         private CategoryList _categoryList;
-
         public CategoryList CategoryList
         {
             get => _categoryList;
@@ -60,7 +44,6 @@ namespace Labb3_HES.ViewModel
         }
 
         private APIQuestionRequest _aPIQuestionRequest;
-
         public APIQuestionRequest APIQuestionRequest
         {
             get => _aPIQuestionRequest;
@@ -72,7 +55,6 @@ namespace Labb3_HES.ViewModel
         }
 
         private string _responseMessage;
-
         public string ResponseMessage
         {
             get => _responseMessage;
@@ -83,39 +65,39 @@ namespace Labb3_HES.ViewModel
             }
         }
 
-
-        private Category _selectedCategory;
-
-        public Category SelectedCategory
+        private Category _selectedCategoryForImporting;
+        public Category SelectedCategoryForImporting
         {
-            get => _selectedCategory;
+            get => _selectedCategoryForImporting;
             set
             {
-                _selectedCategory = value;
+                _selectedCategoryForImporting = value;
                 RaisePropertyChanged();
             }
         }
 
         public Difficulty SelectedDifficultyForImporting { get; set; }
+
         public int SelectedNumberOfQuestionsForImporting { get; set; }
+
+
+        public DelegateCommand AddQuestionCommand { get; }
+        public DelegateCommand RemoveQuestionCommand { get; }
+        public DelegateCommand OpenPackOptionsCommand { get; }
+        public DelegateCommand EnableConfigurationCommand { get; }
+        public DelegateCommand ShouldOpenImportQuestionsCommand { get; }
+        public DelegateCommand ShouldImportQuestionsCommand { get; }
+
+
+        public event EventHandler IsConfigurationModeMessage;
+        public event EventHandler ShouldOpenPackOptionsMessage;
+        public event EventHandler ShouldOpenImportQuestionsMessage;
+        public event EventHandler ShouldImportQuestionsMessage;
 
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
-
-            var listOfCategories = new List<Category>();
-            listOfCategories.Add(new Category(0, "Loading"));
-
-            CategoryList = new CategoryList(listOfCategories);
-            SelectedCategory = CategoryList.ListOfCategories[0];
-
-            var listOfQuestions = new List<Question>();
-            APIQuestionRequest = new APIQuestionRequest(6, listOfQuestions);
-            ResponseMessage = APIQuestionRequest.ActiveResponseCodeMessage;
-            SelectedDifficultyForImporting = Difficulty.Medium;
-            SelectedNumberOfQuestionsForImporting = 1;
-
-            IsConfigurationMode = true;
+            SetDefaultPropertiesOnStartup();
 
             AddQuestionCommand = new DelegateCommand(AddQuestion, CanAddQuestion);
             RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
@@ -126,26 +108,29 @@ namespace Labb3_HES.ViewModel
 
         }
 
-        private bool CanImportQuestions(object? arg) => CategoryList.ListOfCategories.Count > 1;
-
-        private void ShouldImportQuestions(object obj)
+        private void SetDefaultPropertiesOnStartup()
         {
-            ShouldImportQuestionsMessage.Invoke(this, EventArgs.Empty);
+            SetDefaultCategoryList();
+            SetDefaultAPIQuestionRequest();
+
+            ResponseMessage = APIQuestionRequest.ActiveResponseCodeMessage;
+            SelectedDifficultyForImporting = Difficulty.Medium;
+            SelectedNumberOfQuestionsForImporting = 1;
         }
-
-        private bool CanOpenImportQuestions(object? arg) => IsConfigurationMode;
-
-        private async void ShouldOpenImportQuestions(object obj)
+        public void SetDefaultCategoryList()
         {
-            ShouldOpenImportQuestionsMessage.Invoke(this, EventArgs.Empty);
+            var listOfCategories = new List<Category>();
+            listOfCategories.Add(new Category(0, "Loading"));
+
+            CategoryList = new CategoryList(listOfCategories);
+            SelectedCategoryForImporting = CategoryList.ListOfCategories[0];
+
+            ShouldImportQuestionsCommand?.RaiseCanExecuteChanged();
         }
-        public async Task ImportQuestions()
+        private void SetDefaultAPIQuestionRequest()
         {
-            APIQuestionRequest = await APIHandler.GetQuestions(SelectedNumberOfQuestionsForImporting, SelectedCategory.Id, SelectedDifficultyForImporting.ToString().ToLower());
-            foreach (var question in APIQuestionRequest.ImportedQuestions)
-            {
-                mainWindowViewModel.ActivePack.Questions.Add(question);
-            }
+            var listOfQuestions = new List<Question>();
+            APIQuestionRequest = new APIQuestionRequest(6, listOfQuestions);
         }
 
         private void AddQuestion(object obj)
@@ -154,12 +139,14 @@ namespace Labb3_HES.ViewModel
             mainWindowViewModel.PlayerViewModel.PlayQuizCommand.RaiseCanExecuteChanged();
         }
         private bool CanAddQuestion(object? arg) => IsConfigurationMode;
+
         private void RemoveQuestion(object obj)
         {
             ActivePack.Questions.Remove(ActiveQuestion);
             mainWindowViewModel.PlayerViewModel.PlayQuizCommand.RaiseCanExecuteChanged();
         }
         private bool CanRemoveQuestion(object? arg) => ActiveQuestion != null && IsConfigurationMode;
+
         private void OpenPackOptions(object obj)
         {
             ShouldOpenPackOptionsMessage.Invoke(this, EventArgs.Empty);
@@ -176,6 +163,10 @@ namespace Labb3_HES.ViewModel
         {
             IsConfigurationModeMessage.Invoke(this, EventArgs.Empty);
         }
+        public void OnIsOtherModeMessageRecieved(object sender, EventArgs args)
+        {
+            if (IsConfigurationMode) ToggleConfigurationModeOnOrOff();
+        }
         private void ToggleConfigurationModeOnOrOff()
         {
             IsConfigurationMode = !IsConfigurationMode;
@@ -188,9 +179,26 @@ namespace Labb3_HES.ViewModel
             mainWindowViewModel.CreateNewPackCommand.RaiseCanExecuteChanged();
             mainWindowViewModel.DeletePackCommand.RaiseCanExecuteChanged();
         }
-        public void OnIsOtherModeMessageRecieved(object sender, EventArgs args)
+
+        private async void ShouldOpenImportQuestions(object obj)
         {
-            if (IsConfigurationMode) ToggleConfigurationModeOnOrOff();
+            ShouldOpenImportQuestionsMessage.Invoke(this, EventArgs.Empty);
+        }
+        private bool CanOpenImportQuestions(object? arg) => IsConfigurationMode;
+
+        private void ShouldImportQuestions(object obj)
+        {
+            ShouldImportQuestionsMessage.Invoke(this, EventArgs.Empty);
+        }
+        private bool CanImportQuestions(object? arg) => CategoryList.ListOfCategories.Count > 1;
+
+        public async Task ImportQuestions()
+        {
+            APIQuestionRequest = await APIHandler.GetQuestions(SelectedNumberOfQuestionsForImporting, SelectedCategoryForImporting.Id, SelectedDifficultyForImporting.ToString().ToLower());
+            foreach (var question in APIQuestionRequest.ImportedQuestions)
+            {
+                mainWindowViewModel.ActivePack.Questions.Add(question);
+            }
         }
     }
 }
