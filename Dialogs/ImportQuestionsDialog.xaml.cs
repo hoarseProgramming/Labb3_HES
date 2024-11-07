@@ -1,5 +1,6 @@
 ﻿using Labb3_HES.Model;
 using Labb3_HES.ViewModel;
+using System.Net.Http;
 using System.Windows;
 
 namespace Labb3_HES.Dialogs
@@ -8,6 +9,7 @@ namespace Labb3_HES.Dialogs
     public partial class ImportQuestionsDialog : Window
     {
         private ConfigurationViewModel configurationViewModel;
+
         public ImportQuestionsDialog()
         {
             InitializeComponent();
@@ -34,8 +36,16 @@ namespace Labb3_HES.Dialogs
                 configurationViewModel.SelectedCategoryForImporting = configurationViewModel.CategoryList.ListOfCategories[0];
                 configurationViewModel.ShouldImportQuestionsCommand.RaiseCanExecuteChanged();
             }
-            catch (Exception exception)
+            catch (HttpRequestException exception)
             {
+                if (exception.Message == "No such host is known. (opentdb.com:443)")
+                {
+                    configurationViewModel.ResponseMessage = "No connection to host, check your internet connection!";
+                }
+                else
+                {
+                    configurationViewModel.ResponseMessage = exception.Message;
+                }
                 this.Close();
                 ImportStatusDialog importStatusDialog = new();
                 var result = importStatusDialog.ShowDialog();
