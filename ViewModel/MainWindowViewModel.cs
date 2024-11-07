@@ -39,10 +39,10 @@ namespace Labb3_HES.ViewModel
         public DelegateCommand ExitApplicationCommand { get; }
         public DelegateCommand ToggleFullScreenCommand { get; }
 
-        public event EventHandler ShouldCreateNewPackMessage;
-        public event EventHandler ShouldDeletePackMessage;
-        public event EventHandler ShouldExitApplicationMessage;
-        public event EventHandler ShouldToggleFullScreenMessage;
+        public event EventHandler? ShouldCreateNewPackMessage;
+        public event EventHandler? ShouldDeletePackMessage;
+        public event EventHandler? ShouldExitApplicationMessage;
+        public event EventHandler? ShouldToggleFullScreenMessage;
 
         public MainWindowViewModel()
         {
@@ -59,7 +59,6 @@ namespace Labb3_HES.ViewModel
             ToggleFullScreenCommand = new DelegateCommand(ToggleFullScreen);
 
             SubscribeToEvents();
-
             StartAutoSaveTimer();
         }
 
@@ -98,9 +97,7 @@ namespace Labb3_HES.ViewModel
         }
 
         private void SelectActivePack(object obj) => ActivePack = obj as QuestionPackViewModel;
-
         private void ExitApplication(object obj) => ShouldExitApplicationMessage.Invoke(this, EventArgs.Empty);
-
         private void ToggleFullScreen(object obj) => ShouldToggleFullScreenMessage.Invoke(this, EventArgs.Empty);
         private void SubscribeToEvents()
         {
@@ -124,9 +121,7 @@ namespace Labb3_HES.ViewModel
 
             if (applicationRunTimeInSeconds % 30 == 0)
             {
-                List<QuestionPack> questionPacks = GetQuestionPackModelsFrom(Packs);
-
-                await JsonHandler.SaveJsonFile(questionPacks, pathToJsonFile);
+                await SavePacks();
             }
         }
         public async Task LoadPacks()

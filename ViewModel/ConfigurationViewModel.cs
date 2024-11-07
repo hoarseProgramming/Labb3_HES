@@ -189,7 +189,7 @@ namespace Labb3_HES.ViewModel
             mainWindowViewModel.DeletePackCommand.RaiseCanExecuteChanged();
         }
 
-        private async void ShouldOpenImportQuestions(object obj) => ShouldOpenImportQuestionsMessage.Invoke(this, EventArgs.Empty);
+        private void ShouldOpenImportQuestions(object obj) => ShouldOpenImportQuestionsMessage.Invoke(this, EventArgs.Empty);
         private bool CanOpenImportQuestions(object? arg) => IsConfigurationMode;
 
         private void ShouldImportQuestions(object obj) => ShouldImportQuestionsMessage.Invoke(this, EventArgs.Empty);

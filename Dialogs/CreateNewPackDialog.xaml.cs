@@ -5,13 +5,13 @@ namespace Labb3_HES.Dialogs
 {
     public partial class CreateNewPackDialog : Window
     {
-        public string Name { get; set; }
+        public string? NewQuestionPackName { get; set; }
         public int Index { get; set; }
         public int TimeLimitInSeconds { get; set; }
         public CreateNewPackDialog()
         {
             InitializeComponent();
-            DataContext = (App.Current.MainWindow as MainWindow).DataContext;
+            DataContext = ((MainWindow)App.Current.MainWindow).DataContext;
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
@@ -40,7 +40,7 @@ namespace Labb3_HES.Dialogs
         private void textboxPackName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             TextBox? textBox = sender as TextBox;
-            Name = textBox.Text;
+            NewQuestionPackName = textBox.Text;
         }
     }
 }
