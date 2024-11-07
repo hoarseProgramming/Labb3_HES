@@ -44,18 +44,21 @@
            
             <Button Width="18"
                     Height="18" 
-                    Content="{fa:Icon gears}"
+                    Background="White"
+                    Content="{fa:Icon gears, Foreground=ForestGreen}"
                     IsTabStop="False"
                     Click="ButtonOpenPackOptions_Click"/>
             <Button Width="18"
                     Height="18"
+                    Background="White"
                     Margin="5, 0"
-                    Content="{fa:Icon plus}"
+                    Content="{fa:Icon plus, Foreground=ForestGreen}"
                     IsTabStop="False"
                     Command="{Binding AddQuestionCommand}"/>
             <Button Width="18"
                     Height="18" 
-                    Content="{fa:Icon minus}"
+                    Background="White"
+                    Content="{fa:Icon minus, Foreground=ForestGreen}"
                     IsTabStop="False"
                     Command="{Binding RemoveQuestionCommand}"/>
             
