@@ -6,6 +6,7 @@ namespace Labb3_HES
     {
         [JsonPropertyName("id")]
         public int Id { get; }
+
         [JsonPropertyName("name")]
         public string Name { get; }
 
