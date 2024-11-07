@@ -147,10 +147,7 @@ namespace Labb3_HES.ViewModel
         }
         private bool CanRemoveQuestion(object? arg) => ActiveQuestion != null && IsConfigurationMode;
 
-        private void OpenPackOptions(object obj)
-        {
-            ShouldOpenPackOptionsMessage.Invoke(this, EventArgs.Empty);
-        }
+        private void OpenPackOptions(object obj) => ShouldOpenPackOptionsMessage.Invoke(this, EventArgs.Empty);
         private bool CanOpenPackOptions(object? arg) => IsConfigurationMode;
 
         private void EnableConfiguration(object obj)
@@ -159,10 +156,7 @@ namespace Labb3_HES.ViewModel
             ToggleConfigurationModeOnOrOff();
         }
         private bool CanEnableConfiguration(object? arg) => !IsConfigurationMode;
-        private void SendIsConfigurationModeMessage()
-        {
-            IsConfigurationModeMessage.Invoke(this, EventArgs.Empty);
-        }
+        private void SendIsConfigurationModeMessage() => IsConfigurationModeMessage.Invoke(this, EventArgs.Empty);
         public void OnIsOtherModeMessageRecieved(object sender, EventArgs args)
         {
             if (IsConfigurationMode) ToggleConfigurationModeOnOrOff();
@@ -180,16 +174,10 @@ namespace Labb3_HES.ViewModel
             mainWindowViewModel.DeletePackCommand.RaiseCanExecuteChanged();
         }
 
-        private async void ShouldOpenImportQuestions(object obj)
-        {
-            ShouldOpenImportQuestionsMessage.Invoke(this, EventArgs.Empty);
-        }
+        private async void ShouldOpenImportQuestions(object obj) => ShouldOpenImportQuestionsMessage.Invoke(this, EventArgs.Empty);
         private bool CanOpenImportQuestions(object? arg) => IsConfigurationMode;
 
-        private void ShouldImportQuestions(object obj)
-        {
-            ShouldImportQuestionsMessage.Invoke(this, EventArgs.Empty);
-        }
+        private void ShouldImportQuestions(object obj) => ShouldImportQuestionsMessage.Invoke(this, EventArgs.Empty);
         private bool CanImportQuestions(object? arg) => CategoryList.ListOfCategories.Count > 1;
 
         public async Task ImportQuestions()
