@@ -87,7 +87,7 @@ namespace Labb3_HES
                 await APIHandler.CheckConnectionToOpenTDB();
 
                 ImportQuestionsDialog importQuestionsDialog = new();
-
+                mainWindowViewModel.ConfigurationViewModel.SetDefaultCategoryList();
                 var result = importQuestionsDialog.ShowDialog();
 
                 if (result == true)
