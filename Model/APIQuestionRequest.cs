@@ -1,7 +1,6 @@
-﻿using Labb3_HES.Model;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace Labb3_HES
+namespace Labb3_HES.Model
 {
     internal class APIQuestionRequest
     {

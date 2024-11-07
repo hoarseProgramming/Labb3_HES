@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Web;
 
-namespace Labb3_HES
+namespace Labb3_HES.Model
 {
     class APIHandler
     {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Labb3_HES
+namespace Labb3_HES.Model
 {
     class Category
     {
@@ -12,8 +12,8 @@ namespace Labb3_HES
 
         public Category(int id, string name)
         {
-            this.Id = id;
-            this.Name = name;
+            Id = id;
+            Name = name;
         }
     }
 }

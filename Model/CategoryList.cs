@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Labb3_HES
+namespace Labb3_HES.Model
 {
     class CategoryList
     {
@@ -9,7 +9,7 @@ namespace Labb3_HES
 
         public CategoryList(List<Category> listOfCategories)
         {
-            this.ListOfCategories = listOfCategories;
+            ListOfCategories = listOfCategories;
         }
     }
 }

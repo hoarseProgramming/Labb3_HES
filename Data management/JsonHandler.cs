@@ -1,6 +1,5 @@
-﻿namespace Labb3_HES
+﻿namespace Labb3_HES.Model
 {
-    using Labb3_HES.Model;
     using System.IO;
     using System.Text.Json;
 
