@@ -4,12 +4,10 @@ using System.Windows;
 
 namespace Labb3_HES.Dialogs
 {
-    /// <summary>
-    /// Interaction logic for ImportStatusDialog.xaml
-    /// </summary>
     public partial class ImportStatusDialog : Window
     {
         private ConfigurationViewModel configurationViewModel;
+
         public ImportStatusDialog()
         {
             InitializeComponent();
@@ -25,12 +23,13 @@ namespace Labb3_HES.Dialogs
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             configurationViewModel.ResponseMessage = configurationViewModel.APIQuestionRequest.ResponseCodeMessages[6];
+
             try
             {
                 await configurationViewModel.ImportQuestions();
                 configurationViewModel.ResponseMessage = configurationViewModel.APIQuestionRequest.ActiveResponseCodeMessage;
-
             }
+
             catch (HttpRequestException exception)
             {
                 if (exception.Message == "No such host is known. (opentdb.com:443)")
@@ -39,14 +38,12 @@ namespace Labb3_HES.Dialogs
                 }
                 else if (exception.Message == "Response status code does not indicate success: 429 (Too Many Requests).")
                 {
-                    configurationViewModel.ResponseMessage = exception.Message;
                     configurationViewModel.ResponseMessage = "Too many requests, have some patience young padawan!";
                 }
                 else
                 {
                     configurationViewModel.ResponseMessage = exception.Message;
                 }
-
             }
             catch (Exception exception)
             {
