@@ -1,13 +1,11 @@
 ﻿using Labb3_HES.Dialogs;
+using Labb3_HES.Model;
 using Labb3_HES.ViewModel;
 using System.IO;
 using System.Windows;
 
 namespace Labb3_HES
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private MainWindowViewModel mainWindowViewModel = new();

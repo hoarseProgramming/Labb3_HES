@@ -1,4 +1,5 @@
-﻿using Labb3_HES.ViewModel;
+﻿using Labb3_HES.Model;
+using Labb3_HES.ViewModel;
 using System.Windows;
 
 namespace Labb3_HES.Dialogs
