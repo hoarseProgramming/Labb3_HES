@@ -27,7 +27,7 @@
                       Margin="5"
                       Width="250"
                       ItemsSource="{Binding ConfigurationViewModel.CategoryList.ListOfCategories}"
-                      SelectedItem="{Binding ConfigurationViewModel.SelectedCategory}"
+                      SelectedItem="{Binding ConfigurationViewModel.SelectedCategoryForImporting}"
                       SelectedIndex="0"
                       DisplayMemberPath="Name" />
                 
