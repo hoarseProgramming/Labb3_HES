@@ -1,5 +1,4 @@
 ﻿using Labb3_HES.Dialogs;
-using Labb3_HES.Model;
 using Labb3_HES.ViewModel;
 using System.IO;
 using System.Windows;
@@ -96,27 +95,16 @@ namespace Labb3_HES
             packOptionsDialog.ShowDialog();
         }
 
-        public async void OnShouldOpenImportQuestionsMessageRecieved(object sender, EventArgs args)
+        public void OnShouldOpenImportQuestionsMessageRecieved(object sender, EventArgs args)
         {
-            try
-            {
-                await APIHandler.CheckConnectionToOpenTDB();
+            mainWindowViewModel.ConfigurationViewModel.SetDefaultCategoryList();
+            ImportQuestionsDialog importQuestionsDialog = new();
+            var result = importQuestionsDialog.ShowDialog();
 
-                ImportQuestionsDialog importQuestionsDialog = new();
-                mainWindowViewModel.ConfigurationViewModel.SetDefaultCategoryList();
-                var result = importQuestionsDialog.ShowDialog();
-
-                if (result == true)
-                {
-                    ImportStatusDialog importStatusDialog = new();
-                    var importStatusDialogResult = importStatusDialog.ShowDialog();
-                }
-            }
-            catch (Exception exception)
+            if (result == true)
             {
                 ImportStatusDialog importStatusDialog = new();
-
-                var importStatuaDialogResult = importStatusDialog.ShowDialog();
+                var importStatusDialogResult = importStatusDialog.ShowDialog();
             }
         }
 
