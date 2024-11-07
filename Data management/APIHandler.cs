@@ -4,7 +4,7 @@ using System.Web;
 
 namespace Labb3_HES.Model
 {
-    class APIHandler
+    static class APIHandler
     {
         public static async Task<CategoryList> GetQuestionCategories()
         {
