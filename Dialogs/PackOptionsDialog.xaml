@@ -19,6 +19,7 @@
     <Grid>
         <StackPanel Margin="10"
                     DataContext="{Binding ActivePack}">
+            
             <Label Content="Pack Name:" 
                    FontWeight="Bold" />
             <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
@@ -31,9 +32,11 @@
 
             <ComboBox x:Name="comboBox" Margin="5, 0"
                       SelectedIndex="{Binding Difficulty, Converter={StaticResource DifficultyToIntConverter}}">
+                
                 <ComboBoxItem Content="Easy" />
                 <ComboBoxItem Content="Medium" />
                 <ComboBoxItem Content="Hard" />
+                
             </ComboBox>
 
             <StackPanel Orientation="Horizontal">
@@ -44,7 +47,7 @@
                 <Label Content="{Binding TimeLimitInSeconds}" 
                        HorizontalContentAlignment="Right"
                        Width="40"
-                       Padding="20, 5, 0, 0" />
+                       Padding="20, 5, 0, 0"/>
                 
                 <Label Content="seconds"
                        Padding="5, 5"/>

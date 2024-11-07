@@ -2,9 +2,6 @@
 
 namespace Labb3_HES.Dialogs
 {
-    /// <summary>
-    /// Interaction logic for PackOptionsDialog.xaml
-    /// </summary>
     public partial class PackOptionsDialog : Window
     {
         public PackOptionsDialog()
