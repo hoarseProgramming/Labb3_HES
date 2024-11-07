@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Labb3_HES.Dialogs" 
         xmlns:converters="clr-namespace:Labb3_HES.Converters"
         mc:Ignorable="d"
-        Title="Import Questions From Open Trivia Database" Height="270" Width="300"
+        Title="Import Questions From Open Trivia Database" Height="270" Width="320"
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
