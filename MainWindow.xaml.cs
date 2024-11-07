@@ -45,7 +45,7 @@ namespace Labb3_HES
 
             if (result == true)
             {
-                string name = createNewPackDialog.Name;
+                string name = createNewPackDialog.NewQuestionPackName;
                 int difficultyIndex = createNewPackDialog.Index;
                 int timeLimitInSeconds = createNewPackDialog.TimeLimitInSeconds;
                 mainWindowViewModel.AddNewPack(name, difficultyIndex, timeLimitInSeconds);
