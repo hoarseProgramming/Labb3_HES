@@ -84,11 +84,9 @@ namespace Labb3_HES
         {
             try
             {
-                Task startCheckConnection = APIHandler.CheckConnectionToOpenTDB();
+                await APIHandler.CheckConnectionToOpenTDB();
 
                 ImportQuestionsDialog importQuestionsDialog = new();
-
-                await startCheckConnection;
 
                 var result = importQuestionsDialog.ShowDialog();
 
