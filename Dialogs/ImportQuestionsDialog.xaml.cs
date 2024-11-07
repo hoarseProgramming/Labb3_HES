@@ -30,7 +30,7 @@ namespace Labb3_HES.Dialogs
             try
             {
                 configurationViewModel.CategoryList = await APIHandler.GetQuestionCategories();
-                configurationViewModel.SelectedCategory = configurationViewModel.CategoryList.ListOfCategories[0];
+                configurationViewModel.SelectedCategoryForImporting = configurationViewModel.CategoryList.ListOfCategories[0];
                 configurationViewModel.ShouldImportQuestionsCommand.RaiseCanExecuteChanged();
             }
             catch (Exception exception)
