@@ -100,7 +100,7 @@ namespace Labb3_HES.ViewModel
             SetDefaultPropertiesOnStartup();
 
             AddQuestionCommand = new DelegateCommand(AddQuestion, CanAddQuestion);
-            RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
+            RemoveQuestionCommand = new DelegateCommand(RemoveQuestionAndSelectNewActiveQuestion, CanRemoveQuestion);
             OpenPackOptionsCommand = new DelegateCommand(OpenPackOptions, CanOpenPackOptions);
             EnableConfigurationCommand = new DelegateCommand(EnableConfiguration, CanEnableConfiguration);
             ShouldOpenImportQuestionsCommand = new DelegateCommand(ShouldOpenImportQuestions, CanOpenImportQuestions);
@@ -140,10 +140,25 @@ namespace Labb3_HES.ViewModel
         }
         private bool CanAddQuestion(object? arg) => IsConfigurationMode;
 
-        private void RemoveQuestion(object obj)
+        private void RemoveQuestionAndSelectNewActiveQuestion(object obj)
         {
+            int indexOfDeletedQuestion = ActivePack.Questions.IndexOf(ActiveQuestion);
             ActivePack.Questions.Remove(ActiveQuestion);
+
+            if (ActivePack.Questions.Count > 0) SelectNewActiveQuestionAfterDeletingQuestion(indexOfDeletedQuestion);
+
             mainWindowViewModel.PlayerViewModel.PlayQuizCommand.RaiseCanExecuteChanged();
+        }
+        private void SelectNewActiveQuestionAfterDeletingQuestion(int indexOfQuestionToDelete)
+        {
+            if (indexOfQuestionToDelete == 0)
+            {
+                ActiveQuestion = ActivePack.Questions[0];
+            }
+            else
+            {
+                ActiveQuestion = ActivePack.Questions[indexOfQuestionToDelete - 1];
+            }
         }
         private bool CanRemoveQuestion(object? arg) => ActiveQuestion != null && IsConfigurationMode;
 
