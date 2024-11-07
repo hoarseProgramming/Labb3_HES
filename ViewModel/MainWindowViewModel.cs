@@ -2,6 +2,7 @@
 using Labb3_HES.Model;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows.Threading;
 
 namespace Labb3_HES.ViewModel
 {
@@ -10,12 +11,10 @@ namespace Labb3_HES.ViewModel
         public ConfigurationViewModel ConfigurationViewModel { get; }
         public PlayerViewModel PlayerViewModel { get; }
         public ResultViewModel ResultViewModel { get; }
+
         public ObservableCollection<QuestionPackViewModel>? Packs { get; set; }
 
         private QuestionPackViewModel? _activePack = new QuestionPackViewModel(new QuestionPack());
-
-        public string pathToJsonFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Labb3_HES\\hoarseQuizzerer.json";
-
         public QuestionPackViewModel? ActivePack
         {
             get => _activePack;
@@ -26,6 +25,13 @@ namespace Labb3_HES.ViewModel
                 ConfigurationViewModel.RaisePropertyChanged("ActivePack");
             }
         }
+
+        private DispatcherTimer autoSaveTimer = new DispatcherTimer(DispatcherPriority.Background);
+
+        private int applicationRunTimeInSeconds = 0;
+
+        public string pathToJsonFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Labb3_HES\\hoarseQuizzerer.json";
+
 
         public DelegateCommand CreateNewPackCommand { get; }
         public DelegateCommand DeletePackCommand { get; }
@@ -53,6 +59,8 @@ namespace Labb3_HES.ViewModel
             ToggleFullScreenCommand = new DelegateCommand(ToggleFullScreen);
 
             SubscribeToEvents();
+
+            StartAutoSaveTimer();
         }
 
         private void CreateNewPack(object obj) => ShouldCreateNewPackMessage.Invoke(this, EventArgs.Empty);
@@ -103,6 +111,23 @@ namespace Labb3_HES.ViewModel
             PlayerViewModel.IsPlayerModeMessage += ConfigurationViewModel.OnIsOtherModeMessageRecieved;
 
             ResultViewModel.IsResultModeMessage += PlayerViewModel.OnIsOtherModeMessageRecieved;
+        }
+        private void StartAutoSaveTimer()
+        {
+            autoSaveTimer.Interval = TimeSpan.FromSeconds(1);
+            autoSaveTimer.Tick += AutoSaveTimer_Tick;
+            autoSaveTimer.Start();
+        }
+        private async void AutoSaveTimer_Tick(object? sender, EventArgs e)
+        {
+            applicationRunTimeInSeconds++;
+
+            if (applicationRunTimeInSeconds % 30 == 0)
+            {
+                List<QuestionPack> questionPacks = GetQuestionPackModelsFrom(Packs);
+
+                await JsonHandler.SaveJsonFile(questionPacks, pathToJsonFile);
+            }
         }
         public async Task LoadPacks()
         {
