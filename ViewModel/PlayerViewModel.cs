@@ -126,6 +126,7 @@ namespace Labb3_HES.ViewModel
         public DelegateCommand GiveAnswerCommand { get; }
 
         public event EventHandler IsPlayerModeMessage;
+        public event EventHandler ActivePackIsNotPlayableMessage;
         public event EventHandler AnswerRecievedMessage;
         public event EventHandler NoAnswerRecievedMessage;
         public event EventHandler IsNewQuestionMessage;
@@ -140,18 +141,24 @@ namespace Labb3_HES.ViewModel
 
         private void PlayQuiz(object obj)
         {
-            IsPlayerMode = true;
-            SendIsPlayerModeMessage();
-            CurrentQuestionIndex = 0;
-            CorrectAnswersGiven = 0;
+            if (mainWindowViewModel.ActivePack.CheckIfPackIsPlayable())
+            {
+                IsPlayerMode = true;
+                IsPlayerModeMessage.Invoke(this, EventArgs.Empty);
+                CurrentQuestionIndex = 0;
+                CorrectAnswersGiven = 0;
 
-            QuestionPackWithRandomizedOrder = mainWindowViewModel.ActivePack.GetQuestionPackWithRandomizedOrderOfQuestions();
-            NumberOfQuestionsInPack = QuestionPackWithRandomizedOrder.Questions.Count;
+                QuestionPackWithRandomizedOrder = mainWindowViewModel.ActivePack.GetQuestionPackWithRandomizedOrderOfQuestions();
+                NumberOfQuestionsInPack = QuestionPackWithRandomizedOrder.Questions.Count;
 
-            StartNewQuestion();
+                StartNewQuestion();
+            }
+            else
+            {
+                ActivePackIsNotPlayableMessage.Invoke(this, EventArgs.Empty);
+            }
         }
         private bool CanPlayQuiz(object? arg) => mainWindowViewModel.ActivePack.Questions.Count > 0 && !IsPlayerMode;
-        private void SendIsPlayerModeMessage() => IsPlayerModeMessage.Invoke(this, EventArgs.Empty);
         private void StartNewQuestion()
         {
             isWaitingForAnswer = true;
