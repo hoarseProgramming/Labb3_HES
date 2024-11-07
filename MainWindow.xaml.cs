@@ -9,46 +9,34 @@ namespace Labb3_HES
     public partial class MainWindow : Window
     {
         private MainWindowViewModel mainWindowViewModel = new();
+
         private WindowState stateBeforeFullScreenToggled;
+
         public MainWindow()
         {
             InitializeComponent();
 
             DataContext = mainWindowViewModel;
             playerView.DataContext = mainWindowViewModel.PlayerViewModel;
-            SubscribeToEvents();
 
+            SubscribeToEvents();
         }
+
         private void SubscribeToEvents()
         {
-            mainWindowViewModel.ShouldDeletePackMessage += OnDeletePackMessageRecieved;
-            mainWindowViewModel.ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
-            mainWindowViewModel.ConfigurationViewModel.ShouldOpenImportQuestionsMessage += OnShouldOpenImportQuestionsMessageRecieved;
             mainWindowViewModel.ShouldCreateNewPackMessage += OnShouldCreateNewPackMessageRecieved;
+            mainWindowViewModel.ShouldDeletePackMessage += OnShouldDeletePackMessageRecieved;
             mainWindowViewModel.ShouldToggleFullScreenMessage += OnShouldToggleFullScreenMessageRecieved;
             mainWindowViewModel.ShouldExitApplicationMessage += OnShouldExitApplicationMessageRecieved;
+
+            mainWindowViewModel.ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
+            mainWindowViewModel.ConfigurationViewModel.ShouldOpenImportQuestionsMessage += OnShouldOpenImportQuestionsMessageRecieved;
+
             mainWindowViewModel.PlayerViewModel.AnswerRecievedMessage += playerView.OnAnswerRecievedMessageRecieved;
             mainWindowViewModel.PlayerViewModel.NoAnswerRecievedMessage += playerView.OnNoAnswerRecievedMessageRecieved;
             mainWindowViewModel.PlayerViewModel.IsNewQuestionMessage += playerView.OnIsNewQuestionMessageRecieved;
-
         }
-        public void OnDeletePackMessageRecieved(object sender, EventArgs args)
-        {
-            var result = MessageBox.Show($"Are you sure you want to delete {mainWindowViewModel.ActivePack.Name}",
-                                         "Delete question pack?",
-                                         MessageBoxButton.YesNo);
 
-            if (result == MessageBoxResult.Yes)
-            {
-                mainWindowViewModel.DeletePackAfterConfirmation();
-            }
-        }
-        public void OnShouldOpenPackOptionsMessageRecieved(object sender, EventArgs args)
-        {
-            PackOptionsDialog packOptionsDialog = new();
-
-            packOptionsDialog.ShowDialog();
-        }
         public void OnShouldCreateNewPackMessageRecieved(object sender, EventArgs args)
         {
             CreateNewPackDialog createNewPackDialog = new();
@@ -63,6 +51,18 @@ namespace Labb3_HES
                 mainWindowViewModel.AddNewPack(name, difficultyIndex, timeLimitInSeconds);
             }
         }
+
+        public void OnShouldDeletePackMessageRecieved(object sender, EventArgs args)
+        {
+            var result = MessageBox.Show
+                ($"Are you sure you want to delete {mainWindowViewModel.ActivePack.Name}",
+                 "Delete question pack?",
+                 MessageBoxButton.YesNo
+                );
+
+            if (result == MessageBoxResult.Yes) mainWindowViewModel.DeletePackAfterConfirmation();
+        }
+
         public void OnShouldToggleFullScreenMessageRecieved(object sender, EventArgs args)
         {
             if (!(this.WindowState == WindowState.Maximized))
@@ -78,6 +78,16 @@ namespace Labb3_HES
                 ResizeMode = ResizeMode.CanResize;
             }
         }
+
+        public void OnShouldExitApplicationMessageRecieved(object sender, EventArgs args) => this.Close();
+
+        public void OnShouldOpenPackOptionsMessageRecieved(object sender, EventArgs args)
+        {
+            PackOptionsDialog packOptionsDialog = new();
+
+            packOptionsDialog.ShowDialog();
+        }
+
         public async void OnShouldOpenImportQuestionsMessageRecieved(object sender, EventArgs args)
         {
             try
@@ -101,11 +111,6 @@ namespace Labb3_HES
                 var importStatuaDialogResult = importStatusDialog.ShowDialog();
             }
         }
-        public void OnShouldExitApplicationMessageRecieved(object sender, EventArgs args) => this.Close();
-        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            await mainWindowViewModel.SavePacks();
-        }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -122,6 +127,10 @@ namespace Labb3_HES
             mainWindowViewModel.ActivePack = mainWindowViewModel.Packs.FirstOrDefault();
             mainWindowViewModel.PlayerViewModel.QuestionPackWithRandomizedOrder = mainWindowViewModel.ActivePack.GetQuestionPackWithRandomizedOrderOfQuestions();
             mainWindowViewModel.PlayerViewModel.ActiveAnswers = new string[4];
+        }
+        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            await mainWindowViewModel.SavePacks();
         }
     }
 }
