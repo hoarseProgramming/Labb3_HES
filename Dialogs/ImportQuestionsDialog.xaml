@@ -12,7 +12,7 @@
         Loaded="Window_Loaded">
 
     <Window.Resources>
-        <converters:DifficultyToIntConverter x:Key="DifficultyToIntConverter" />
+        <converters:DifficultyToIntConverter x:Key="DifficultyToIntConverter"/>
     </Window.Resources>
 
     <Grid>
@@ -35,19 +35,23 @@
             <ComboBox Margin="5"
                       SelectedIndex="{Binding ConfigurationViewModel.SelectedDifficultyForImporting,
                                       Converter={StaticResource DifficultyToIntConverter}}">
+                
                      <ComboBoxItem Content="Easy" />
                      <ComboBoxItem Content="Medium" />
                      <ComboBoxItem Content="Hard" />
+                
             </ComboBox>
 
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Left">
+                
                 <Label Content="Number of Questions" 
                        FontWeight="Bold"
                        Margin="0, 0, 40, 0"/>
                 <Label Content="{Binding ElementName=sliderNumberOfQuestions, Path=Value}" 
                        HorizontalContentAlignment="Right"
                        Width="30"/>
+                
             </StackPanel>
            
             
