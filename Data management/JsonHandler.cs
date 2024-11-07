@@ -22,7 +22,6 @@
             return deserializedPacks;
         }
 
-
         public static async Task SaveJsonFile(List<QuestionPack> packs, string pathToFile)
         {
             string serializedPacks = JsonSerializer.Serialize(packs);
