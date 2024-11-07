@@ -3,9 +3,6 @@ using System.Windows.Controls;
 
 namespace Labb3_HES.Dialogs
 {
-    /// <summary>
-    /// Interaction logic for CreateNewPackDialog.xaml
-    /// </summary>
     public partial class CreateNewPackDialog : Window
     {
         public string Name { get; set; }
@@ -20,13 +17,11 @@ namespace Labb3_HES.Dialogs
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
-            this.Close();
         }
 
         private void buttonCreate_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
-            this.Close();
         }
 
         private void sliderTimeLimitInSeconds_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
