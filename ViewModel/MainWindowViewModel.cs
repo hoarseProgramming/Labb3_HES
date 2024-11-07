@@ -154,6 +154,7 @@ namespace Labb3_HES.ViewModel
         {
             QuestionPackViewModel defaultQuestionpack = new(new QuestionPack("hoarse Default Question Pack!"));
 
+            defaultQuestionpack.Questions.Add(new Question(new string[] { "ViewModel, Model, View", "View, ViewModel, Model", "ViewModel, View, Model" }, "", "What does MVVM stand for?"));
             defaultQuestionpack.Questions.Add(new Question(new string[] { "UnDRY", "Weak", "Smelly" }, "SOLID", "Fredrik the ...?"));
             defaultQuestionpack.Questions.Add(new Question(new string[]
                 {
