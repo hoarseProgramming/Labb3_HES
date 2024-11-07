@@ -7,7 +7,7 @@
         xmlns:converters="clr-namespace:Labb3_HES.Converters"
         mc:Ignorable="d"
         Title="Pack Options" 
-        Height="200" 
+        Height="230" 
         Width="200"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
@@ -21,7 +21,9 @@
                     DataContext="{Binding ActivePack}">
             <Label Content="Pack Name:" 
                    FontWeight="Bold" />
-            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                     Height="35"
+                     TextWrapping="Wrap"
                      Margin="5, 0"/>
 
             <Label Content="Difficulty:" 
