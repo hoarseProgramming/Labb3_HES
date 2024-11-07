@@ -46,10 +46,12 @@ namespace Labb3_HES.ViewModel
         public QuestionPackViewModel GetQuestionPackWithRandomizedOrderOfQuestions()
         {
             QuestionPackViewModel randomizedQuestionPack = new(new QuestionPack());
+
             foreach (Question question in Questions)
             {
                 randomizedQuestionPack.Questions.Add(question);
             }
+
             randomizedQuestionPack.TimeLimitInSeconds = TimeLimitInSeconds;
             randomizedQuestionPack.Name = Name;
             randomizedQuestionPack.Difficulty = Difficulty;
@@ -61,6 +63,7 @@ namespace Labb3_HES.ViewModel
         private void ShuffleQuestions()
         {
             int n = Questions.Count;
+
             while (n > 1)
             {
                 n--;
@@ -81,6 +84,7 @@ namespace Labb3_HES.ViewModel
             shuffledAnswers[3] = Questions[currentIndexOfQuestions].CorrectAnswer;
 
             int n = shuffledAnswers.Length;
+
             while (n > 1)
             {
                 n--;
