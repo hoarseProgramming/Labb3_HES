@@ -2,7 +2,7 @@
 
 ## Quiz App - "hoarseQuizzerer" overview:
 
-This is a quiz app made as an final assignment in the course "programming with C#".
+This is a quiz app made as a final assignment in the course "programming with C#".
 
 The application is made with WPF following the MVVM architectural pattern.
 
