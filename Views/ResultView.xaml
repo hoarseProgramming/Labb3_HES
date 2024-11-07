@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:local="clr-namespace:Labb3_HES.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -53,14 +54,14 @@
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center">
 
-                <Button Content="Restart!"
+                <Button Content="{fa:Icon arrowsrotate, Foreground=ForestGreen}"
                         FontSize="25"
                         FontWeight="SemiBold"
                         Padding="10"
                         Command="{Binding PlayerViewModel.PlayQuizCommand}"
                         Margin="0, 0, 20, 0"/>
 
-                <Button Content="Edit quiz!"
+                <Button Content="{fa:Icon sliders, Foreground=ForestGreen}"
                         FontSize="25"
                         FontWeight="SemiBold"
                         Padding="10"
