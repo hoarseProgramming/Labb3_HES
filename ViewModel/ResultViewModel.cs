@@ -14,13 +14,13 @@
                 RaisePropertyChanged();
             }
         }
-        private int _correctAnswers;
+        private int _correctAnswersGiven;
         public int CorrectAnswersGiven
         {
-            get => _correctAnswers;
+            get => _correctAnswersGiven;
             set
             {
-                _correctAnswers = value;
+                _correctAnswersGiven = value;
                 RaisePropertyChanged();
             }
         }
@@ -47,15 +47,12 @@
         }
 
         public event EventHandler IsResultModeMessage;
+
         public ResultViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
         }
 
-        public void OnIsOtherModeMessageRecieved(object sender, EventArgs args)
-        {
-            IsResultMode = false;
-        }
         public void EnableResultMode(int numberOfQuestionsInPack, int correctAnswersGiven)
         {
             NumberOfQuestionsInPack = numberOfQuestionsInPack;
@@ -74,5 +71,7 @@
             IsResultModeMessage.Invoke(this, EventArgs.Empty);
             IsResultMode = true;
         }
+
+        public void OnIsOtherModeMessageRecieved(object sender, EventArgs args) => IsResultMode = false;
     }
 }
