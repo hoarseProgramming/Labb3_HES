@@ -33,6 +33,13 @@ Get direct feedback if your answer is right or wrong (and which one was the righ
 
 After you've answered all of the questions in the question you get a result.
 
+### Saving and loading
+
+The application creates a directory (User/AppData/Local/Labb3_HES) on it's first startup 
+where it saves your packs.
+
+The application automatically saves your pack every 30 seconds or upon closing.
+
 ### Enjoy!
 
 / hoarseProgramming
