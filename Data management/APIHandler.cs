@@ -6,13 +6,6 @@ namespace Labb3_HES.Model
 {
     class APIHandler
     {
-        public static async Task CheckConnectionToOpenTDB()
-        {
-            HttpClient client = new HttpClient();
-
-            var myVar = await client.GetStreamAsync("https://opentdb.com");
-        }
-
         public static async Task<CategoryList> GetQuestionCategories()
         {
             HttpClient client = new HttpClient();
