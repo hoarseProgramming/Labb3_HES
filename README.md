@@ -38,7 +38,7 @@ After you've answered all of the questions in the question you get a result.
 The application creates a directory (User/AppData/Local/Labb3_HES) on it's first startup 
 where it saves/loads your packs.
 
-The application automatically saves your pack every 30 seconds or upon closing.
+The application automatically saves your packs every 30 seconds or upon closing.
 
 ### Enjoy!
 
