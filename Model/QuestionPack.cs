@@ -6,6 +6,13 @@ namespace Labb3_HES.Model
 
     class QuestionPack
     {
+        public string Name { get; set; }
+
+        public Difficulty Difficulty { get; set; }
+
+        public int TimeLimitInSeconds { get; set; }
+
+        public List<Question> Questions { get; set; }
         public QuestionPack(string name = "PackName", Difficulty difficulty = Difficulty.Medium, int timeLimitInSeconds = 30)
         {
             Name = name;
@@ -23,12 +30,5 @@ namespace Labb3_HES.Model
             Questions = questions;
         }
 
-        public string Name { get; set; }
-
-        public Difficulty Difficulty { get; set; }
-
-        public int TimeLimitInSeconds { get; set; }
-
-        public List<Question> Questions { get; set; }
     }
 }

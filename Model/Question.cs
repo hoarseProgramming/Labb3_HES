@@ -4,12 +4,6 @@ namespace Labb3_HES.Model
 {
     class Question
     {
-        public Question(string[] incorrectAnswers, string correctAnswer, string query = "New Question")
-        {
-            Query = query;
-            CorrectAnswer = correctAnswer;
-            IncorrectAnswers = incorrectAnswers;
-        }
         [JsonIgnore]
         public string type { get; set; }
         [JsonIgnore]
@@ -22,6 +16,12 @@ namespace Labb3_HES.Model
         public string CorrectAnswer { get; set; }
         [JsonPropertyName("incorrect_answers")]
         public string[] IncorrectAnswers { get; set; }
+        public Question(string[] incorrectAnswers, string correctAnswer, string query = "New Question")
+        {
+            Query = query;
+            CorrectAnswer = correctAnswer;
+            IncorrectAnswers = incorrectAnswers;
+        }
 
     }
 }
