@@ -8,6 +8,17 @@ namespace Labb3_HES.ViewModel
     {
         private readonly MainWindowViewModel? mainWindowViewModel;
 
+        private bool _isPlayerMode;
+        public bool IsPlayerMode
+        {
+            get => _isPlayerMode;
+            set
+            {
+                _isPlayerMode = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private QuestionPackViewModel _questionPackWithRandomizedOrder;
         public QuestionPackViewModel QuestionPackWithRandomizedOrder
         {
@@ -18,8 +29,8 @@ namespace Labb3_HES.ViewModel
                 RaisePropertyChanged();
             }
         }
-        private Question _activeQuestion;
 
+        private Question _activeQuestion;
         public Question ActiveQuestion
         {
             get => _activeQuestion;
@@ -29,8 +40,8 @@ namespace Labb3_HES.ViewModel
                 RaisePropertyChanged();
             }
         }
-        private string[] _activeAnswers;
 
+        private string[] _activeAnswers;
         public string[] ActiveAnswers
         {
             get => _activeAnswers;
@@ -42,7 +53,6 @@ namespace Labb3_HES.ViewModel
         }
 
         private int _currentQuestionIndex;
-
         public int CurrentQuestionIndex
 
         {
@@ -55,7 +65,6 @@ namespace Labb3_HES.ViewModel
         }
 
         private int _currentQuestionNumber;
-
         public int CurrentQuestionNumber
 
         {
@@ -66,8 +75,8 @@ namespace Labb3_HES.ViewModel
                 RaisePropertyChanged();
             }
         }
-        private int _numberOfQuestionsInPack;
 
+        private int _numberOfQuestionsInPack;
         public int NumberOfQuestionsInPack
 
         {
@@ -78,8 +87,8 @@ namespace Labb3_HES.ViewModel
                 RaisePropertyChanged();
             }
         }
-        private string _givenAnswer;
 
+        private string _givenAnswer;
         public string GivenAnswer
 
         {
@@ -93,18 +102,9 @@ namespace Labb3_HES.ViewModel
 
         public int CorrectAnswersGiven { get; set; }
 
-        private bool _isPlayerMode;
-        public bool IsPlayerMode
-        {
-            get => _isPlayerMode;
-            set
-            {
-                _isPlayerMode = value;
-                RaisePropertyChanged();
-            }
-        }
+
         private DispatcherTimer timeLimitTimer;
-        private DispatcherTimer coolDownTimer;
+        private DispatcherTimer cooldownTimer;
 
         private int _timeLimit;
 
@@ -119,12 +119,13 @@ namespace Labb3_HES.ViewModel
         }
 
         private int coolDownTime;
+
         private bool isWaitingForAnswer;
 
         public DelegateCommand PlayQuizCommand { get; }
-        public event EventHandler IsPlayerModeMessage;
-
         public DelegateCommand GiveAnswerCommand { get; }
+
+        public event EventHandler IsPlayerModeMessage;
         public event EventHandler AnswerRecievedMessage;
         public event EventHandler NoAnswerRecievedMessage;
         public event EventHandler IsNewQuestionMessage;
@@ -135,26 +136,7 @@ namespace Labb3_HES.ViewModel
 
             PlayQuizCommand = new DelegateCommand(PlayQuiz, CanPlayQuiz);
             GiveAnswerCommand = new DelegateCommand(GetAnswer);
-
-
         }
-
-        private void GetAnswer(object givenAnswer)
-        {
-            if (string.IsNullOrEmpty(GivenAnswer) && isWaitingForAnswer)
-            {
-                timeLimitTimer.Stop();
-                GivenAnswer = (string)givenAnswer;
-                if (GivenAnswer == ActiveQuestion.CorrectAnswer)
-                {
-                    CorrectAnswersGiven++;
-                }
-                AnswerRecievedMessage.Invoke(this, EventArgs.Empty);
-                PrepareForNextQuestionOrResult();
-            }
-        }
-
-
 
         private void PlayQuiz(object obj)
         {
@@ -167,12 +149,16 @@ namespace Labb3_HES.ViewModel
             NumberOfQuestionsInPack = QuestionPackWithRandomizedOrder.Questions.Count;
 
             StartNewQuestion();
-
         }
         private bool CanPlayQuiz(object? arg) => mainWindowViewModel.ActivePack.Questions.Count > 0 && !IsPlayerMode;
-        private void SendIsPlayerModeMessage()
+        private void SendIsPlayerModeMessage() => IsPlayerModeMessage.Invoke(this, EventArgs.Empty);
+        private void StartNewQuestion()
         {
-            IsPlayerModeMessage.Invoke(this, EventArgs.Empty);
+            isWaitingForAnswer = true;
+            GivenAnswer = string.Empty;
+            IsNewQuestionMessage.Invoke(this, EventArgs.Empty);
+            GetNextQuestion(CurrentQuestionIndex);
+            RestartTimeLimitTimer();
         }
         private void GetNextQuestion(int currentQuestionIndex)
         {
@@ -188,18 +174,8 @@ namespace Labb3_HES.ViewModel
             timeLimitTimer.Tick += CountdownTimeLimit;
             timeLimitTimer.Start();
         }
-        private void PrepareForNextQuestionOrResult()
-        {
-            coolDownTime = 1;
-            coolDownTimer = new DispatcherTimer();
-            coolDownTimer.Interval = TimeSpan.FromSeconds(1);
-            coolDownTimer.Tick += CountdownCooldown;
-            coolDownTimer.Start();
-        }
-
         private void CountdownTimeLimit(object? sender, EventArgs e)
         {
-
             if (TimeLimit > 0)
             {
                 TimeLimit--;
@@ -208,13 +184,19 @@ namespace Labb3_HES.ViewModel
             {
                 timeLimitTimer.Stop();
                 isWaitingForAnswer = false;
-                if (string.IsNullOrEmpty(GivenAnswer))
-                {
-                    NoAnswerRecievedMessage.Invoke(this, EventArgs.Empty);
-                }
+
+                if (string.IsNullOrEmpty(GivenAnswer)) NoAnswerRecievedMessage.Invoke(this, EventArgs.Empty);
 
                 PrepareForNextQuestionOrResult();
             }
+        }
+        private void PrepareForNextQuestionOrResult()
+        {
+            coolDownTime = 1;
+            cooldownTimer = new DispatcherTimer();
+            cooldownTimer.Interval = TimeSpan.FromSeconds(1);
+            cooldownTimer.Tick += CountdownCooldown;
+            cooldownTimer.Start();
         }
         private void CountdownCooldown(object? sender, EventArgs e)
         {
@@ -225,7 +207,7 @@ namespace Labb3_HES.ViewModel
             }
             else
             {
-                coolDownTimer.Stop();
+                cooldownTimer.Stop();
                 if (!(CurrentQuestionNumber == NumberOfQuestionsInPack))
                 {
                     CurrentQuestionIndex++;
@@ -237,18 +219,30 @@ namespace Labb3_HES.ViewModel
                 }
             }
         }
-        private void StartNewQuestion()
+
+        private void GetAnswer(object givenAnswer)
         {
-            isWaitingForAnswer = true;
-            GivenAnswer = string.Empty;
-            IsNewQuestionMessage.Invoke(this, EventArgs.Empty);
-            GetNextQuestion(CurrentQuestionIndex);
-            RestartTimeLimitTimer();
+            bool shouldTakeAnswer = string.IsNullOrEmpty(GivenAnswer) && isWaitingForAnswer;
+
+            if (shouldTakeAnswer)
+            {
+                timeLimitTimer.Stop();
+                GivenAnswer = (string)givenAnswer;
+
+                if (GivenAnswer == ActiveQuestion.CorrectAnswer)
+                {
+                    CorrectAnswersGiven++;
+                }
+
+                AnswerRecievedMessage.Invoke(this, EventArgs.Empty);
+                PrepareForNextQuestionOrResult();
+            }
         }
+
         public void OnIsOtherModeMessageRecieved(object sender, EventArgs args)
         {
             timeLimitTimer.Stop();
-            coolDownTimer?.Stop();
+            cooldownTimer?.Stop();
             IsPlayerMode = false;
             PlayQuizCommand.RaiseCanExecuteChanged();
         }
