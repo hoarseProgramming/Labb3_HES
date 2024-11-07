@@ -1,0 +1,33 @@
+﻿<Window x:Class="Labb3_HES.Dialogs.ActivePackNotPlayableDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Labb3_HES.Dialogs"
+        mc:Ignorable="d"
+        Title="Active pack is not ready to play!" Height="180" Width="350"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid>
+        
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="10">
+            
+            <Label Content="Pack is not fit for playing. Check for:" 
+                   FontWeight="Bold"/>
+            <Label Content="1: Empty fields in your questions" />
+            <Label Content="2: Incorrect answers that match the correct answer." />
+            <Button x:Name="buttonOk" 
+                    Content="OK"
+                    Width="40"
+                    HorizontalAlignment="Center"
+                    FontWeight="SemiBold"
+                    Margin="15"
+                    Click="buttonOk_Click"/>
+
+        </StackPanel>
+               
+    </Grid>
+</Window>
