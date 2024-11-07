@@ -27,6 +27,7 @@ namespace Labb3_HES
             mainWindowViewModel.ShouldCreateNewPackMessage += OnShouldCreateNewPackMessageRecieved;
             mainWindowViewModel.ShouldDeletePackMessage += OnShouldDeletePackMessageRecieved;
             mainWindowViewModel.ShouldToggleFullScreenMessage += OnShouldToggleFullScreenMessageRecieved;
+            mainWindowViewModel.PlayerViewModel.ActivePackIsNotPlayableMessage += OnActivePackIsNotPlayableMessageRecieved;
             mainWindowViewModel.ShouldExitApplicationMessage += OnShouldExitApplicationMessageRecieved;
 
             mainWindowViewModel.ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
@@ -77,6 +78,13 @@ namespace Labb3_HES
                 WindowStyle = WindowStyle.SingleBorderWindow;
                 ResizeMode = ResizeMode.CanResize;
             }
+        }
+
+        private void OnActivePackIsNotPlayableMessageRecieved(object? sender, EventArgs e)
+        {
+            ActivePackNotPlayableDialog activePackNotPlayableDialog = new();
+
+            activePackNotPlayableDialog.ShowDialog();
         }
 
         public void OnShouldExitApplicationMessageRecieved(object sender, EventArgs args) => this.Close();
