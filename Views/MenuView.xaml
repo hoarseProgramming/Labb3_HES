@@ -15,43 +15,47 @@
             <MenuItem Header="_File">
 
                 <MenuItem Header="_New Question Pack" 
-                          Icon="{fa:Icon folderplus}"
+                          Icon="{fa:Icon folderplus, Foreground=ForestGreen}"
                           Command="{Binding CreateNewPackCommand}"/>
 
                 <MenuItem Header="_Select Question Pack"                         
-                          Icon="{fa:Icon folderopen}"
+                          Icon="{fa:Icon folderopen, Foreground=ForestGreen}"
                           ItemsSource="{Binding Packs}"
                           IsEnabled="{Binding ConfigurationViewModel.IsConfigurationMode}">
-                    
+
+                    <MenuItem.Resources>
+                        <fa:IconImage Icon="Box" Foreground="ForestGreen" Width="13" Height="13" x:Key="boxIcon" x:Shared="false" />
+                    </MenuItem.Resources>
+
                     <MenuItem.ItemContainerStyle>
-                        
+
                         <Style TargetType="MenuItem">
                             <Setter Property="Header" Value="{Binding}"/>
-                            <Setter Property="Icon" Value="{fa:Icon box}"/>
+                            <Setter Property="Icon" Value="{StaticResource boxIcon}"/>
                             <Setter Property="Command" Value="{Binding DataContext.SelectActivePackCommand, 
-                                                              RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                          RelativeSource={RelativeSource AncestorType=Window}}"/>
                             <Setter Property="CommandParameter" Value="{Binding}"/>
                         </Style>
-                        
+
                     </MenuItem.ItemContainerStyle>
-                    
+
                 </MenuItem>
 
                 <MenuItem Header="_Delete Question Pack" 
-                          Icon="{fa:Icon folderminus}"
+                          Icon="{fa:Icon folderminus,Foreground=ForestGreen}"
                           Command="{Binding DeletePackCommand}"/>
 
                 <Separator/>
                 
                 <MenuItem Header="_Import Questions" 
-                          Icon="{fa:Icon cloudarrowdown}"
+                          Icon="{fa:Icon cloudarrowdown, Foreground=ForestGreen}"
                           Command="{Binding ConfigurationViewModel.ShouldOpenImportQuestionsCommand}"
                           InputGestureText="Ctrl+I"/>
                 
                 <Separator/>
                 
                 <MenuItem Header="E_xit"
-                          Icon="{fa:Icon personrunning}"
+                          Icon="{fa:Icon personrunning,Foreground=ForestGreen}"
                           Command="{Binding ExitApplicationCommand}"
                           InputGestureText="Alt+F4"/>
                 
@@ -61,17 +65,17 @@
                       DataContext="{Binding ConfigurationViewModel}">
                 
                 <MenuItem Header="_Add Question"
-                          Icon="{fa:Icon plus}"
+                          Icon="{fa:Icon plus,Foreground=ForestGreen}"
                           Command="{Binding AddQuestionCommand}"
                           InputGestureText="Ctrl+" />
                 
                 <MenuItem Header="_Remove Question" 
-                          Icon="{fa:Icon minus}"
+                          Icon="{fa:Icon minus, Foreground=ForestGreen}"
                           Command="{Binding RemoveQuestionCommand}"
                           InputGestureText="Ctrl-" />
 
                 <MenuItem Header="Pack _Options"
-                          Icon="{fa:Icon sliders}"
+                          Icon="{fa:Icon sliders, Foreground=ForestGreen}"
                           Command="{Binding OpenPackOptionsCommand}"
                           InputGestureText="Ctrl+O" />
 
@@ -80,18 +84,18 @@
             <MenuItem Header="_View">
                 
                 <MenuItem Header="_Play" 
-                          Icon="{fa:Icon play}"
+                          Icon="{fa:Icon play, Foreground=ForestGreen}"
                           Command="{Binding PlayerViewModel.PlayQuizCommand}"
                           InputGestureText="Ctrl+P"/>
                 <MenuItem Header="_Edit" 
-                          Icon="{fa:Icon gears}"
+                          Icon="{fa:Icon gears, Foreground=ForestGreen}"
                           Command="{Binding ConfigurationViewModel.EnableConfigurationCommand}"
                           InputGestureText="Ctrl+E"/>
 
                 <Separator />
                 
                 <MenuItem Header="_Fullscreen" 
-                          Icon="{fa:Icon expand}"
+                          Icon="{fa:Icon expand, Foreground=ForestGreen}"
                           Command="{Binding ToggleFullScreenCommand}"
                           InputGestureText="Alt+Enter"/>
                 
