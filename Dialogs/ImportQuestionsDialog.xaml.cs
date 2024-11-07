@@ -18,13 +18,11 @@ namespace Labb3_HES.Dialogs
         private void StartQuestionImport(object? sender, EventArgs e)
         {
             DialogResult = true;
-            configurationViewModel.ShouldImportQuestionsMessage -= StartQuestionImport;
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
-            configurationViewModel.ShouldImportQuestionsMessage -= StartQuestionImport;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -41,6 +39,11 @@ namespace Labb3_HES.Dialogs
                 ImportStatusDialog importStatusDialog = new();
                 var result = importStatusDialog.ShowDialog();
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            configurationViewModel.ShouldImportQuestionsMessage -= StartQuestionImport;
         }
     }
 }
