@@ -3,21 +3,16 @@ using System.Text.Json.Serialization;
 
 namespace Labb3_HES
 {
-
     internal class APIQuestionRequest
     {
-        public APIQuestionRequest(int responseCode, List<Question> importedQuestions)
-        {
-            ResponseCode = responseCode;
-            ImportedQuestions = importedQuestions;
-            ActiveResponseCodeMessage = ResponseCodeMessages[ResponseCode];
-        }
         [JsonPropertyName("response_code")]
         public int ResponseCode { get; set; }
+
         [JsonPropertyName("results")]
         public List<Question> ImportedQuestions { get; set; }
 
         public string ActiveResponseCodeMessage { get; set; }
+
 
         public string[] ResponseCodeMessages = new string[]
         {
@@ -29,5 +24,12 @@ namespace Labb3_HES
             "Rate Limit: Too many requests have occurred. Each IP can only access the API once every 5 seconds.",
             "Attempting to download questions..."
         };
+
+        public APIQuestionRequest(int responseCode, List<Question> importedQuestions)
+        {
+            ResponseCode = responseCode;
+            ImportedQuestions = importedQuestions;
+            ActiveResponseCodeMessage = ResponseCodeMessages[ResponseCode];
+        }
     }
 }
