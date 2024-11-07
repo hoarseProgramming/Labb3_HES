@@ -42,6 +42,22 @@ namespace Labb3_HES.ViewModel
         }
         public ObservableCollection<Question> Questions { get; }
 
+        public bool CheckIfPackIsPlayable()
+        {
+            foreach (var question in Questions)
+            {
+                if (string.IsNullOrEmpty(question.CorrectAnswer)) return false;
+                if (string.IsNullOrEmpty(question.Query)) return false;
+
+                foreach (var answer in question.IncorrectAnswers)
+                {
+                    if (string.IsNullOrEmpty(answer) || answer == question.CorrectAnswer) return false;
+                }
+            }
+
+            return true;
+        }
+
         private static Random rng = new Random();
         public QuestionPackViewModel GetQuestionPackWithRandomizedOrderOfQuestions()
         {
