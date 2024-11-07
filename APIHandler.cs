@@ -12,6 +12,7 @@ namespace Labb3_HES
 
             var myVar = await client.GetStreamAsync("https://opentdb.com");
         }
+
         public static async Task<CategoryList> GetQuestionCategories()
         {
             HttpClient client = new HttpClient();
@@ -22,6 +23,7 @@ namespace Labb3_HES
 
             return categoryList;
         }
+
         public static async Task<APIQuestionRequest> GetQuestions(int amount, int categoryId, string difficulty)
         {
             HttpClient client = new HttpClient();
@@ -36,6 +38,7 @@ namespace Labb3_HES
 
             return questionRequest;
         }
+
         private static void DecodeFromHTTP(APIQuestionRequest questionRequest)
         {
             foreach (var question in questionRequest.ImportedQuestions)
