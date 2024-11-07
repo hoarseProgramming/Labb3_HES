@@ -7,10 +7,10 @@ namespace Labb3_HES.ViewModel
 {
     class MainWindowViewModel : ViewModelBase
     {
-        public ObservableCollection<QuestionPackViewModel>? Packs { get; set; }
         public ConfigurationViewModel ConfigurationViewModel { get; }
         public PlayerViewModel PlayerViewModel { get; }
         public ResultViewModel ResultViewModel { get; }
+        public ObservableCollection<QuestionPackViewModel>? Packs { get; set; }
 
         private QuestionPackViewModel? _activePack = new QuestionPackViewModel(new QuestionPack());
 
@@ -28,13 +28,13 @@ namespace Labb3_HES.ViewModel
         }
 
         public DelegateCommand CreateNewPackCommand { get; }
-        public DelegateCommand SelectActivePackCommand { get; }
         public DelegateCommand DeletePackCommand { get; }
+        public DelegateCommand SelectActivePackCommand { get; }
         public DelegateCommand ExitApplicationCommand { get; }
         public DelegateCommand ToggleFullScreenCommand { get; }
 
         public event EventHandler ShouldCreateNewPackMessage;
-        public event EventHandler DeletePackMessage;
+        public event EventHandler ShouldDeletePackMessage;
         public event EventHandler ShouldExitApplicationMessage;
         public event EventHandler ShouldToggleFullScreenMessage;
 
@@ -42,37 +42,20 @@ namespace Labb3_HES.ViewModel
         {
             Packs = new ObservableCollection<QuestionPackViewModel>();
 
+            ConfigurationViewModel = new ConfigurationViewModel(this);
+            PlayerViewModel = new PlayerViewModel(this);
+            ResultViewModel = new ResultViewModel(this);
+
             CreateNewPackCommand = new DelegateCommand(CreateNewPack, CanCreateNewPack);
             DeletePackCommand = new DelegateCommand(DeletePack, CanDeletePack);
             SelectActivePackCommand = new DelegateCommand(SelectActivePack);
             ExitApplicationCommand = new DelegateCommand(ExitApplication);
             ToggleFullScreenCommand = new DelegateCommand(ToggleFullScreen);
 
-
-            ConfigurationViewModel = new ConfigurationViewModel(this);
-            PlayerViewModel = new PlayerViewModel(this);
-            ResultViewModel = new ResultViewModel(this);
-
-            ConfigurationViewModel.IsConfigurationModeMessage += PlayerViewModel.OnIsOtherModeMessageRecieved;
-            ConfigurationViewModel.IsConfigurationModeMessage += ResultViewModel.OnIsOtherModeMessageRecieved;
-
-            PlayerViewModel.IsPlayerModeMessage += ResultViewModel.OnIsOtherModeMessageRecieved;
-            PlayerViewModel.IsPlayerModeMessage += ConfigurationViewModel.OnIsOtherModeMessageRecieved;
-
-            ResultViewModel.IsResultModeMessage += PlayerViewModel.OnIsOtherModeMessageRecieved;
-
-
+            SubscribeToEvents();
         }
 
-        private void ToggleFullScreen(object obj)
-        {
-            ShouldToggleFullScreenMessage.Invoke(this, EventArgs.Empty);
-        }
-
-        private void CreateNewPack(object obj)
-        {
-            ShouldCreateNewPackMessage.Invoke(this, EventArgs.Empty);
-        }
+        private void CreateNewPack(object obj) => ShouldCreateNewPackMessage.Invoke(this, EventArgs.Empty);
         private bool CanCreateNewPack(object? arg) => ConfigurationViewModel.IsConfigurationMode;
         public void AddNewPack(string name, int difficultyIndex, int timeLimitInSeconds)
         {
@@ -83,8 +66,8 @@ namespace Labb3_HES.ViewModel
         }
 
         private void DeletePack(object obj) => SendDeletePackMessage();
-        private void SendDeletePackMessage() => DeletePackMessage.Invoke(this, EventArgs.Empty);
         private bool CanDeletePack(object? arg) => Packs.Count > 1 && ConfigurationViewModel.IsConfigurationMode;
+        private void SendDeletePackMessage() => ShouldDeletePackMessage.Invoke(this, EventArgs.Empty);
         public void DeletePackAfterConfirmation()
         {
             var currentActivePack = ActivePack;
@@ -110,7 +93,17 @@ namespace Labb3_HES.ViewModel
 
         private void ExitApplication(object obj) => ShouldExitApplicationMessage.Invoke(this, EventArgs.Empty);
 
+        private void ToggleFullScreen(object obj) => ShouldToggleFullScreenMessage.Invoke(this, EventArgs.Empty);
+        private void SubscribeToEvents()
+        {
+            ConfigurationViewModel.IsConfigurationModeMessage += PlayerViewModel.OnIsOtherModeMessageRecieved;
+            ConfigurationViewModel.IsConfigurationModeMessage += ResultViewModel.OnIsOtherModeMessageRecieved;
 
+            PlayerViewModel.IsPlayerModeMessage += ResultViewModel.OnIsOtherModeMessageRecieved;
+            PlayerViewModel.IsPlayerModeMessage += ConfigurationViewModel.OnIsOtherModeMessageRecieved;
+
+            ResultViewModel.IsResultModeMessage += PlayerViewModel.OnIsOtherModeMessageRecieved;
+        }
         public async Task LoadPacks()
         {
             Task<List<QuestionPack>> loadQuestions = JsonHandler.LoadJsonFile(pathToJsonFile);
@@ -121,13 +114,18 @@ namespace Labb3_HES.ViewModel
             {
                 Packs.Add(new QuestionPackViewModel(pack));
             }
-
         }
         public async Task SavePacks()
         {
+            List<QuestionPack> questionPacks = GetQuestionPackModelsFrom(Packs);
+
+            await JsonHandler.SaveJsonFile(questionPacks, pathToJsonFile);
+        }
+        private List<QuestionPack> GetQuestionPackModelsFrom(ObservableCollection<QuestionPackViewModel> packs)
+        {
             List<QuestionPack> questionPacks = new();
 
-            foreach (var pack in Packs)
+            foreach (var pack in packs)
             {
                 QuestionPack currentQuestionPack = pack.GetQuestionPackModel();
 
@@ -143,7 +141,7 @@ namespace Labb3_HES.ViewModel
                 questionPacks.Add(pack.GetQuestionPackModel());
             }
 
-            await JsonHandler.SaveJsonFile(questionPacks, pathToJsonFile);
+            return questionPacks;
         }
 
         internal void CreateDirectory()
