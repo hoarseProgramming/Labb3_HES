@@ -31,10 +31,6 @@ namespace Labb3_HES
 
             mainWindowViewModel.ConfigurationViewModel.ShouldOpenPackOptionsMessage += OnShouldOpenPackOptionsMessageRecieved;
             mainWindowViewModel.ConfigurationViewModel.ShouldOpenImportQuestionsMessage += OnShouldOpenImportQuestionsMessageRecieved;
-
-            mainWindowViewModel.PlayerViewModel.AnswerRecievedMessage += playerView.OnAnswerRecievedMessageRecieved;
-            mainWindowViewModel.PlayerViewModel.NoAnswerRecievedMessage += playerView.OnNoAnswerRecievedMessageRecieved;
-            mainWindowViewModel.PlayerViewModel.IsNewQuestionMessage += playerView.OnIsNewQuestionMessageRecieved;
         }
 
         public void OnShouldCreateNewPackMessageRecieved(object sender, EventArgs args)
