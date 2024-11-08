@@ -16,7 +16,6 @@
             
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="Margin" Value="5"/>
-            <Setter Property="Background" Value="AliceBlue" />
             <Setter Property="Template">
                     <Setter.Value>
                         
@@ -90,11 +89,12 @@
 
                 <Button x:Name="buttonOne" 
                         Style="{StaticResource ButtonWithoutHoveringEffectStyle}"
+                        Background="{Binding ColorForAnswerOne}"
                         Width="230"
                         Height="80" 
                         Margin="20" 
                         Command="{Binding GiveAnswerCommand}"
-                        CommandParameter="{Binding ElementName=buttonOne, Path=Content.Text}">
+                        CommandParameter="0">
                     <Button.Content>
                         
                         <TextBlock Text="{Binding ActiveAnswers[0]}"
@@ -105,11 +105,12 @@
                 
                 <Button x:Name="buttonTwo" 
                         Style="{StaticResource ButtonWithoutHoveringEffectStyle}"
+                        Background="{Binding ColorForAnswerTwo}"
                         Width="230"
                         Height="80" 
                         Margin="20" 
                         Command="{Binding GiveAnswerCommand}"
-                        CommandParameter="{Binding ElementName=buttonTwo, Path=Content.Text}">
+                        CommandParameter="1">
                     <Button.Content>
                         
                         <TextBlock Text="{Binding ActiveAnswers[1]}"
@@ -125,11 +126,12 @@
                 
                 <Button x:Name="buttonThree" 
                         Style="{StaticResource ButtonWithoutHoveringEffectStyle}"
+                        Background="{Binding ColorForAnswerThree}"
                         Width="230"
                         Height="80" 
                         Margin="20" 
                         Command="{Binding GiveAnswerCommand}"
-                        CommandParameter="{Binding ElementName=buttonThree, Path=Content.Text}">
+                        CommandParameter="2">
                     <Button.Content>
                         
                         <TextBlock Text="{Binding ActiveAnswers[2]}"
@@ -140,11 +142,12 @@
                 
                 <Button x:Name="buttonFour" 
                         Style="{StaticResource ButtonWithoutHoveringEffectStyle}"
+                        Background="{Binding ColorForAnswerFour}"
                         Width="230"
                         Height="80" 
                         Margin="20" 
                         Command="{Binding GiveAnswerCommand}"
-                        CommandParameter="{Binding ElementName=buttonFour, Path=Content.Text}">
+                        CommandParameter="3">
                     <Button.Content>
                         
                         <TextBlock Text="{Binding ActiveAnswers[3]}"
