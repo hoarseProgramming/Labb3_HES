@@ -1,5 +1,6 @@
 ﻿using Labb3_HES.Command;
 using Labb3_HES.Model;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Labb3_HES.ViewModel
@@ -102,6 +103,54 @@ namespace Labb3_HES.ViewModel
 
         public int CorrectAnswersGiven { get; set; }
 
+        private SolidColorBrush _colorForAnswerOne;
+
+        public SolidColorBrush ColorForAnswerOne
+        {
+            get => _colorForAnswerOne;
+            set
+            {
+                _colorForAnswerOne = value;
+                RaisePropertyChanged();
+            }
+        }
+        private SolidColorBrush _colorForAnswerTwo;
+        public SolidColorBrush ColorForAnswerTwo
+        {
+            get => _colorForAnswerTwo;
+            set
+            {
+                _colorForAnswerTwo = value;
+                RaisePropertyChanged();
+            }
+        }
+        private SolidColorBrush _colorForAnswerThree;
+
+        public SolidColorBrush ColorForAnswerThree
+        {
+            get => _colorForAnswerThree;
+            set
+            {
+                _colorForAnswerThree = value;
+                RaisePropertyChanged();
+            }
+        }
+        private SolidColorBrush _colorForAnswerFour;
+
+        public SolidColorBrush ColorForAnswerFour
+        {
+            get => _colorForAnswerFour;
+            set
+            {
+                _colorForAnswerFour = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+        private SolidColorBrush aliceBlueBrush = new SolidColorBrush(new System.Windows.Media.Color() { R = 240, G = 248, B = 255, A = 255 });
+        private SolidColorBrush greenBrush = new SolidColorBrush(new System.Windows.Media.Color() { G = 255, A = 255 });
+        private SolidColorBrush redBrush = new SolidColorBrush(new System.Windows.Media.Color() { R = 255, A = 255 });
 
         private DispatcherTimer timeLimitTimer;
         private DispatcherTimer cooldownTimer;
@@ -127,9 +176,6 @@ namespace Labb3_HES.ViewModel
 
         public event EventHandler IsPlayerModeMessage;
         public event EventHandler ActivePackIsNotPlayableMessage;
-        public event EventHandler AnswerRecievedMessage;
-        public event EventHandler NoAnswerRecievedMessage;
-        public event EventHandler IsNewQuestionMessage;
 
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
@@ -137,6 +183,16 @@ namespace Labb3_HES.ViewModel
 
             PlayQuizCommand = new DelegateCommand(PlayQuiz, CanPlayQuiz);
             GiveAnswerCommand = new DelegateCommand(GetAnswer);
+
+            ResetColorsForAnswers();
+        }
+
+        private void ResetColorsForAnswers()
+        {
+            ColorForAnswerOne = aliceBlueBrush;
+            ColorForAnswerTwo = aliceBlueBrush;
+            ColorForAnswerThree = aliceBlueBrush;
+            ColorForAnswerFour = aliceBlueBrush;
         }
 
         private void PlayQuiz(object obj)
@@ -161,9 +217,9 @@ namespace Labb3_HES.ViewModel
         private bool CanPlayQuiz(object? arg) => mainWindowViewModel.ActivePack.Questions.Count > 0 && !IsPlayerMode;
         private void StartNewQuestion()
         {
+            ResetColorsForAnswers();
             isWaitingForAnswer = true;
             GivenAnswer = string.Empty;
-            IsNewQuestionMessage.Invoke(this, EventArgs.Empty);
             GetNextQuestion(CurrentQuestionIndex);
             RestartTimeLimitTimer();
         }
@@ -192,7 +248,9 @@ namespace Labb3_HES.ViewModel
                 timeLimitTimer.Stop();
                 isWaitingForAnswer = false;
 
-                if (string.IsNullOrEmpty(GivenAnswer)) NoAnswerRecievedMessage.Invoke(this, EventArgs.Empty);
+                int indexOfCorrectAnswer = Array.IndexOf(ActiveAnswers, ActiveQuestion.CorrectAnswer);
+
+                GiveColorToAnswer(indexOfCorrectAnswer + 1, greenBrush);
 
                 PrepareForNextQuestionOrResult();
             }
@@ -234,15 +292,43 @@ namespace Labb3_HES.ViewModel
             if (shouldTakeAnswer)
             {
                 timeLimitTimer.Stop();
-                GivenAnswer = (string)givenAnswer;
+                GivenAnswer = ActiveAnswers[Int32.Parse((string)givenAnswer)];
+
+                int indexOfCorrectAnswer = Array.IndexOf(ActiveAnswers, ActiveQuestion.CorrectAnswer);
+
+                GiveColorToAnswer(indexOfCorrectAnswer + 1, greenBrush);
 
                 if (GivenAnswer == ActiveQuestion.CorrectAnswer)
                 {
                     CorrectAnswersGiven++;
                 }
+                else
+                {
+                    int givenAnswerIndex = Array.IndexOf(ActiveAnswers, GivenAnswer);
 
-                AnswerRecievedMessage.Invoke(this, EventArgs.Empty);
+                    GiveColorToAnswer(givenAnswerIndex + 1, redBrush);
+                }
+
                 PrepareForNextQuestionOrResult();
+            }
+        }
+        private void GiveColorToAnswer(int answerNumber, SolidColorBrush brush)
+        {
+            if (answerNumber == 1)
+            {
+                ColorForAnswerOne = brush;
+            }
+            else if (answerNumber == 2)
+            {
+                ColorForAnswerTwo = brush;
+            }
+            else if (answerNumber == 3)
+            {
+                ColorForAnswerThree = brush;
+            }
+            else
+            {
+                ColorForAnswerFour = brush;
             }
         }
 
